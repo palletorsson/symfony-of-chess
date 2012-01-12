@@ -1,5 +1,11 @@
 BundleChessBundle_homepage:
-    pattern:  /Game
+    pattern:  /
+    defaults: { _controller: BundleChessBundle:Game:index }
+    requirements:
+        _method:  GET
+
+BundleChessBundle_game:
+    pattern:  /game
     defaults: { _controller: BundleChessBundle:Game:index }
     requirements:
         _method:  GET

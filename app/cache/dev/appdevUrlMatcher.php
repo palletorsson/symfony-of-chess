@@ -136,14 +136,27 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // BundleChessBundle_homepage
-        if ($pathinfo === '/Game') {
+        if (rtrim($pathinfo, '/') === '') {
             if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                 $allow = array_merge($allow, array('GET', 'HEAD'));
                 goto not_BundleChessBundle_homepage;
             }
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'BundleChessBundle_homepage');
+            }
             return array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::indexAction',  '_route' => 'BundleChessBundle_homepage',);
         }
         not_BundleChessBundle_homepage:
+
+        // BundleChessBundle_game
+        if ($pathinfo === '/game') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_BundleChessBundle_game;
+            }
+            return array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::indexAction',  '_route' => 'BundleChessBundle_game',);
+        }
+        not_BundleChessBundle_game:
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
