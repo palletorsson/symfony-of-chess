@@ -106,8 +106,8 @@ class __TwigTemplate_e7982e3803e2d1cdf245a6e73c8e34f0 extends Twig_Template
     public function block_stylesheets($context, array $blocks = array())
     {
         // line 11
-        echo "            <link href='http://fonts.googleapis.com/css?family=Irish+Grover' rel='stylesheet' type='text/css'>
-            <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'>
+        echo "            <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
             <link href=\"";
         // line 13
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("css/screen.css"), "html", null, true);
@@ -136,7 +136,7 @@ class __TwigTemplate_e7982e3803e2d1cdf245a6e73c8e34f0 extends Twig_Template
     // line 33
     public function block_blog_tagline($context, array $blocks = array())
     {
-        echo "<a href=\"#\">yes a game of chess</a>";
+        echo "<a href=\"#\">- Yes a game of chess</a>";
     }
 
     // line 38

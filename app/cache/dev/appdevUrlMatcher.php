@@ -136,13 +136,10 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // BundleChessBundle_homepage
-        if (rtrim($pathinfo, '/') === '') {
+        if ($pathinfo === '/Game') {
             if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                 $allow = array_merge($allow, array('GET', 'HEAD'));
                 goto not_BundleChessBundle_homepage;
-            }
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'BundleChessBundle_homepage');
             }
             return array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::indexAction',  '_route' => 'BundleChessBundle_homepage',);
         }

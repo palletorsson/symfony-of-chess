@@ -12,9 +12,9 @@ body { line-height: 1;font-family: Arial, Helvetica, sans-serif;font-size: 12px;
 #header ul.navigation { list-style: none; text-align: right; }
 #header .navigation li { display: inline }
 #header .navigation li a { display: inline-block; padding: 10px 15px; border-left: 1px solid #ccc; }
-#header h2 { font-family: 'Irish Grover', cursive; font-size: 92px; text-align: center; line-height: 110px; }
+#header h2 { font-family: 'Oswald', sans-serif; font-size: 62px; text-align: center; line-height: 110px; }
 #header h2 a { color: #000; }
-#header h3 { text-align: center; font-family: 'La Belle Aurore', cursive; font-size: 24px; margin-bottom: 20px; font-weight: normal; }
+#header h3 { text-align: center; font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 24px; margin-bottom: 20px; font-weight: normal; }
 
 .main-col { width: 700px; display: inline-block; float: left; border-right: 1px solid #ccc; padding: 20px; margin-bottom: 20px; }
 .sidebar { width: 239px; padding: 10px; display: inline-block; }

@@ -153,6 +153,6 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
 
     private function getBundleChessBundle_homepageRouteInfo()
     {
-        return array(array (), array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::indexAction',), array (  '_method' => 'GET',), array (  0 =>   array (    0 => 'text',    1 => '/',  ),));
+        return array(array (), array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::indexAction',), array (  '_method' => 'GET',), array (  0 =>   array (    0 => 'text',    1 => '/Game',  ),));
     }
 }
