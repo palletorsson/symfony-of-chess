@@ -18,3 +18,149 @@
 	height: 500px;
 	background: #666;
 }
+
+
+#coord { /*  number bar */
+width:25px; 
+float:left;
+}
+
+#coord_bottom_bar { /*  alfa bar */
+width:500px;
+height:25px;
+margin:0;
+}
+
+#coord_bottom_bar ul li {
+width:88px;
+float:left;
+display:inline;
+height:40px;
+}
+
+#coord_bottom_bar_no {
+display:inline;
+height:20px;
+padding:13px;
+width:700px;
+font-size:24pt;  /* the size of alfa */
+}
+
+#coord_bottom ul {
+float:left;
+display:inline;
+}
+
+
+#board ul {
+cursor:hand;cursor:pointer; 
+}
+
+#board{ 
+	margin:0;
+	border:10px outset gray;
+	float:left;
+	width:520px;
+	height:520px;
+	position:relative;
+	margin:10px;
+	padding:7px 0 0 7px;
+}
+
+#board ul {
+	margin:0; /* 340/40=42,5 2,5*8=20 */
+	height:60px;
+	width:520px; 
+	position:relative;
+	background-color:rgba(255,255,255,0.5);
+	color:#222;
+	font-size:24pt;  /* the size of the pieces and numbers */
+}
+
+#board ul li{
+	display:inline;
+	float:left;
+	position:relative;
+	height:58px; /* (38) */
+	width:58px;
+	border:1px solid silver;
+	text-align:center;
+	font-size: 150%;
+}
+
+#board ul li:not(.selected){
+}
+
+#board ul li img{ 
+	display:block; 
+	position:relative;
+}
+
+#board ul:nth-child(odd) li:nth-child(odd){background-color:rgba(0,0,0,0.5);}
+
+#board ul:nth-child(even) li:nth-child(even){background-color:rgba(0,0,0,0.5);}
+
+#board ul li img.active:hover{
+	border:1px solid red;
+	top:-1px;
+	left:-1px;
+}
+
+#board ul:first-child div:hover{margin-top:0;}
+#board ul li:first-child:hover{margin-left:0;}
+#board ul li.legal{background-color:rgba(0,0,200,0.6) !important;}
+#board ul li.legal:hover{background-color:rgba(0,100,200,0.6) !important;}
+#board ul li.threat{background-color:rgba(200,0,0,0.6) !important;}
+
+.label{
+position:absolute;
+bottom:0px;
+left:2px;
+z-index:100;
+}
+
+.selected{
+background-color:silver !important;
+border:1px solid purple;
+z-index:5;
+}
+
+
+#row .1 .2 .3 .4 .5 .6 .7 .8{
+height:50px;
+width: 450px;
+float:left;
+}
+
+#col .1 .2 .3 .4 .5 .6 .7 .8{
+height:450px;
+width:50px;
+float:right;
+}
+
+.lsq{
+height:40px;
+width:40px;
+background-color:grey;
+}
+
+.dsq{
+height:40px;
+width:40px
+background-color:olive;
+}
+
+.coordbot_dsq{
+height:20px;
+width:60px;
+padding:5px;
+}
+
+#leftcoord{
+position:absolute;
+bottom:0px;
+left:2px;
+z-index:100;
+width:5px;
+}
+
