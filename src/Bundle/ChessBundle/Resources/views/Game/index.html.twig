@@ -3,28 +3,118 @@
 
 {% block body %}
 <script type="text/javascript">
-	function dragStart(event) {
-		event.dataTransfer.effectAllowed = 'move';
-		event.dataTransfer.setData("Text", event.target.getAttribute('id'));
+
+// stores the reference to the XMLHttpRequest object
+var xmlHttp = createXmlHttpRequestObject();
+// retrieves the XMLHttpRequest object
+function createXmlHttpRequestObject() {
+	// will store the reference to the XMLHttpRequest object
+	var xmlHttp;
+	// if running Internet Explorer
+	if(window.ActiveXObject) {
+		try {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		catch (e) {
+		xmlHttp = false;
+		}
 	}
-	
-	function dragOver(event) {
-		return false;
+	// if running Mozilla or other browsers
+	else {
+		try {
+		xmlHttp = new XMLHttpRequest();
+		}
+		catch (e) {
+		xmlHttp = false;
 	}
+}
+
+// return the created object or display an error message
+if (!xmlHttp)
+	alert("Error creating the XMLHttpRequest object.");
+else
+	return xmlHttp;
+}
 	
-	function drop(event) {
-        var to = event.dataTransfer.getData("Text");
-	var from = event.target.getAttribute('id');
-	console.log(to);
-	var element = document.getElementById(to);
-	console.log(from);	
-	event.target.innerHTML = element.innerHTML; // Moving piece to new cell
-	element.innerHTML = ""; // Clearing old cell
-	event.preventDefault(); // Consider using `event.preventDefault` instead
-	var txt = document.createTextNode(":"+from+"-"+to+"| ");
-	document.getElementById('moves').appendChild(txt);
+function dragStart(event) {
+	event.dataTransfer.effectAllowed = 'move';
+	event.dataTransfer.setData("Text", event.target.getAttribute('id'));
+}
+
+function dragOver(event) {
 	return false;
+}
+
+function drop(event) {
+var from = event.dataTransfer.getData("Text");
+var to = event.target.getAttribute('id');
+var element = document.getElementById(to);
+event.target.innerHTML = element.innerHTML; // Moving piece to new cell
+element.innerHTML = ""; // Clearing old cell
+event.preventDefault(); // Consider using `event.preventDefault` instead
+var text = document.createTextNode(from+"-"+to);
+var txt = from+"-"+to;
+document.getElementById('moves').appendChild(text);
+	// proceed only if the xmlHttp object isn't busy
+if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0) {
+	// retrieve the name typed by the user on the form
+	text = encodeURIComponent(txt);
+	// execute the /Entity/Game.php page from the server
+	xmlHttp.open("GET", "http://localhost/symfony-of-chess/src/Bundle/ChessBundle/Entity/Game.php?text=" + txt, true);
+	// define the method to handle server responses
+	xmlHttp.onreadystatechange = handleServerResponse;
+	// make the server request
+	xmlHttp.send(null);
+}
+// else
+// if the connection is busy, try again after one second
+// setTimeout('drop()', 1000);
+
+return false;
+}
+
+
+// executed automatically when a message is received from the server
+function handleServerResponse()	{
+	// move forward only if the transaction has completed
+	if (xmlHttp.readyState == 4) {
+	console.log('server working'); 
+	// status of 200 indicates the transaction completed successfully
+		if (xmlHttp.status == 200) {
+		// extract the XML retrieved from the server
+		xmlResponse = xmlHttp.responseXML;
+
+		// obtain the document element (the root element) of the XML structure
+		xmlDocumentElement = xmlResponse.documentElement;
+		// get the text message, which is in the first child of
+		// the the document element
+		move = xmlDocumentElement.firstChild.data;
+		// update the client display using the data received from the server
+		document.getElementById("moves").innerHTML = move;
+		// now update the board
+		var from = move.substring(0,2);
+		console.log(to);
+		var to = move.substring(3,5);
+		console.log(from);
+		var element = document.getElementById(from);
+		console.log(element);		
+		var target = document.getElementById(to);
+		
+		
+		target.innerHTML = element.innerHTML; // Moving piece to new cell
+		console.log(element.innerHTML);
+		element.innerHTML = ""; // Clearing old cell		
+		// restart sequence
+		// setTimeout('process()', 1000);
+		}
+		// a HTTP status different than 200 signals an error
+		else {
+			alert("There was a problem accessing the server: " +
+			xmlHttp.statusText);
+		}
 	}
+}
+
 </script>	
 	
 	<!-- ******************************************************************** -->
