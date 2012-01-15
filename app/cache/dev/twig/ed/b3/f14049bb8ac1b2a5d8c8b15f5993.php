@@ -72,13 +72,9 @@ function dragOver(event) {
 function drop(event) {
 var from = event.dataTransfer.getData(\"Text\");
 var to = event.target.getAttribute('id');
-var element = document.getElementById(to);
-event.target.innerHTML = element.innerHTML; // Moving piece to new cell
-element.innerHTML = \"\"; // Clearing old cell
+var txt = from+\"-\"+to;
 event.preventDefault(); // Consider using `event.preventDefault` instead
 var text = document.createTextNode(from+\"-\"+to);
-var txt = from+\"-\"+to;
-document.getElementById('moves').appendChild(text);
 \t// proceed only if the xmlHttp object isn't busy
 if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0) {
 \t// retrieve the name typed by the user on the form
