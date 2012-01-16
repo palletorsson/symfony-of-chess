@@ -43,6 +43,8 @@ function drop(event) {
 	var from = event.dataTransfer.getData("Text");
 	var to = event.target.getAttribute('id');
 	var txt = from+"-"+to;
+	var piece = document.getElementById(from).innerHTML;
+	console.log(piece);
 	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var text = document.createTextNode(from+"-"+to);
 	// we can add the code for the piece and send it to the server. 

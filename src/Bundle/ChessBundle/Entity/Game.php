@@ -19,11 +19,13 @@ if (preg_match($pattern, $string)) {
        $to = $string_array[1];
        echo $from.":".$to; 
    } else {
-		return false; // "invalide move";
+		echo "invalide move";
+		return false; // 
    }
    
 } else {
-    return false; // "invalide syntax";
+    echo "invalide syntax";
+    return false; // 
 }
 
 // close the <response> element

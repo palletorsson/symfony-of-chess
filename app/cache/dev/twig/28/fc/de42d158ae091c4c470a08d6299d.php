@@ -26,7 +26,7 @@ class __TwigTemplate_28fcde42d158ae091c4c470a08d6299d extends Twig_Template
     public function block_sidebar($context, array $blocks = array())
     {
         // line 5
-        echo "<div id=\"start\">Start-button. </div></br></br>
+        echo "<div id=\"start\"><a href=\"game\">Start a new game</a></div></br></br>
 \t
 
 <div id=\"moves\">Game Moves: </br></br> </div>

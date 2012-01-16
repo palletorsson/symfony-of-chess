@@ -154,7 +154,7 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 $allow = array_merge($allow, array('GET', 'HEAD'));
                 goto not_BundleChessBundle_game;
             }
-            return array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::indexAction',  '_route' => 'BundleChessBundle_game',);
+            return array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::gameAction',  '_route' => 'BundleChessBundle_game',);
         }
         not_BundleChessBundle_game:
 
