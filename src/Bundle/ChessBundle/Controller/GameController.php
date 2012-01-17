@@ -21,7 +21,7 @@ class GameController extends Controller
     
     public function moveAction($slug) {	
 		$string = $slug;
-		echo $string; 
+		// no checks are made, use functions below etc 
 		$text = $string;
 		
 		function makeValues($string) {
@@ -41,7 +41,7 @@ class GameController extends Controller
 		
 		// $string = strtolower($string);
 		// explode hand check that the input was of avalide type (a4-b6)
-		// check taht letter and number in right order.
+		// check that letter and number in right order.
 		// check if moved farward and return string to board
 		
 		function pawnMove() {
@@ -64,15 +64,17 @@ class GameController extends Controller
 			}
 		}
 		
-		// the reponse		
+		// the reponse 		
+		
+
 		$response = new Response();
 		$response->setContent('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 								<response>'.$text.'</response>');
 		$response->setStatusCode(200);
 		$response->headers->set('Content-Type', 'text/xml');
 		// prints the XML headers followed by the content
-		return $response->send(); 
-	
+		return $response; 
+				
 	} 
 
 }
