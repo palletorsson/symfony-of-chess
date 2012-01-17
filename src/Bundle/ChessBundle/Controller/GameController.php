@@ -77,7 +77,7 @@ class GameController extends Controller
 		
 		// the response 		
 		
-
+		
 		$response = new Response();
 		$response->setContent('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 								<response>'.$text.'</response>');
