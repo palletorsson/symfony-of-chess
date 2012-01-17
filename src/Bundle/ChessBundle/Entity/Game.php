@@ -1,5 +1,5 @@
- <?php
-
+<?php
+namespace Bundle\ChessBundle\Entity;
 	class Game{
 
 		private $board = array(

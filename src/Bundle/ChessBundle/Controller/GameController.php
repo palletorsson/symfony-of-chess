@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Bundle\ChessBundle\Entity\Game;
 
-include('../Entity/Game.php');
+//include('../Entity/Game.php');
 class GameController extends Controller
 {
 	private $current_game;
@@ -75,7 +75,7 @@ class GameController extends Controller
 			}
 		}
 		
-		// the reponse 		
+		// the response 		
 		
 
 		$response = new Response();
