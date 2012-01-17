@@ -5,17 +5,20 @@ namespace Bundle\ChessBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-		
+use Bundle\ChessBundle\Entity\Game;
+
+include('../Entity/Game.php');
 class GameController extends Controller
 {
-	public function indexAction()
-    {
+	private $current_game;
+	
+	public function indexAction(){
         return $this->render('BundleChessBundle::index.html.twig');
     }
 
-    public function gameAction()
-    { 	
-		$_SESSION['turn']=1; // white 		 
+    public function gameAction(){ 	
+		$_SESSION['turn']=1; // white
+		$this -> current_game = new Game(); 		 		 
         return $this->render('BundleChessBundle:Game:index.html.twig');    
 	}
     
