@@ -1,0 +1,135 @@
+{# src/Bundle/ChessBundle/Resources/views/Game/index.html.twig #}
+{% extends 'BundleChessBundle::layout.html.twig' %}
+
+{% block body %}	
+	<!-- ******************************************************************** -->
+	<!-- The content below is for demonstration of some common HTML5 elements  -->
+	<!-- orginal code found at http://www.buryknightschess.org.uk/play-chess/ -->
+	
+	<div id="board" ondragstart="dragStart(event);" ondragover="return dragOver(event);" ondrop="return drop(event);" >
+			
+	<ul>
+		<div id="coord" class=" 5 dsq" ><span class="label">8</span></div>
+
+		<li id="A8" draggable="true">&#9820;</li>
+		<li id="B8" class="5 dsq" draggable="true">&#9822;</li>
+		<li id="C8" draggable="true">&#9821;</li>
+		<li id="D8" class="5 dsq" draggable="true">&#9819;</li>
+		<li id="E8" draggable="true">&#9818;</li>
+		<li id="F8" class="5 dsq" draggable="true">&#9821;</li>
+		<li id="G8" draggable="true">&#9822;</li>	
+		<li id="H8"class="5 dsq" draggable="true">&#9820;</li>
+	</ul>
+	<ul>
+		<div id="coord" class="5 dsq" ><span class="label">7</span></div>
+
+		<li id="A7" draggable="true">&#9823; </li>
+		<li id="B7" draggable="true">&#9823;</li>
+		<li id="C7" class="5 dsq" draggable="true">&#9823;</li>
+		<li id="D7" draggable="true">&#9823; </li>
+		<li id="E7" class="5 dsq" draggable="true">&#9823;</li>
+		<li id="F7" draggable="true" >&#9823; </li>
+		<li id="G7" class="5 dsq" draggable="true">&#9823;</li>	
+		<li id="H7" draggable="true" >&#9823;</li>
+
+	</ul>
+	<ul>
+		<div id="coord"class="5 dsq"><span class="label">6</span></div>
+
+		<li id="A6" draggable="true"></li>
+		<li id="B6" class="5 dsq" draggable="true"></li>	
+		<li id="C6" draggable="true"></li>	
+		<li id="D6" class="5 dsq" draggable="true"></li>	
+		<li id="E6" draggable="true"></li>	
+		<li id="F6" class="5 dsq" draggable="true" ></li>	
+		<li id="G6" draggable="true"></li>	
+		<li id="H6" class="5 dsq" draggable="true" ></li>	
+	</ul>
+
+		
+	<ul>
+		<div id="coord" class=" 5 dsq"><span class="label">5</span></div>
+
+		<li id="A5" draggable="true"></li>
+		<li id="B5" draggable="true"></li>
+		<li id="C5" class="5 dsq"draggable="true"></li>
+		<li id="D5" draggable="true"></li>
+		<li id="E5" class="5 dsq"draggable="true"></li>
+		<li id="F5" draggable="true"></li>
+		<li id="G5" class="5 dsq"draggable="true"></li>
+		<li id="H5" draggable="true"></li>
+	</ul>
+				
+	<ul>
+		<div id="coord" class="5 dsq"><span class="label">4</span></div>	
+
+		<li id="A4" draggable="true"></li>
+		<li id="B4" class="5 dsq"draggable="true"></li>
+		<li id="C4" draggable="true"></li>
+		<li id="D4" class="5 dsq"draggable="true"></li>
+		<li id="E4" draggable="true"></li>
+		<li id="F4" class="5 dsq"draggable="true"></li>
+		<li id="G4" draggable="true"></li>
+		<li id="H4" class="5 dsq"draggable="true"></li>
+	</ul>
+				
+	<ul>
+		<div id="coord" class="5 dsq"><span class="label">3</span></div>		
+		
+		<li id="A3" class="5 dsq"draggable="true"></li>
+		<li id="B3" draggable="true"></li>
+		<li id="C3" class="5 dsq"draggable="true"></li>
+		<li id="D3" draggable="true"></li>
+		<li id="E3" class="5 dsq"draggable="true"></li>
+		<li id="F3" draggable="true"></li>
+		<li id="G3" class="5 dsq"draggable="true"></li>
+		<li id="H3" draggable="true"></li>
+	</ul>
+				
+	<ul>
+		<div id="coord" class=" 5 dsq"><span class="label">2</span></div>		
+
+		<li id="A2" draggable="true">&#9817;</li>
+		<li id="B2" class="5 dsq" draggable="true">&#9817;</li>
+		<li id="C2" draggable="true">&#9817;</li>
+		<li id="D2" class="5 dsq" draggable="true">&#9817;</li>
+		<li id="E2" draggable="true">&#9817;</li>
+		<li id="F2" class="5 dsq" draggable="true">&#9817;</li>
+		<li id="G2" draggable="true">&#9817;</li>
+		<li id="H2" class="5 dsq" draggable="true">&#9817;</li>
+	</ul>
+	
+	<ul>
+
+		<div id="coord" class=" 5 dsq"><span class="label">1</span></div>		
+
+		<li id="A1" class="5 dsq" draggable="true">&#9814;</li>
+		<li id="B1" draggable="true">&#9816;</li>
+		<li id="C1" class="5 dsq" draggable="true">&#9815;</li>
+		<li id="D1" draggable="true">&#9813;</li>
+		<li id="E1"class="5 dsq" draggable="true">&#9812;</li>
+		<li id="F1" draggable="true">&#9815;</li>
+		<li id="G1" class="5 dsq" draggable="true">&#9816;</li>
+		<li id="H1" draggable="true">&#9814;</li>
+
+	</ul>
+		<div id="coord_bottom_bar" class=" 5 dsq">	
+	
+	    <div id="coord_bottom_bar_no">  <span class="coordbot_dsq">A</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">B</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">C</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">D</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">E</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">F</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">G</span></div>
+		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">H</span></div>
+	</ul>
+	
+	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/events.js') }}"></script>
+ 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+
+{% endblock %}
+{% block sidebar %}
+	<div id="start"><a href="game">Start a new game</a></div></br></br>
+	<div id="moves">Game Moves: </br></br> </div>
+{% endblock %}

@@ -1,7 +1,6 @@
- <?php
+<?php
 
 	class Game{
-
 		private $board = array(
 			'a8' => 9820,
 			'b8' => 9822,
