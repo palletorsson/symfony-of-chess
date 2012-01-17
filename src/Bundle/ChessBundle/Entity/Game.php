@@ -1,5 +1,6 @@
 <?php
-namespace Bundle\ChessBundle\Entity;
+	namespace Bundle\ChessBundle\Entity;
+
 	class Game{
 
 		private $board = array(
@@ -103,6 +104,9 @@ namespace Bundle\ChessBundle\Entity;
 			return $this->pieces[$code]; 
 		}
 		
+		public function move($themove){
+			
+		}
 	}
 
 ?>

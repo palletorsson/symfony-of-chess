@@ -22,7 +22,8 @@ class GameController extends Controller
         return $this->render('BundleChessBundle:Game:index.html.twig');    
 	}
     
-    public function moveAction($slug) {	
+    public function moveAction($slug) {
+    	//$this -> current_game -> move($slug);	
 		$string = $slug;
 		// no checks are made, use functions below etc 
 		$text = $string;
@@ -75,7 +76,7 @@ class GameController extends Controller
 			}
 		}
 		
-		// the response 		
+		// the response DETTA ÄR DET ENDA SOM FAKTISKT KÖRS ÄN SÅ LÄNGE 		
 		
 		
 		$response = new Response();
