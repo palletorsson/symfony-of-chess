@@ -24,43 +24,51 @@ class GameController extends Controller
 		// no checks are made, use functions below etc 
 		$text = $string;
 		
+		// check if pattern is ok and make piece, from and to values in an array
 		function makeValues($string) {
-			$pattern = "/^[0-9]{4}+[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
-			if (preg_match($pattern, $string)) {
+			// $pattern = "/^[0-9]{4}+[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
+			// if (preg_match($pattern, $string)) {
 					$string_array = explode('-', $string);
+					$piece = $string_array[0]; 
 					$from = $string_array[0]; 
 					$to = $string_array[1];
 					
-			return array('from'=>$from, 'to'=>$to); 		
+			return array('piece'=>$piece, 'from'=>$from, 'to'=>$to); 		
 		
-			}  else {
-			return "invalide syntax";
-			}
+			// }  else {
+			// return "invalide syntax";
+			// }
 		}	
 		
-		
-		// $string = strtolower($string);
-		// explode hand check that the input was of avalide type (a4-b6)
-		// check that letter and number in right order.
-		// check if moved farward and return string to board
-		
-		function pawnMove() {
-			if ($string[1]+1 == $string[4]) { 
-				$string_array = explode('-', $string);
-				$from = $string_array[0]; 
-				$to = $string_array[1];
-				$text = $from.":".$to; 
-			} else {
-				$text = "invalide move";
-			}
-		}
-
+		// takes the int of the $piece and checks against black or white $turn
 		function checkTurn($piece, $turn) {
 			$black = array('rook'=>9820, 'bishop'=>9822, 'knight'=>9819, 'queen'=>9821, 'king'=>9818, 'pawn'=>9823);
 			$white = array('rook'=>9814, 'bishop'=>9816, 'knight'=>9816, 'king'=>9815, 'queen'=>9813, 'pawn'=>9812);
 			
 			if (in_array($piece, $white) && $_SESSION['turn'] == 1) {
 					echo "Whites turn!";			
+			}
+		}
+				
+		// $string = strtolower($string);
+		// explode hand check that the input was of avalide type (a4-b6)
+		// check that letter and number in right order.
+		// check if moved farward and return string to board
+		
+		// basic white pawnMove, to make check black use negative numbers
+		function whitePawnMove($from, $to) {
+			if ($from+1 == $to) { 
+				return true;  
+			} else {
+				return false;
+			}
+		}
+
+		function blackPawnMove($from, $to) {
+			if ($from-1 == $to) { 
+				return true;  
+			} else {
+				return false;
 			}
 		}
 		
