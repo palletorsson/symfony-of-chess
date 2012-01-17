@@ -9,3 +9,9 @@ BundleChessBundle_game:
     defaults: { _controller: BundleChessBundle:Game:game }
     requirements:
         _method:  GET
+        
+BundleChessBundle_move:
+    pattern:  /move/{slug}
+    defaults: { _controller: BundleChessBundle:Game:move}
+    requirements:
+        _method:  GET

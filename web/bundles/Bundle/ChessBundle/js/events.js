@@ -41,10 +41,11 @@ function dragOver(event) {
 
 function drop(event) {
 	var from = event.dataTransfer.getData("Text");
+	console.log(from);	
 	var to = event.target.getAttribute('id');
-	var txt = from+"-"+to;
-	var piece = document.getElementById(from).innerHTML;
-	console.log(piece);
+	// var piece = document.getElementById(from).innerHTML;
+	// console.log(piece.substring(3,4)); 
+	var txt = "8956-"+from+"-"+to;
 	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var text = document.createTextNode(from+"-"+to);
 	// we can add the code for the piece and send it to the server. 
@@ -53,7 +54,11 @@ function drop(event) {
 		// retrieve the name typed by the user on the form
 		text = encodeURIComponent(txt);
 		// execute the /Entity/Game.php page from the server
-		xmlHttp.open("GET", "http://localhost/symfony-of-chess/src/Bundle/ChessBundle/Entity/Game.php?text=" + txt, true);
+		// /move/
+		xmlHttp.open("GET", "move/"+txt, true);
+	//	$.post("/move",{ str: text },function( data ){
+
+	//	},"json" );	
 		// define the method to handle server responses
 		xmlHttp.onreadystatechange = handleServerResponse;
 		// make the server request
@@ -67,17 +72,17 @@ function handleServerResponse()	{
 	if (xmlHttp.readyState == 4) {
 	// status of 200 indicates the transaction completed successfully
 		if (xmlHttp.status == 200) {
-			// extract the XML retrieved from the server
+			// extract the XML retrieved from the server						
 			xmlResponse = xmlHttp.responseXML;
 			// obtain the document element (the root element) of the XML structure
-			xmlDocumentElement = xmlResponse.documentElement;
+			xmlDocumentElement = responseXML.documentElement;
 			// get the text message, which is in the first child of game.php
 			move = xmlDocumentElement.firstChild.data;
 			// update the client display using the data received from the server
 			// now update the board
 			// if (move.lenght < 6) {
 				document.getElementById("moves").innerHTML = move;
-				var from = move.substring(0,2);
+				var from = move.substring(0,2); 
 				var to = move.substring(3,5);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);

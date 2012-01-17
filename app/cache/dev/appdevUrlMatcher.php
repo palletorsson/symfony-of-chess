@@ -158,6 +158,16 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
         not_BundleChessBundle_game:
 
+        // BundleChessBundle_move
+        if (0 === strpos($pathinfo, '/move') && preg_match('#^/move/(?P<slug>[^/]+?)$#xs', $pathinfo, $matches)) {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_BundleChessBundle_move;
+            }
+            return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::moveAction',)), array('_route' => 'BundleChessBundle_move'));
+        }
+        not_BundleChessBundle_move:
+
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

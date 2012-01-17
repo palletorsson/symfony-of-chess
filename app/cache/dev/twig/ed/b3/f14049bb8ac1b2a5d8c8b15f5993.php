@@ -47,12 +47,12 @@ class __TwigTemplate_edb3f14049bb8ac1b2a5d8c8b15f5993 extends Twig_Template
 \t<ul>
 \t\t<div id=\"coord\" class=\"5 dsq\" ><span class=\"label\">7</span></div>
 
-\t\t<li id=\"A7\" draggable=\"true\">&#9823; </li>
+\t\t<li id=\"A7\" draggable=\"true\">&#9823;</li>
 \t\t<li id=\"B7\" draggable=\"true\">&#9823;</li>
 \t\t<li id=\"C7\" class=\"5 dsq\" draggable=\"true\">&#9823;</li>
-\t\t<li id=\"D7\" draggable=\"true\">&#9823; </li>
+\t\t<li id=\"D7\" draggable=\"true\">&#9823;</li>
 \t\t<li id=\"E7\" class=\"5 dsq\" draggable=\"true\">&#9823;</li>
-\t\t<li id=\"F7\" draggable=\"true\" >&#9823; </li>
+\t\t<li id=\"F7\" draggable=\"true\" >&#9823;</li>
 \t\t<li id=\"G7\" class=\"5 dsq\" draggable=\"true\">&#9823;</li>\t
 \t\t<li id=\"H7\" draggable=\"true\" >&#9823;</li>
 

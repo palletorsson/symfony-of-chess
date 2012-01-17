@@ -5,7 +5,7 @@ header('Content-Type: text/xml');
 echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 // create the <response> element
 echo '<response>';
-// retrieve the user name
+// retrieve the user name <response> A3-A4 </response>
 $string = $_GET['text'];
 // $string = strtolower($string);
 $pattern = "/^[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
@@ -30,4 +30,20 @@ if (preg_match($pattern, $string)) {
 
 // close the <response> element
 echo '</response>';
+
+/**
+$arr = array(
+            array(
+                    "pi" => "Black Pawn",
+                    "from" => $from,
+					"to" => $to,
+                  ),
+    );
+
+    echo json_encode($arr);
+
+placeras i en klass och en metod 
+* 
+**/
+
 ?>
