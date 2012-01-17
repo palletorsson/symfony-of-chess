@@ -34,6 +34,7 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
        '_configurator_final' => true,
        'BundleChessBundle_homepage' => true,
        'BundleChessBundle_game' => true,
+       'BundleChessBundle_move' => true,
     );
 
     /**
@@ -160,5 +161,10 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
     private function getBundleChessBundle_gameRouteInfo()
     {
         return array(array (), array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::gameAction',), array (  '_method' => 'GET',), array (  0 =>   array (    0 => 'text',    1 => '/game',  ),));
+    }
+
+    private function getBundleChessBundle_moveRouteInfo()
+    {
+        return array(array (  0 => 'slug',), array (  '_controller' => 'Bundle\\ChessBundle\\Controller\\GameController::moveAction',), array (  '_method' => 'GET',), array (  0 =>   array (    0 => 'variable',    1 => '/',    2 => '[^/]+?',    3 => 'slug',  ),  1 =>   array (    0 => 'text',    1 => '/move',  ),));
     }
 }
