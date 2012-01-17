@@ -37,6 +37,7 @@ Thumbs.db
 # Symfony #
 ######################
 cache/*
+cache/dev/*
 log/*
 web/uploads/*
 config/databases.yml
