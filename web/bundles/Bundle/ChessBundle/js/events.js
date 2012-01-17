@@ -20,14 +20,14 @@ function createXmlHttpRequestObject() {
 		}
 		catch (e) {
 		xmlHttp = false;
+		}
 	}
-}
-
-// return the created object or display an error message
-if (!xmlHttp)
-	alert("Error creating the XMLHttpRequest object.");
-else
-	return xmlHttp;
+	
+	// return the created object or display an error message
+	if (!xmlHttp)
+		alert("Error creating the XMLHttpRequest object.");
+	else
+		return xmlHttp;
 }
 	
 function dragStart(event) {
