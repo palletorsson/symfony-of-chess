@@ -1,8 +1,10 @@
 <?php
     
     
+    
     function checkMove($piece, $from, $to){
     	
+		//funktion som returnar inskickat tal som posetivt oavset om det var negativt eller posetivt
 		function negToPos($number){
 			if ($number < 0) {
 				return $number * -1;
@@ -12,7 +14,16 @@
 			};
 		}
 		
+		//funktion som retrunar en array med antal steg i både x och y led
+		function xySteps(){
+			$xystep = array(
+			'y' => negToPos($yPosToInt[substr($to, 0, 1)] - $yPosToInt[substr($from, 0, 1)]),//räknar antal y leds steg
+			'x' => negToPos(substr($to, 1, 1) - substr($from, 1, 1))//räknar antal x leds steg
+			);
+			return $xystep;
+		}
 		
+		//array för att konvertera bokstav till siffra för beräkning och logiska vilkor
 		$yPosToInt = array(
 			'a' => 1,
 			'b' => 2,
@@ -61,18 +72,21 @@
 		}
 		//rook
 		if($piece == 9820 || $piece == 9814){
-			//kolla om toret har flyttat sig på ett av leden
-			if($yPosToInt[substr($to, 0,1)] != $yPosToInt[substr($from, 0,1)] xor substr($to, 1,1) != substr($from, 1,1)){
+			$xyarray = xySteps();
+			//om en rikning är noll får andra vara hur lång som helst
+			if($xyarray["y"] == 0 || $xyarray["x"] == 0){
 				return true;
+			}
+			else {
+				return false;
 			}
 		}
 		//bishop
 		if($piece == 9821 || $piece == 9815){
-			$yStep = negToPos($yPosToInt[substr($to, 0, 1)] - $yPosToInt[substr($from, 0, 1)]);//räknar antal y leds steg
-			$xStep = negToPos(substr($to, 1, 1) - substr($from, 1, 1));//räknar antal x leds steg
+			$xyarray = xySteps();
 			
 			//om det är lika många steg i båda riktningarna är det en diagonal förflyttning
-			if($yStep == $xStep){
+			if($xyarray["y"] == $xyarray["x"]){
 				return true;
 			}
 			else {
@@ -81,15 +95,29 @@
 		}
 		//knight
 		if($piece == 9822 || $piece == 9816){
-			
+			$xyarray = xySteps();
+			if(($xyarray["x"] == 1 && $xyarray["y"] == 2) || ($xyarray["x"] == 2 && $xyarray["y"] == 1)){
+				
+			}
 		}
 		//queen
 		if($piece == 9819 || $piece == 9813){
+			$xyarray = xySteps();
+			if($xyarray["x"] == $xyarray["y"] || ($xyarray["x"] == 0 xor $xyarray["y"] == 0)){
+				return true;
+			}
 			
 		}
 		//king
 		if($piece == 9818 || $piece == 9812){
-			
+			$xyarray = xySteps();
+			//om det är lika många steg i båda riktningarna är det en diagonal förflyttning
+			if($xyarray["y"] <= 1 && $xyarray["x"] <= 1){
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		
 		
