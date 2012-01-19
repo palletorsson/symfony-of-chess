@@ -23,6 +23,59 @@
 			return $xystep;
 		}
 		
+		function checkCollision($moveOverArray){
+			foreach ($moveOverArray as $node) {
+				if($board[$node] != 0){
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		function makeMoveOverArray($from, $to){
+				
+			if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) < 0){
+				$y = 1;
+			}
+			else{
+				$y = -1;
+			}
+			
+			if((substr($to, 1, 1) - substr($from, 1, 1)) < 0){
+				$x = 1;
+			}
+			else{
+				$x = -1;
+			}
+			
+			$moveOverAttay = array();
+			$from = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
+			
+			while($from != $to){
+				$moveOverAttay[] = $from;
+				$from = "" . array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
+			}
+			return $moveOverAttay;
+		}
+		
+		function checkTo($piece, $to){
+			if($board[$to] != 0){
+				//kollar om pjäs är vit
+				if($piece >= 9812 && $piece <= 9817 ){
+					if($board[$to] >= 9812 && $board[$to] <= 9817 ){
+						return false;
+					}
+				}
+				//kollar om pjäs är svart
+				else if($piece >= 9818 && $piece <= 9823 ){
+					if($board[$to] >= 9818 && $board[$to] <= 9823 ){
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		
 		//array för att konvertera bokstav till siffra för beräkning och logiska vilkor
 		$yPosToInt = array(
 			'a' => 1,
