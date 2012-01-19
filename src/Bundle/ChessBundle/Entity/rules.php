@@ -128,7 +128,11 @@
 			$xyarray = xySteps();
 			//om en rikning är noll får andra vara hur lång som helst
 			if($xyarray["y"] == 0 || $xyarray["x"] == 0){
-				return true;
+				if(checkCollision(makeMoveOverArray($from, $to))){
+					if(checkTo($piece, $to)){
+						return true;
+					}
+				}
 			}
 			else {
 				return false;
@@ -140,7 +144,11 @@
 			
 			//om det är lika många steg i båda riktningarna är det en diagonal förflyttning
 			if($xyarray["y"] == $xyarray["x"]){
-				return true;
+				if(checkCollision(makeMoveOverArray($from, $to))){
+					if(checkTo($piece, $to)){
+						return true;
+					}
+				}
 			}
 			else {
 				return false;
@@ -150,14 +158,26 @@
 		if($piece == 9822 || $piece == 9816){
 			$xyarray = xySteps();
 			if(($xyarray["x"] == 1 && $xyarray["y"] == 2) || ($xyarray["x"] == 2 && $xyarray["y"] == 1)){
-				
+				if(checkTo($piece, $to)){
+					return true;
+				}
+			}
+			else{
+				return false;
 			}
 		}
 		//queen
 		if($piece == 9819 || $piece == 9813){
 			$xyarray = xySteps();
 			if($xyarray["x"] == $xyarray["y"] || ($xyarray["x"] == 0 xor $xyarray["y"] == 0)){
-				return true;
+				if(checkCollision(makeMoveOverArray($from, $to))){
+					if(checkTo($piece, $to)){
+						return true;
+					}
+				}
+			}
+			else{
+				return false;
 			}
 			
 		}
@@ -166,7 +186,11 @@
 			$xyarray = xySteps();
 			//om det är lika många steg i båda riktningarna är det en diagonal förflyttning
 			if($xyarray["y"] <= 1 && $xyarray["x"] <= 1){
-				return true;
+				if(checkCollision(makeMoveOverArray($from, $to))){
+					if(checkTo($piece, $to)){
+						return true;
+					}
+				}
 			}
 			else {
 				return false;
