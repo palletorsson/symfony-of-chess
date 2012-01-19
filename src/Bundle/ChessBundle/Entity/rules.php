@@ -1,7 +1,5 @@
 <?php
     
-    
-    
     function checkMove($piece, $from, $to){
     	
 		//funktion som returnar inskickat tal som posetivt oavset om det var negativt eller posetivt
@@ -90,34 +88,62 @@
 		
     	//black pawn
 		if($piece == 9823){
-			if(substr($from, 1,1) == 7){
-				if($to == 6 || $to == 5){
+			//här ska går diagonalt för att döda
+			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1)) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1))){//här ska går diagonalt för att döda
+				if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1){
+					if(checkTo($piece, $to)){
+						return true;
+					}
+				}
+			}
+			//drag för bondens ifrån startposion
+			else if(substr($from, 1,1) == 7 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+				if(substr($to, 1,1) == 6 || substr($to, 1,1) == 5){
+					if(checkCollision(makeMoveOverArray($from, $to))){
+						if($board[$to] == 0){
+							return true;
+						}
+					}
+				}
+			}
+			
+			// vanligt drag när bonden går ett steg framåt
+			else if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+				if($board[$to] == 0){
 					return true;
 				}
 			}
-			else if($to == $from - 1){
-				return true;
-			}
-			else if(false){//här ska går diagonalt för att döda
-				return true;
-			}
+			
 			else {
 				return false;	
 			}
-			
 		}
 		//white pawn
 		if($piece == 9817){
-			if(substr($from, 1,1) == 2){
-				if($to == 3 || $to == 4){
-					return true;
+			//här ska går diagonalt för att döda
+			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1)) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1))){//här ska går diagonalt för att döda
+				if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1){
+					if(checkTo($piece, $to)){
+						return true;
+					}
 				}
 			}
-			else if($to == $from + 1){
-				return true;
+			//drag för bondens ifrån startposion
+			else if(substr($from, 1,1) == 2 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+				if(substr($to, 1,1) == 3 || substr($to, 1,1) == 4){
+					if(checkCollision(makeMoveOverArray($from, $to))){
+						if($board[$to] == 0){
+							return true;
+						}
+					}
+				}
 			}
-			else if(false){//här ska går diagonalt för att döda
-				return true;
+			
+			// vanligt drag när bonden går ett steg framåt
+			else if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+				if($board[$to] == 0){
+					return true;
+				}
 			}
 			else {
 				return false;	
@@ -196,29 +222,6 @@
 				return false;
 			}
 		}
-		
-		
-		
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 ?>
