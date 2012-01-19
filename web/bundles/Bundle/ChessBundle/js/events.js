@@ -45,7 +45,7 @@ function drop(event) {
 	var to = event.target.getAttribute('id');
 	var piece = document.getElementById(from).innerHTML;
 	// console.log(piece.substring(3,4)); 
-	var txt = piece+"-"+from+"-"+to;
+	var txt = from+"-"+to;
 	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var text = document.createTextNode(from+"-"+to);
 	// we can add the code for the piece and send it to the server. 
@@ -95,9 +95,9 @@ console.log(move);
 			// now update the board
 			// if (move.lenght < 6) {
 				document.getElementById("moves").innerHTML += move;
-				var from = move.substring(2,4); 
+				var from = move.substring(0,2); 
 				// console.log(from);
-				var to = move.substring(5,7);
+				var to = move.substring(3,5);
 				// console.log(to);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);

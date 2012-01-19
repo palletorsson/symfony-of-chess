@@ -2,7 +2,10 @@
 	namespace Bundle\ChessBundle\Entity;
 
 	class Game{
-
+			
+			
+		protected $turn = 'w';
+		
 		private $board = array(
 			'a8' => 9820,
 			'b8' => 9822,
@@ -86,13 +89,18 @@
 			9823 => 'b_pawn',
 			9814 => 'w_rook', 
 			9815 => 'w_bishop', 
-			9816 => 'w_knight', 
+			9816 => 'w_knight',
+			9817 => 'w_knight',  
 			9813 => 'w_king', 
 			9813 => 'w_queen', 
 			9812 => 'w_pawn'
 		);
 		
-		public function updateBoard($newPos, $piece){
+		public function __construct(){
+			
+		}
+		public function updateBoard($oldPos, $newPos, $piece){
+			$this -> board[$oldPos] = 0;
 			$this -> board[$newPos] = $piece;
 		}
 		
@@ -105,8 +113,33 @@
 		}
 		
 		public function move($themove){
+					
+			//gör först!
+			$pattern = "/^[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
+			if (preg_match($pattern, $themove)) {
+				$from = strtolower(substr($themove,0,2)); 
+				$to = strtolower(substr($themove,3,2));
+			}else{
+				return FALSE;
+			}	
 			
+			//forsätt här
+			$current_piece = $this -> board[$from];
+			$piece_color = substr($this -> pieces[$current_piece],0,1);
+			
+			//Här ändrar vi på vems tur det är
+			if($this -> turn == 'w' && $piece_color == 'w'){
+				$this -> turn = 'b';
+			}else if($this -> turn == 'b' && $piece_color == 'b'){
+				$this -> turn = 'w';
+			}else{
+				//echo "Det är inte din tur!";
+				return FALSE;
+			}
+			
+			return TRUE;
 		}
+		
 	}
 
 ?>
