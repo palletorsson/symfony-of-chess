@@ -122,6 +122,9 @@
 			if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) < 0){
 				$y = 1;
 			}
+			else if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) == 0){
+				$y = 0;
+			}
 			else{
 				$y = -1;
 			}
@@ -129,15 +132,20 @@
 			if((substr($to, 1, 1) - substr($from, 1, 1)) < 0){
 				$x = -1;
 			}
+			else if((substr($to, 1, 1) - substr($from, 1, 1)) == 0){
+				$x = 0;
+			}
 			else{
 				$x = 1;
 			}
 			
 			$moveOverAttay = array();
+			//echo "vbvcbvvcbcvb ".$from. "</br>";
 			$from = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
-			echo $from. "</br>";
+			//echo "qweqweqweqweqw ".$from. "</br>";
 			while($from != $to){
 				$moveOverAttay[] = $from;
+				//echo "test " . $from,  "</br>"; 	
 				$tempFrom = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
 				$from = $tempFrom;
 				
@@ -168,7 +176,7 @@
     	//black pawn
 		if($piece == 9823){
 			//här ska går diagonalt för att döda
-			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1)) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1))){//här ska går diagonalt för att döda
+			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1), $yPosToInt) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1), $yPosToInt)){//här ska går diagonalt för att döda
 				if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1){
 					if(checkTo($piece, $to, $board)){
 						return true;
@@ -176,7 +184,7 @@
 				}
 			}
 			//drag för bondens ifrån startposion
-			else if(substr($from, 1,1) == 7 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+			else if(substr($from, 1,1) == 7 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
 				if(substr($to, 1,1) == 6 || substr($to, 1,1) == 5){
 					if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 						if($board[$to] == 0){
@@ -187,7 +195,7 @@
 			}
 			
 			// vanligt drag när bonden går ett steg framåt
-			else if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+			else if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
 				if($board[$to] == 0){
 					return true;
 				}
@@ -200,7 +208,7 @@
 		//white pawn
 		if($piece == 9817){
 			//här ska går diagonalt för att döda
-			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1)) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1))){//här ska går diagonalt för att döda
+			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1), $yPosToInt) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1), $yPosToInt)){//här ska går diagonalt för att döda
 				if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1){
 					if(checkTo($piece, $to, $board)){
 						return true;
@@ -208,7 +216,7 @@
 				}
 			}
 			//drag för bondens ifrån startposion
-			else if(substr($from, 1,1) == 2 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+			else if(substr($from, 1,1) == 2 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
 				if(substr($to, 1,1) == 3 || substr($to, 1,1) == 4){
 					if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 						if($board[$to] == 0){
@@ -219,7 +227,7 @@
 			}
 			
 			// vanligt drag när bonden går ett steg framåt
-			else if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1 && array_search(substr($from, 0,1)) == array_search(substr($to, 0,1))){
+			else if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
 				if($board[$to] == 0){
 					return true;
 				}
@@ -275,7 +283,7 @@
 		if($piece == 9819 || $piece == 9813){
 			$xyarray = xySteps($from, $to ,$yPosToInt);
 			if($xyarray["x"] == $xyarray["y"] || ($xyarray["x"] == 0 xor $xyarray["y"] == 0)){
-				if(checkCollision(makeMoveOverArray($from, $to))){
+				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
 						return true;
 					}
@@ -322,19 +330,38 @@
 		else{
 			echo "buuuuuuuuuuuu</br>";
 		}
-	if(checkMove('9817','b2','b3')){
+		if(checkMove('9817','b2','b3')){
 			echo("funkarhar hurra</br>");
 		}
 		else{
 			echo "buuuuuuuuuuuu</br>";
 		}
-	if(checkMove('9817','c2','c4')){
+		if(checkMove('9817','c2','c4')){
 			echo("funkarhar hurra</br>");
 		}
 		else{
 			echo "buuuuuuuuuuuu</br>";
 		}
-	
+		
+		if(checkMove('9813','d1','b3')){
+			echo("funkarhar hurra</br>");
+		}
+		else{
+			echo "buuuuuuuuuuuu</br>";
+		}
+		if(checkMove('9813','d1','d5')){
+			echo("funkarhar hurra</br>");
+		}
+		else{
+			echo "buuuuuuuuuuuu</br>";
+		}
+		if(checkMove('9813','d1','e2')){
+			echo("funkarhar hurra</br>");
+		}
+		else{
+			echo "buuuuuuuuuuuu</br>";
+		}
+		
 	*/
 	
 	
