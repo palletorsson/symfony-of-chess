@@ -10,16 +10,16 @@ function createXmlHttpRequestObject() {
 			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		catch (e) {
-		xmlHttp = false;
+			xmlHttp = false;
 		}
 	}
 	// if running Mozilla or other browsers
 	else {
 		try {
-		xmlHttp = new XMLHttpRequest();
+			xmlHttp = new XMLHttpRequest();
 		}
 		catch (e) {
-		xmlHttp = false;
+			xmlHttp = false;
 		}
 	}
 	
@@ -94,7 +94,7 @@ console.log(move);
 			// update the client display using the data received from the server
 			// now update the board
 			// if (move.lenght < 6) {
-				document.getElementById("moves").innerHTML += move;
+				document.getElementById("moves").innerHTML +=  move + "<br />";
 				var from = move.substring(0,2); 
 				// console.log(from);
 				var to = move.substring(3,5);

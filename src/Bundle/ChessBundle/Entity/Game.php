@@ -1,12 +1,74 @@
 <?php
-	namespace Bundle\ChessBundle\Entity;
 
-	class Game{
-			
-			
-		protected $turn = 'w';
+namespace Bundle\ChessBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * 
+ * @ORM\Entity(repositoryClass="Bundle\ChessBundle\Repository\ChessRepository")
+ * @ORM\Table(name="game")
+ * @ORM\HasLifecycleCallbacks()
+ */
+
+class Game {
+
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	protected $gameid;
+	
+	/**
+	 * @ORM\Column(type="string", length="40")
+	 */
+	protected $player1;
+	
+	/**
+	 * @ORM\Column(type="string", length="40")
+	 */
+	protected $player2;
+	
+	/**
+	 * @ORM\Column(type="string", length="1")
+	 */
+	protected $turn;
+
+	/**
+	 * @ORM\Column(type="array")
+	 */
+	protected $gameboard;
+	
+	/**
+	 * @ORM\Column(type="array")
+	 */
+	protected $whitedraws;
+	
+	/**
+	 * @ORM\Column(type="array")
+	 */
+	protected $blackdraws;
+	
+	/**
+	* @ORM\Column(type="datetime")
+	*/
+	protected $started;
+
+	/**
+	* @ORM\Column(type="datetime")
+	*/
+	protected $ended;
+	
+	public function __construct(){
+
+	}
+	
+	public function createGame(){
+		$this -> player1 = "Player 1";
+		$this -> player2 = "Player 2";
 		
-		private $board = array(
+		$this -> gameboard = array(
 			'a8' => 9820,
 			'b8' => 9822,
 			'c8' => 9821,
@@ -80,65 +142,176 @@
 			'h1' => 9814,
 		);
 		
-		private	$pieces = array(
-			9820 => 'b_rook', 
-			9821 => 'b_bishop', 
-			9822 => 'b_knight', 
-			9819 => 'b_queen', 
-			9818 => 'b_king', 
-			9823 => 'b_pawn',
-			9814 => 'w_rook', 
-			9815 => 'w_bishop', 
-			9816 => 'w_knight',  
-			9812 => 'w_king', 
-			9813 => 'w_queen', 
-			9817 => 'w_pawn'
-		);
 		
-		public function __construct(){
-			
-		}
-		public function updateBoard($oldPos, $newPos, $piece){
-			$this -> board[$oldPos] = 0;
-			$this -> board[$newPos] = $piece;
-		}
-		
-		public function getPieceAtPosition($pos){
-			return $this -> board[$position];
-		}
-		
-		public function getColor($code){
-			return $this->pieces[$code]; 
-		}
-		
-		public function move($themove){
-					
-			//gör först!
-			$pattern = "/^[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
-			if (preg_match($pattern, $themove)) {
-				$from = strtolower(substr($themove,0,2)); 
-				$to = strtolower(substr($themove,3,2));
-			}else{
-				return FALSE;
-			}	
-			
-			//forsätt här
-			$current_piece = $this -> board[$from];
-			$piece_color = substr($this -> pieces[$current_piece],0,1);
-			
-			//Här ändrar vi på vems tur det är
-			if($this -> turn == 'w' && $piece_color == 'w'){
-				$this -> turn = 'b';
-			}else if($this -> turn == 'b' && $piece_color == 'b'){
-				$this -> turn = 'w';
-			}else{
-				//echo "Det är inte din tur!";
-				return FALSE;
-			}
-			
-			return TRUE;
-		}
-		
-	}
+	}	
 
-?>
+    /**
+     * Get gameid
+     *
+     * @return integer 
+     */
+    public function getGameid()
+    {
+        return $this->gameid;
+    }
+
+    /**
+     * Set player1
+     *
+     * @param string $player1
+     */
+    public function setPlayer1($player1)
+    {
+        $this->player1 = $player1;
+    }
+
+    /**
+     * Get player1
+     *
+     * @return string 
+     */
+    public function getPlayer1()
+    {
+        return $this->player1;
+    }
+
+    /**
+     * Set player2
+     *
+     * @param string $player2
+     */
+    public function setPlayer2($player2)
+    {
+        $this->player2 = $player2;
+    }
+
+    /**
+     * Get player2
+     *
+     * @return string 
+     */
+    public function getPlayer2()
+    {
+        return $this->player2;
+    }
+
+    /**
+     * Set gameboard
+     *
+     * @param array $gameboard
+     */
+    public function setGameboard($gameboard)
+    {
+        $this->gameboard = $gameboard;
+    }
+
+    /**
+     * Get gameboard
+     *
+     * @return array 
+     */
+    public function getGameboard()
+    {
+        return $this->gameboard;
+    }
+
+    /**
+     * Set whitedraws
+     *
+     * @param array $whitedraws
+     */
+    public function setWhitedraws($whitedraws)
+    {
+        $this->whitedraws = $whitedraws;
+    }
+
+    /**
+     * Get whitedraws
+     *
+     * @return array 
+     */
+    public function getWhitedraws()
+    {
+        return $this->whitedraws;
+    }
+
+    /**
+     * Set blackdraws
+     *
+     * @param array $blackdraws
+     */
+    public function setBlackdraws($blackdraws)
+    {
+        $this->blackdraws = $blackdraws;
+    }
+
+    /**
+     * Get blackdraws
+     *
+     * @return array 
+     */
+    public function getBlackdraws()
+    {
+        return $this->blackdraws;
+    }
+
+    /**
+     * Set started
+     *
+     * @param datetime $started
+     */
+    public function setStarted($started)
+    {
+        $this->started = $started;
+    }
+
+    /**
+     * Get started
+     *
+     * @return datetime 
+     */
+    public function getStarted()
+    {
+        return $this->started;
+    }
+
+    /**
+     * Set ended
+     *
+     * @param datetime $ended
+     */
+    public function setEnded($ended)
+    {
+        $this->ended = $ended;
+    }
+
+    /**
+     * Get ended
+     *
+     * @return datetime 
+     */
+    public function getEnded()
+    {
+        return $this->ended;
+    }
+
+    /**
+     * Set turn
+     *
+     * @param string $turn
+     */
+    public function setTurn($turn)
+    {
+        $this->turn = $turn;
+    }
+
+    /**
+     * Get turn
+     *
+     * @return string 
+     */
+    public function getTurn()
+    {
+        return $this->turn;
+    }
+}

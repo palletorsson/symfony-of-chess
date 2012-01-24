@@ -6,6 +6,7 @@ BundleChessBundle_homepage:
 
 BundleChessBundle_game:
     pattern:  /game
+    
     defaults: { _controller: BundleChessBundle:Game:game }
     requirements:
         _method:  GET
