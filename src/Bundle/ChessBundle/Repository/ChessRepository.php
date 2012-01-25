@@ -22,38 +22,63 @@ use Doctrine\ORM\EntityRepository;
 		return $qb -> getQuery() -> getResult();
 	}
 */	
-	public function getGameboard($gameid) {
+	public function getGameid() {
 		$qb = $this -> createQueryBuilder('Game') 
-					-> select('Game.gameboard')
-					//-> from('Game','Game.gameboard')
-					//-> where('Game.gameid = '. $gameid)
+					-> select('Game.gameid')
+					-> getQuery() 
 					;
 
-		$result = $qb -> getQuery() -> getResult();
-		$result = unserialize($result[0]['gameboard']);
-		print_r($result);
+		$result = $qb -> getResult();
+		//print_r($result);
+		$result = count($result);
 		return $result;
+	}
+	
+	public function getGame($gameid) {
+		$qb = $this -> createQueryBuilder('Game') 
+					-> select('Game')
+					-> where('Game.gameid = :gameid')
+					-> setParameter('gameid', $gameid)
+					-> getQuery() 
+					;
+
+		$result = $qb -> getResult();
+		//print_r($result[0]);
+		return $result[0];
+		
+		/*
+		$result1[0] = unserialize($result[0]['gameboard']);
+		$result1[1] = $result[0]['turn'];
+		return $result1;
+		 * */
 	}
 
 	public function updateGameboard($gameid,$gameboard) {
 		$qb = $this -> createQueryBuilder('Game') 
 					-> update('Game.gameboard', $gameboard)
 					//-> from('Game','Game.gameboard')
-					//-> where('Game.gameid = '. $gameid)
+					//-> where('Game.gameid = ?'. $gameid)
 					;
 		//$qb -> update('Game.gameboard', $gameboard);
 		
 	}
 
-	public function getTurn() {
+	public function getTurn($gameid2) {
 		$qb2 = $this -> createQueryBuilder('Game') 
-					 -> select('Game.turn');
-				//	-> from('game','turn');
-					 
+					 -> select('Game.turn')
+					-> where('Game.gameid = :gameid')
+					-> setParameter('gameid', $gameid2)
+					-> getQuery() 
+					;
 
-		$result = $qb2 -> getQuery() -> getSingleResult();
-		$result = $result['turn'];
-		//echo $result;
-		return $result;
+		$result2 = $qb2 -> getResult();
+		//print_r($result2);
+		$result2 = $result2[0]['turn'];
+		//	echo "HÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄR!".$result2;
+		return $result2;
+	}
+
+	public function updateTurn($turn){
+		//skicka in $turn i db
 	}
 }

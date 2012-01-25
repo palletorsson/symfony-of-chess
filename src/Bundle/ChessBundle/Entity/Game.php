@@ -67,6 +67,9 @@ class Game {
 	public function createGame(){
 		$this -> player1 = "Player 1";
 		$this -> player2 = "Player 2";
+		$this -> turn = "w";
+		$this -> started = new \DateTime();
+		$this -> ended = new \DateTime();
 		
 		$this -> gameboard = array(
 			'a8' => 9820,
