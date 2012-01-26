@@ -77,17 +77,17 @@
 		
 		private	$pieces = array(
 			9820 => 'b_rook', 
-			9822 => 'b_bishop', 
-			9819 => 'b_knight', 
-			9821 => 'b_queen', 
-			9819 => 'b_king', 
+			9821 => 'b_bishop', 
+			9822 => 'b_knight', 
+			9819 => 'b_queen', 
+			9818 => 'b_king', 
 			9823 => 'b_pawn',
 			9814 => 'w_rook', 
 			9815 => 'w_bishop', 
 			9816 => 'w_knight', 
-			9813 => 'w_king', 
+			9812 => 'w_king', 
 			9813 => 'w_queen', 
-			9812 => 'w_pawn'
+			9817 => 'w_pawn'
 		);
 		
 		public function updateBoard($newPos, $piece){

@@ -1,81 +1,6 @@
 <?php
-    
-    function checkMove($piece, $from, $to){
+    function checkMove($piece, $from, $to, $board){
     	
-		$board = array(
-			'a8' => 9820,
-			'b8' => 9822,
-			'c8' => 9821,
-			'd8' => 9819,
-			'e8' => 9818,
-			'f8' => 9821,
-			'g8' => 9822,
-			'h8' => 9820,
-			
-			'a7' => 9823,
-			'b7' => 9823,
-			'c7' => 9823,
-			'd7' => 9823,
-			'e7' => 9823,
-			'f7' => 9823,
-			'g7' => 9823,
-			'h7' => 9823,
-			
-			'a6' => 0,
-			'b6' => 0,
-			'c6' => 0,
-			'd6' => 0,
-			'e6' => 0,
-			'f6' => 0,
-			'g6' => 0,
-			'h6' => 0,
-			
-			'a5' => 0,
-			'b5' => 0,
-			'c5' => 0,
-			'd5' => 0,
-			'e5' => 0,
-			'f5' => 0,
-			'g5' => 0,
-			'h5' => 0,
-			
-			'a4' => 0,
-			'b4' => 0,
-			'c4' => 0,
-			'd4' => 0,
-			'e4' => 0,
-			'f4' => 0,
-			'g4' => 0,
-			'h4' => 0,
-			
-			'a3' => 0,
-			'b3' => 0,
-			'c3' => 0,
-			'd3' => 0,
-			'e3' => 0,
-			'f3' => 0,
-			'g3' => 0,
-			'h3' => 0,
-
-			'a2' => 9817,
-			'b2' => 9817,
-			'c2' => 9817,
-			'd2' => 9817,
-			'e2' => 9817,
-			'f2' => 9817,
-			'g2' => 9817,
-			'h2' => 9817,
-
-			'a1' => 9814,
-			'b1' => 9816,
-			'c1' => 9815,
-			'd1' => 9813,
-			'e1' => 9812,
-			'f1' => 9815,
-			'g1' => 9816,
-			'h1' => 9814,
-		);
-		
 		
 		//array för att konvertera bokstav till siffra för beräkning och logiska vilkor
 		$yPosToInt = array(
@@ -140,12 +65,11 @@
 			}
 			
 			$moveOverAttay = array();
-			//echo "vbvcbvvcbcvb ".$from. "</br>";
+			
 			$from = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
-			//echo "qweqweqweqweqw ".$from. "</br>";
+			
 			while($from != $to){
 				$moveOverAttay[] = $from;
-				//echo "test " . $from,  "</br>"; 	
 				$tempFrom = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
 				$from = $tempFrom;
 				
@@ -153,7 +77,7 @@
 			return $moveOverAttay;
 		}
 		
-		function checkTo($piece, $to, $board){
+		function checkTo($piece, $to, $board){//kollar om den slår vän eller motståndare
 			if($board[$to] != 0){
 				//kollar om pjäs är vit
 				if($piece >= 9812 && $piece <= 9817 ){
@@ -171,6 +95,82 @@
 			return true;
 		}
 		
+		function checkChess($pos, $piece, $yPosToInt, $board){
+			
+			function checkKnight($pos, $yPosToInt){//hämtar alla rutor en häst kan gå till utifrån pos
+				$moveToArray = array();
+				$tempArray = array();
+				
+				function negativToZero($int){//gör ett negativt tal till noll
+					if($int < 0){
+						$int = 0;
+					}
+					return $int;
+				}
+				
+				//$knightTo = ($yPosToInt[substr($pos, 0, 1)] + 2)
+				$tempArray[] = (($yPosToInt[substr($pos, 0, 1)] + 2) . (substr($pos, 1, 1) + 1));
+				
+				$tempArray[] = (($yPosToInt[substr($pos, 0, 1)] + 1) . (substr($pos, 1, 1) + 2));
+				
+				$tempArray[] = (negativToZero($yPosToInt[substr($pos, 0, 1)] - 2) . (substr($pos, 1, 1) + 1));
+				
+				$tempArray[] = (negativToZero($yPosToInt[substr($pos, 0, 1)] - 1) . (substr($pos, 1, 1) + 2));
+				
+				$tempArray[] = (($yPosToInt[substr($pos, 0, 1)] + 2) . negativToZero(substr($pos, 1, 1) - 1));
+				
+				$tempArray[] = (($yPosToInt[substr($pos, 0, 1)] + 1) . negativToZero(substr($pos, 1, 1) - 2));
+				
+				$tempArray[] = (negativToZero($yPosToInt[substr($pos, 0, 1)] - 2) . negativToZero(substr($pos, 1, 1) - 1));
+				
+				$tempArray[] = (negativToZero($yPosToInt[substr($pos, 0, 1)] - 1) . negativToZero(substr($pos, 1, 1) - 2));
+				
+				
+				foreach ($tempArray as $value) {
+					if(substr($value, 0, 1) > 0 && substr($value, 0, 1) < 9){
+						if(substr($value, 1, 1) > 0 && substr($value, 1, 1) < 9){
+							$moveToArray[] = (array_search(substr($value, 0, 1), $yPosToInt)) . substr($value, 1, 1);
+						}
+					}
+				}
+				
+				return $moveToArray;
+			}
+
+			
+			$color = "";
+			if($piece == 9812){
+				$color = "white";
+			}
+			else if($piece == 9818){
+				$color = "black";
+			}
+			else{
+			
+				return false;
+			}
+			
+			$knightMoves = checkKnight($pos, $yPosToInt);
+			
+			foreach($knightMoves as $move){
+				
+				if($color == "white"){
+					
+					if($board[$move] == 9822){
+						return true;
+					}
+				}
+				if($color == "black"){
+					
+					if($board[$move] == 9816){
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		}
+
 		
 		
     	//black pawn
@@ -179,12 +179,15 @@
 			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1), $yPosToInt) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1), $yPosToInt)){//här ska går diagonalt för att döda
 				if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1){
 					if(checkTo($piece, $to, $board)){
-						return true;
+						if(!$board[$to] == 0){
+							return true;
+						};
+							
 					}
 				}
 			}
 			//drag för bondens ifrån startposion
-			else if(substr($from, 1,1) == 7 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
+			else if(substr($from, 1,1) == 7 && substr($from, 0,1) == substr($to, 0,1)){
 				if(substr($to, 1,1) == 6 || substr($to, 1,1) == 5){
 					if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 						if($board[$to] == 0){
@@ -211,12 +214,14 @@
 			if(substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] + 1), $yPosToInt) || substr($to, 0, 1) == array_search(($yPosToInt[substr($from, 0, 1)] - 1), $yPosToInt)){//här ska går diagonalt för att döda
 				if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1){
 					if(checkTo($piece, $to, $board)){
-						return true;
+						if(!$board[$to] == 0){
+							return true;
+						};
 					}
 				}
 			}
 			//drag för bondens ifrån startposion
-			else if(substr($from, 1,1) == 2 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
+			else if(substr($from, 1,1) == 2 && substr($from, 0,1) == substr($to, 0,1)){
 				if(substr($to, 1,1) == 3 || substr($to, 1,1) == 4){
 					if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 						if($board[$to] == 0){
@@ -362,8 +367,17 @@
 			echo "buuuuuuuuuuuu</br>";
 		}
 		
+		if(checkMove('9816','b1','c3')){
+			echo("funkarhar hurra</br>");
+		}
+		else{
+			echo "buuuuuuuuuuuu</br>";
+		}
+		if(checkMove('9816','b1','a3')){
+			echo("funkarhar hurra</br>");
+		}
+		else{
+			echo "buuuuuuuuuuuu</br>";
+		}
 	*/
-	
-	
-	
 ?>
