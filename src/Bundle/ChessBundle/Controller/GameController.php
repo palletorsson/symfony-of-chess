@@ -91,22 +91,6 @@ class GameController extends Controller
 		return $response; 
 		
 		
-		function whitePawnMove($from, $to) {
-			if ($from+1 == $to) { 
-				return true;  
-			} else {
-				return false;
-			}
-		}
-
-		function blackPawnMove($from, $to) {
-			if ($from-1 == $to) { 
-				return true;  
-			} else {
-				return false;
-			}
-		}
-		
 			
 	} 
 
