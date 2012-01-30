@@ -106,15 +106,17 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			return true;
 		}
-		//kollar om pos är hotad att blir slagen. Behöver $piece som en kung för att avgöra färg
 		
+		//kollar om pos är hotad att blir slagen. Behöver $piece som en kung för att avgöra färg return true om pos kan bli slagen
 		function checkChess($pos, $piece, $yPosToInt, $board){
 			
-			function checkKnight($pos, $yPosToInt){//hämtar alla rutor en häst kan gå till utifrån pos
+			//hämtar alla rutor en häst kan gå till utifrån pos
+			function checkKnight($pos, $yPosToInt){
 				$moveToArray = array();
 				$tempArray = array();
 				
-				function negativToZero($int){//gör ett negativt tal till noll
+				//gör ett negativt tal till noll
+				function negativToZero($int){
 					if($int < 0){
 						$int = 0;
 					}
@@ -149,7 +151,247 @@ namespace Bundle\ChessBundle\Entity;
 				
 				return $moveToArray;
 			}
+			
+			function checkUp($pos, $color, $board){
+				$x = substr($pos, 1, 1);
+				$x++;
+				while ($x <= 8) {
+					$y = substr($pos, 0, 1);
+					if($board[$y . $x] != 0){
+						if($color == "white"){
+							
+							if($board[$y . $x] == 9820 || $board[$y . $x] == 9819 ){
+								return true;
+								}
+						}
+						else if($color == "black"){
+							if($board[$y . $x] == 9814 || $board[$y . $x] == 9813 ){
+								return true;
+							}
+						}
+						else{
+							return false;
+						}
+					}
+					
+					$x++;
+				}
+			}
+			
+			function checkDown($pos, $color, $board){
+				$x = substr($pos, 1, 1);
+				$x--;
+				while ($x >= 1) {
+					$y = substr($pos, 0, 1);
+					if($board[$y . $x] != 0){
+						if($color == "white"){
+							if($board[$y . $x] == 9820 || $board[$y . $x] == 9819 ){
+								return true;
+							}
+					}
+						else if($color == "black"){
+							if($board[$y . $x] == 9814 || $board[$y . $x] == 9813 ){
+								return true;
+							}
+						}
+					}
+					
+					$x--;
+				}
+				return false;
+			}
+			
+			function checkRight($pos, $color, $yPosToInt, $board){
+				$y = $yPosToInt[substr($pos, 0, 1)];
+				$y++;
+				while ($y <= 8) {
+					$x = substr($pos, 1, 1);
+					$yAsString = array_search($y, $yPosToInt);
+					if($board[$yAsString . $x] != 0){
+						if($color == "white"){
+							if($board[$yAsString . $x] == 9820 || $board[$yAsString . $x] == 9819 ){
+								return true;
+							}
+					}
+					else if($color == "black"){
+						if($board[$yAsString . $x] == 9814 || $board[$yAsString . $x] == 9813 ){
+							return true;
+						}
+					}
+					}
+					
+					$y++;
+				}
+				return false;
+			}
+			
+			function checkLeft($pos, $color, $yPosToInt, $board){
+				$y = $yPosToInt[substr($pos, 0, 1)];
+				$y--;
+				while ($y >= 1) {
+					$x = substr($pos, 1, 1);
+					$yAsString = array_search($y, $yPosToInt);
+					if($board[$yAsString . $x] != 0){
+						if($color == "white"){
+							if($board[$yAsString . $x] == 9820 || $board[$yAsString . $x] == 9819 ){
+								return true;
+							}
+					}
+					else if($color == "black"){
+						if($board[$yAsString . $x] == 9814 || $board[$yAsString . $x] == 9813 ){
+							return true;
+						}
+					}
+					}
+					
+					$y--;
+				}
+				return false;
+			}
+			
+			function checkUpRight($pos, $color, $yPosToInt, $board){
+				$y = $yPosToInt[substr($pos, 0, 1)];
+				$x = substr($pos, 1, 1);
+				$y++;
+				$x++;
+				
+				//kollar efter bonde på först steget
+				if($color == "white" && ($y <= 8 && $x <= 8)){
+						
+						$yAsString = array_search($y, $yPosToInt);
+						if($board[$yAsString . $x] == 9823){
+							return true;
+						}
+					}
+				
+				while ($y <= 8 && $x <= 8) {
+					$yAsString = array_search($y, $yPosToInt);
+					if($board[$yAsString . $x] != 0){
+						if($color == "white"){
+							if($board[$yAsString . $x] == 9821 || $board[$yAsString . $x] == 9819 ){
+								return true;
+							}
+						}
+						else if($color == "black"){
+							if($board[$yAsString . $x] == 9815 || $board[$yAsString . $x] == 9813 ){
+								return true;
+							}
+						}
+					}
+					$y++;
+					$x++;
+				}
+				return false;
+			}
+			
+			function checkUpLeft($pos, $color, $yPosToInt, $board){
+				$y = $yPosToInt[substr($pos, 0, 1)];
+				$x = substr($pos, 1, 1);
+				$y--;
+				$x++;
+				
+				//kollar efter bonde på först steget
+				if($color == "white"  && ($y >= 1 && $x <= 8)){
+						$yAsString = array_search($y, $yPosToInt);
+						if($board[$yAsString . $x] == 9823){
+							return true;
+						}
+					}
+				
+				while ($y >= 1 && $x <= 8) {
+					$yAsString = array_search($y, $yPosToInt);
+					if($board[$yAsString . $x] != 0){
+						if($color == "white"){
+							if($board[$yAsString . $x] == 9821 || $board[$yAsString . $x] == 9819 ){
+								return true;
+							}
+						}
+						else if($color == "black"){
+							if($board[$yAsString . $x] == 9815 || $board[$yAsString . $x] == 9813 ){
+								return true;
+							}
+						}
+					}
+					$y--;
+					$x++;
+				}
+				return false;
+			}
+			
+			function checkDownRight($pos, $color, $yPosToInt, $board){
+				$y = $yPosToInt[substr($pos, 0, 1)];
+				$x = substr($pos, 1, 1);
+				$y++;
+				$x--;
+				
+				//kollar efter bonde på först steget
+				if($color == "black"  && ($y <= 8 || $x >= 1)){
+						
+						$yAsString = array_search($y, $yPosToInt);
+						if($board[$yAsString . $x] == 9817){
+							return true;
+						}
+					}
+				
+				while ($y <= 8 && $x >= 1) {
+					$yAsString = array_search($y, $yPosToInt);
+					if($board[$yAsString . $x] != 0){
+						if($color == "white"){
+							if($board[$yAsString . $x] == 9821 || $board[$yAsString . $x] == 9819 ){
+								return true;
+							}
+						}
+						else if($color == "black"){
+							if($board[$yAsString . $x] == 9815 || $board[$yAsString . $x] == 9813 ){
+								return true;
+							}
+						}
+					}
+					$y++;
+					$x--;
+				}
+				return false;
+			}
+			
+			function checkDownLeft($pos, $color, $yPosToInt, $board){
+				$y = $yPosToInt[substr($pos, 0, 1)];
+				$x = substr($pos, 1, 1);
+				$y--;
+				$x--;
+				
+				//kollar efter bonde på först steget
+				if($color == "black"  && ($y >= 1 && $x >= 1)){
+						
+						$yAsString = array_search($y, $yPosToInt);
+						if($board[$yAsString . $x] == 9817){
+							return true;
+						}
+					}
+				
+				while ($y >= 1 && $x >= 1 ) {
+					$yAsString = array_search($y, $yPosToInt);
+					if($board[$yAsString . $x] != 0){
+						if($color == "white"){
 
+							if($board[$yAsString . $x] == 9821 || $board[$yAsString . $x] == 9819 ){
+								return true;
+							}
+						}
+						else if($color == "black"){
+	
+							if($board[$yAsString . $x] == 9815 || $board[$yAsString . $x] == 9813 ){
+								return true;
+							}
+						}
+					}
+					$y--;
+					$x--;
+				}
+				return false;
+			}
+			
+			
+			
 			
 			$color = "";
 			if($piece == 9812){
@@ -162,6 +404,7 @@ namespace Bundle\ChessBundle\Entity;
 			
 				return false;
 			}
+			
 			
 			$knightMoves = checkKnight($pos, $yPosToInt);
 			
@@ -179,6 +422,31 @@ namespace Bundle\ChessBundle\Entity;
 						return true;
 					}
 				}
+			}
+			
+			if(checkUp($pos, $color, $board)){
+				return true;
+			}
+			if(checkDown($pos, $color, $board)){
+				return true;
+			}
+			if(checkRight($pos, $color, $yPosToInt, $board)){
+				return true;
+			}
+			if(checkLeft($pos, $color, $yPosToInt, $board)){
+				return true;
+			}
+			if(checkUpRight($pos, $color, $yPosToInt, $board)){
+				return true;
+			}
+			if(checkUpLeft($pos, $color, $yPosToInt, $board)){
+				return true;
+			}
+			if(checkDownRight($pos, $color, $yPosToInt, $board)){
+				return true;
+			}
+			if(checkDownLeft($pos, $color, $yPosToInt, $board)){
+				return true;
 			}
 			
 			return false;
@@ -260,7 +528,7 @@ namespace Bundle\ChessBundle\Entity;
 			$xyarray = xySteps($from, $to ,$yPosToInt);
 			//om en rikning är noll får andra vara hur lång som helst
 			if($xyarray["y"] == 0 || $xyarray["x"] == 0){
-				if(checkCollision(makeMoveOverArray($from, $to), $board)){
+				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
 						return true;
 					}
