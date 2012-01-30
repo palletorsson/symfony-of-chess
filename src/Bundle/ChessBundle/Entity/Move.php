@@ -752,14 +752,16 @@ namespace Bundle\ChessBundle\Entity;
 			
 			// hämta pjäs nummer
 			$current_piece = $this -> board[$from];
-			
+	
 			// Kolla om det är rätt färg som drar
 			if(!$this->checkTurn($current_piece)) {
-				$error = 202; 
-				return $error;
+				// "It's not your turn."
+				$error_202 = 202;
+				return $error_202;
 			} else if(!$this->checkMove($current_piece, $from, $to, $this -> board)) {
-				$error = 203; 
-				return $error;
+				// "This move is against the game rules."
+				$error_203 = 203;
+				return $error_203;
 			}
 			//uppdatera arrayen
 			return TRUE;

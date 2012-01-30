@@ -79,14 +79,15 @@ function handleServerResponse()	{
 			// the the document element
 			move = xmlDocumentElement.firstChild.data;
 			if (move == 202) {
-				errormsg = "not your turn";
+				errormsg = "It's not your turn.";
 				document.getElementById("error").innerHTML = errormsg;
 				 $('#error').hide().fadeIn("slow");
 				 $('#error').fadeOut(3000);
 			} else if (move == 203) {
-				errormsg = "Against the rules";
+				errormsg = "This move is against the game rules.";
 				document.getElementById("error").innerHTML = errormsg;
 			} 
+			
 			else {
 				// update the client display using the data received 
 				document.getElementById("moves").innerHTML +=  move + "<br />";
