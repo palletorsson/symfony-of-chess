@@ -1,0 +1,35 @@
+Felmeddelanden
+
+//// Pawn
+Pawn's can't go backwards.
+Pawn's can't go diagonal (except when killing an opponent).
+Pawn's can't go more than 1 step if not on start position.
+Pawn's can't go more than 2 steps from start position.
+Pawn's can't go past other pieces.
+
+//// Rook
+Rook's cant' go diagonal.
+Rook's cant' go in a direction unless it's a straight line.
+Rook's cant' go past other pieces.
+
+//// Knight
+Knight's can't go more than 3 steps.
+Knight's can't go less than 3 steps.
+Knight's can't go straight vertical.
+Knight's can't go straight horizontal.
+Knight's can't go straight diagonal.
+
+//// Bishop
+Bishops's cant' go straight vertical.
+Bishops's cant' go straight horizontal.
+Bishop's can't go diagonal unless it's a straight line.
+Bishops's cant' go past other pieces.
+
+//// Queen
+Queen's cant' go in a direction unless it's a straight line.
+Queen's cant' go past other pieces.
+
+//// King
+King's can't go more than 1 step.
+King's can't go to where kings can get killed.
+King's can't go past other pieces.

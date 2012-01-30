@@ -4,6 +4,8 @@ namespace Bundle\ChessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+// JOHANS MAMP Pro STRUL // date_default_timezone_set("Europe/Berlin");
+
 /**
  * 
  * @ORM\Entity(repositoryClass="Bundle\ChessBundle\Repository\ChessRepository")
