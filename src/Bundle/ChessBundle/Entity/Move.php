@@ -714,51 +714,56 @@ namespace Bundle\ChessBundle\Entity;
 			return $board;
 			
 		}
-		
-		private function checkPattern($move){
-			
-		}
-		public function move($themove){
-			if(!isset($this -> board) || !isset($this -> turn)) {
-				throw $this -> createNotFoundException('Unable to find gameboard or turn.');
-			}
-
-			//gör först!
+		private function checkPattern($themove){
 			$pattern = "/^[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
 			if (preg_match($pattern, $themove)) {
 				$from = strtolower(substr($themove,0,2)); 
 				$to = strtolower(substr($themove,3,2));
+				$fromtoarray = array($from, $to);
 			}else{
-				return FALSE;
+				// "wrong syntax"
+				$error = 201; 
+				return $error;
 			}	
-
+			return $fromtoarray;
+		}
 			
-			//forsätt här
-			$current_piece = $this -> board[$from];
+		public function checkTurn($current_piece) {
 			$piece_color = substr($this -> pieces[$current_piece],0,1);
-			
-			//Här ändrar vi på vems tur det är
 			if($this -> turn == 'w' && $piece_color == 'w'){
 				$this -> turn = 'b';
 			}else if($this -> turn == 'b' && $piece_color == 'b'){
 				$this -> turn = 'w';
 			}else{
-				//echo "Det är inte din tur!";
-				return FALSE;
-			}
-			/*
-			
-			 * 
-			 */
-			
-			if(!$this->checkMove($current_piece, $from, $to, $this -> board)){
-				return FALSE;
-			}
-			
-			//uppdatera arrayen
+				return false;
+			}	
 			return TRUE;
 		}
-		
+			
+		public function move($themove){
+			if(!isset($this -> board) || !isset($this -> turn)) {
+				throw $this -> createNotFoundException('Unable to find gameboard or turn.');
+			}
+			
+			// kolla syntax ta mar to och from
+			$fromto = $this->checkPattern($themove); 
+			$from = $fromto[0];
+			$to = $fromto[1];
+			
+			// hämta pjäs nummer
+			$current_piece = $this -> board[$from];
+			
+			// Kolla om det är rätt färg som drar
+			if(!$this->checkTurn($current_piece)) {
+				$error = 202; 
+				return $error;
+			} else if(!$this->checkMove($current_piece, $from, $to, $this -> board)) {
+				$error = 203; 
+				return $error;
+			}
+			//uppdatera arrayen
+			return TRUE;
+			
+		}
 	}
-
 ?>

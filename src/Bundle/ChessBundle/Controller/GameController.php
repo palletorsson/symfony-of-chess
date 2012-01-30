@@ -45,15 +45,14 @@ class GameController extends Controller
 		//print_r($gameboard);
 		//echo $turn;
 		
-		//move objekt, kolla moven	
+		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn);
 		
-		$text = $slug;
-		
 		// the response DETTA ÄR DET ENDA SOM FAKTISKT KÖRS ÄN SÅ LÄNGE 		
-		//Den manipulerade arrayen måste in i db nånstans.Var?
-		if($this -> current_move -> move($slug)){
-			
+		// Den manipulerade arrayen måste in i db nånstans.Var?
+		if ($this -> current_move -> move($slug) != 1) {
+				$text = $this -> current_move -> move($slug);
+		} else if ($this -> current_move -> move($slug) == TRUE) {
 				if($turn == 'w'){
 					$turn = 'b';
 				}else if($turn == 'b'){
@@ -77,9 +76,13 @@ class GameController extends Controller
 				//uppdatera move också
 				//ändra i databasen 1. titta på array 2. titta på movet dvs A3-A4 3. ändra enligt move
 				$text = $slug;
-		}else{
-				$text = "Invalid move!";
-		}
+		} else if($this -> current_move -> move($slug) == FALSE) {
+				// special fall av kröning
+				$text = 201; // $this -> current_move -> move($slug);
+		} else {
+				// kommer att returnera felkod
+				$text = $this -> current_move -> move($slug);
+		} 
 		
 		//här är xml:en som skickas som svar till ajax-requestet
 		$response = new Response();
