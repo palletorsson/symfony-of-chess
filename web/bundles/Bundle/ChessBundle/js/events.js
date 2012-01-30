@@ -78,16 +78,20 @@ function handleServerResponse()	{
 			// get the text message, which is in the first child of
 			// the the document element
 			move = xmlDocumentElement.firstChild.data;
-			if (move == 202) {
-				errormsg = "It's not your turn.";
-				document.getElementById("error").innerHTML = errormsg;
-				 $('#error').hide().fadeIn("slow");
-				 $('#error').fadeOut(3000);
-			} else if (move == 203) {
-				errormsg = "This move is against the game rules.";
-				document.getElementById("error").innerHTML = errormsg;
-			} 
 			
+			var errormsg =  {
+									 "201" : "It's not your turn."
+									,"202" : "This move is against the game rules."
+									,"203" : "Another piece in the way"
+									,"204" : "You can not move there."
+									,"205" : "King can't move into chess."
+									};
+			if (move > 200) {
+				msg =  errormsg[move];
+				document.getElementById("error").innerHTML = msg;
+				$('#error').hide().fadeIn("slow");
+				$('#error').fadeOut(3000);
+			}
 			else {
 				// update the client display using the data received 
 				document.getElementById("moves").innerHTML +=  move + "<br />";

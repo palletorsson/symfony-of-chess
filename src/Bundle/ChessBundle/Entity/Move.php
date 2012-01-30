@@ -448,8 +448,9 @@ namespace Bundle\ChessBundle\Entity;
 			if(checkDownLeft($pos, $color, $yPosToInt, $board)){
 				return true;
 			}
-			
-			return false;
+			// "King can't move into chess."
+			$error = 205; 
+			return $error;
 		}
 
 		
@@ -756,11 +757,11 @@ namespace Bundle\ChessBundle\Entity;
 			// Kolla om det är rätt färg som drar
 			if(!$this->checkTurn($current_piece)) {
 				// "It's not your turn."
-				$error_202 = 202;
+				$error_202 = 201;
 				return $error_202;
 			} else if(!$this->checkMove($current_piece, $from, $to, $this -> board)) {
 				// "This move is against the game rules."
-				$error_203 = 203;
+				$error_203 = 202;
 				return $error_203;
 			}
 			//uppdatera arrayen
