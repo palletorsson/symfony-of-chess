@@ -861,15 +861,21 @@ namespace Bundle\ChessBundle\Entity;
 			
 			// hämta pjäs nummer
 			$current_piece = $this -> board[$from];
-			$moveAnswer = $this->checkMove($current_piece, $from, $to, $this -> board);
 			// Kolla om det är rätt färg som drar
 			if(!$this->checkTurn($current_piece)) {
 				// "It's not your turn."
 				$error_201 = 201;
 				return $error_201;
 			} else  {
+<<<<<<< HEAD
 				return $moveAnswer;
 		}
+=======
+				$moveAnswer = $this->checkMove($current_piece, $from, $to, $this -> board);
+				return $moveAnswer; 
+			}
+		
+>>>>>>> 3aeba6dd72d34c5ba7468231609b3d44370fd5d7
 	}
 }
 ?>
