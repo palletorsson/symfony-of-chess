@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Bundle\ChessBundle\Entity\Move;
 use Bundle\ChessBundle\Entity\Game;
+use Bundle\ChessBundle\Entity\Enquiry;
+use Bundle\ChessBundle\Form\EnquiryType;
 
 class GameController extends Controller
 {
@@ -14,13 +16,38 @@ class GameController extends Controller
 	private $gameid;
 	
 	public function indexAction(){
-        return $this->render('BundleChessBundle::index.html.twig');
+		$enquiry = new Enquiry();
+	    $form = $this->createForm(new EnquiryType(), $enquiry);
+	
+	    $request = $this->getRequest();
+	    if ($request->getMethod() == 'POST') {
+	        $form->bindRequest($request);
+	
+	        if ($form->isValid()) {
+	            // Perform some action, such as sending an email
+	
+	            // Redirect - This is important to prevent users re-posting
+	            // the form if they refresh the page
+	            return $this->redirect($this->generateUrl('BundleChessBundle_game'));
+	        }
+	    }
+
+    	return $this->render('BundleChessBundle::index.html.twig', array(
+        	'form' => $form->createView()
+    	));
+
+        //return $this->render('BundleChessBundle::index.html.twig');
     }
 
-    public function gameAction(){ 	
+    public function gameAction(){
+    	print_r($_POST);
 
+		$p1 = $_POST['players']['player1'];
+		$p2 = $_POST['players']['player2'];
+		
+		echo $p1." ".$p2;				
 		$current_game = new Game();  
-		$current_game -> createGame();		 
+		$current_game -> createGame($p1, $p2);		 
 
 		$em = $this -> getDoctrine()-> getEntityManager();
 		$em -> persist($current_game);
@@ -28,7 +55,10 @@ class GameController extends Controller
         
         $this -> gameid = $current_game -> getGameid();
         
-        return $this -> render('BundleChessBundle:Game:index.html.twig');    
+        return $this -> render('BundleChessBundle:Game:index.html.twig', array(
+        	'player1' => $p1,
+        	'player2' => $p2
+    	));    
 	}
     
     public function moveAction($slug) {

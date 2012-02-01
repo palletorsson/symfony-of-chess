@@ -66,9 +66,9 @@ class Game {
 
 	}
 	
-	public function createGame(){
-		$this -> player1 = "Player 1";
-		$this -> player2 = "Player 2";
+	public function createGame($p1,$p2){
+		$this -> player1 = $p1;
+		$this -> player2 = $p2;
 		$this -> turn = "w";
 		$this -> started = new \DateTime();
 		$this -> ended = new \DateTime();

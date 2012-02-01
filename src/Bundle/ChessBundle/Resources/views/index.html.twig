@@ -126,3 +126,14 @@
 	</ul>
 	
 {% endblock %}
+{% block sidebar %}
+<div class="playernames">
+	<h2> Please enter the names of the players </h2>
+	<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players">
+	        {{ form_row(form.player1) }}
+	        {{ form_row(form.player2) }}
+		<input type="submit" value="Start a new game" />
+	</form>
+</div>
+	
+{% endblock %}

@@ -16,8 +16,8 @@ body { line-height: 1;font-family: Arial, Helvetica, sans-serif;font-size: 12px;
 #header h2 a { color: #000; }
 #header h3 { text-align: center; font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 16px; margin-bottom: 5px; font-weight: normal; }
 
-.main-col { width: 700px; display: inline-block; float: left; border-right: 1px solid #ccc; padding: 20px; margin-bottom: 20px; }
-.sidebar { width: 239px; padding: 10px; display: inline-block; }
+.main-col { width: 600px; display: inline-block; float: left;padding: 20px; margin-bottom: 20px; }
+.sidebar { width: 293px; padding: 10px; display: inline-block;}
 
 .main-col a { color: #F48A00; }
 .main-col h1,

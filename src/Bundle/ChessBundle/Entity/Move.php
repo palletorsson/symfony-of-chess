@@ -715,6 +715,7 @@ namespace Bundle\ChessBundle\Entity;
 			return $board;
 			
 		}
+		
 		private function checkPattern($themove){
 			$pattern = "/^[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
 			if (preg_match($pattern, $themove)) {

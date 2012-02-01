@@ -1,6 +1,13 @@
 // stores the reference to the XMLHttpRequest object
 var xmlHttp = createXmlHttpRequestObject();
+var whosturn = 'w';
+var piece;
 // retrieves the XMLHttpRequest object
+
+$('#start a').click(function(){
+	alert('A new game will be started and this game lost. Continue?');
+});
+
 function createXmlHttpRequestObject() {
 	// will store the reference to the XMLHttpRequest object
 	var xmlHttp;
@@ -43,7 +50,7 @@ function drop(event) {
 	var from = event.dataTransfer.getData("Text");
 	console.log(from);	
 	var to = event.target.getAttribute('id');
-	var piece = document.getElementById(from).innerHTML;
+	piece = document.getElementById(from).innerHTML;
 	var txt = from+"-"+to;
 	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var text = document.createTextNode(from+"-"+to);
@@ -83,7 +90,7 @@ function handleServerResponse()	{
 									 "201" : "It's not your turn."
 									,"202" : "This move is against the game rules."
 									,"203" : "Another piece in the way"
-									,"204" : "You can not move there."
+									,"204" : "You cannot move there."
 									,"205" : "King can't move into chess."
 									};
 			if (move > 200) {
@@ -94,12 +101,18 @@ function handleServerResponse()	{
 			}
 			else {
 				// update the client display using the data received 
-				document.getElementById("moves").innerHTML +=  move + "<br />";
+				if(whosturn == 'w'){
+					document.getElementById("whitemoves").innerHTML += piece + move + "<br />";
+					whosturn = 'b'
+				}else{
+					document.getElementById("blackmoves").innerHTML +=  piece + move + "<br />";
+					whosturn = 'w'
+				}
 				var from = move.substring(0,2); 
 				var to = move.substring(3,5);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
-				target.innerHTML = element.innerHTML; // Moving piece to new cell
+			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
 				element.innerHTML = ""; // Clearing old cell	
 			}
 		}
