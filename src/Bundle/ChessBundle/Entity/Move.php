@@ -849,7 +849,7 @@ namespace Bundle\ChessBundle\Entity;
 			}	
 			return TRUE;
 		}
-			// kollar och gör förflytting
+			
 		public function move($themove){
 			if(!isset($this -> board) || !isset($this -> turn)) {
 				throw $this -> createNotFoundException('Unable to find gameboard or turn.');
@@ -874,4 +874,3 @@ namespace Bundle\ChessBundle\Entity;
 	}
 }
 ?>
-
