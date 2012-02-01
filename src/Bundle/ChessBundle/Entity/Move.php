@@ -480,7 +480,7 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 			// vanligt drag när bonden går ett steg framåt
-			else if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
+			else if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1 && array_search($yPosToInt[substr($from, 0,1)], $yPosToInt) == array_search($yPosToInt[substr($to, 0,1)], $yPosToInt)){
 				if($board[$to] == 0){
 					return true;
 				}
@@ -514,7 +514,7 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 			// vanligt drag när bonden går ett steg framåt
-			else if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1 && array_search(substr($from, 0,1), $yPosToInt) == array_search(substr($to, 0,1), $yPosToInt)){
+			else if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1 && array_search($yPosToInt[substr($from, 0,1)], $yPosToInt) == array_search($yPosToInt[substr($to, 0,1)], $yPosToInt)){
 				if($board[$to] == 0){
 					return true;
 				}
