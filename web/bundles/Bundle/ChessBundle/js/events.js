@@ -91,6 +91,13 @@ function handleServerResponse()	{
 				document.getElementById("error").innerHTML = msg;
 				$('#error').hide().fadeIn("slow");
 				$('#error').fadeOut(3000);
+			} else if (move == 101) {
+				var from = txt.substring(0,2); 
+				var to = txt.substring(3,5);
+				var element = document.getElementById(from);
+				var target = document.getElementById(to);
+				target.innerHTML = "&#9818;"; // Make it a Queen
+				element.innerHTML = ""; // Clearing old cell
 			}
 			else {
 				// update the client display using the data received 
