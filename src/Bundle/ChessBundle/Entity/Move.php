@@ -673,7 +673,7 @@ namespace Bundle\ChessBundle\Entity;
 			if($xyarray["y"] <= 1 && $xyarray["x"] <= 1){
 				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
-						if(!checkChess($to, $piece, $yPosToInt, $board)){
+						if(checkChess($to, $piece, $yPosToInt, $board)){
 							return 100;
 						}
 						else{
@@ -857,7 +857,7 @@ namespace Bundle\ChessBundle\Entity;
 				return $error_203;
 			}
 			//uppdatera arrayen
-			return TRUE;
+			return TRUE;	
 			
 		}
 	}
