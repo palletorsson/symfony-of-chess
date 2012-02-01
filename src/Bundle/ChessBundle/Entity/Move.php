@@ -449,8 +449,7 @@ namespace Bundle\ChessBundle\Entity;
 				return true;
 			}
 			// "King can't move into chess."
-			$error = 205; 
-			return $error;
+			return false;
 		}
 
 		
@@ -869,7 +868,7 @@ namespace Bundle\ChessBundle\Entity;
 				$error_201 = 201;
 				return $error_201;
 			} else  {
-				return $moveAnswer; 
+				return $moveAnswer;
 		}
 	}
 }
