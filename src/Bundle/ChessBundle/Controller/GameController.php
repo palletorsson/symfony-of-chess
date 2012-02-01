@@ -85,7 +85,7 @@ class GameController extends Controller
 				$em -> persist($game);
 				$em -> flush();
 				
-				$text = "101".$slug;
+				$text = "101".$slug.$turn;
 		}
 		
 		else {

@@ -93,16 +93,14 @@ function handleServerResponse()	{
 				$('#error').fadeOut(3000);
 			} else if (move.substring(0,3) == 101) {
  				var from = move.substring(3,5);	 
- 				console.log(from);
 				var to = move.substring(6,8);
-				console.log(to);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
-				var p = target.innerHTML;
-				if (p == "&#9817;") { 
-				target.innerHTML = "&#9813;"; // Make it a Queen
-				} else {
+				var p = element.innerHTML;				 
+				if (move.substring(8,9) == "w") { 
 				target.innerHTML = "&#9819;"; // Make it a Queen
+				} else {
+				target.innerHTML = "&#9813;"; // Make it a Queen
 				}	
 				element.innerHTML = ""; // Clearing old cell
 			}
