@@ -807,6 +807,23 @@ namespace Bundle\ChessBundle\Entity;
 			return $board;
 			
 		}
+		
+		public function updateBoardCrown($move,$board,$turn){
+			$from = strtolower(substr($move,0,2)); 
+			$to = strtolower(substr($move,3,2));
+			if ($turn = "w") {
+			$current_piece = "9813";
+			} else { 
+			$current_piece = "9819";
+			}
+				
+			$board[$from] = 0;
+			$board[$to] = $current_piece;
+			
+			return $board;
+			
+		}
+		
 		private function checkPattern($themove){
 			$pattern = "/^[A-H]{1}+[0-9]{1}[-][A-H]{1}+[0-9]{1}/";
 			if (preg_match($pattern, $themove)) {
@@ -845,20 +862,15 @@ namespace Bundle\ChessBundle\Entity;
 			
 			// hämta pjäs nummer
 			$current_piece = $this -> board[$from];
-	
+			$moveAnswer = $this->checkMove($current_piece, $from, $to, $this -> board);
 			// Kolla om det är rätt färg som drar
 			if(!$this->checkTurn($current_piece)) {
 				// "It's not your turn."
-				$error_202 = 201;
-				return $error_202;
-			} else if(!$this->checkMove($current_piece, $from, $to, $this -> board)) {
-				// "This move is against the game rules."
-				$error_203 = 202;
-				return $error_203;
-			}
-			//uppdatera arrayen
-			return TRUE;
-			
+				$error_201 = 201;
+				return $error_201;
+			} else  {
+				return $moveAnswer; 
 		}
 	}
+}
 ?>

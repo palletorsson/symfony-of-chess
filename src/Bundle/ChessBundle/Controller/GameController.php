@@ -48,13 +48,13 @@ class GameController extends Controller
 		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn);
 		
-		// the response DETTA ÄR DET ENDA SOM FAKTISKT KÖRS ÄN SÅ LÄNGE 		
-		// Den manipulerade arrayen måste in i db nånstans.Var?
+		// Den manipulerade arrayen sparas i db. 
 		$move_var = $this -> current_move -> move($slug);
-		if ($move_var != 1) {
+		
+		if ($move_var > 200) {
 				$text = $move_var;
-		} else if ($move_var == TRUE) {
-				if($turn == 'w'){
+		} else if ($move_var == 100) {
+				if($turn == 'w') {
 					$turn = 'b';
 				}else if($turn == 'b'){
 					$turn = 'w';
@@ -69,9 +69,28 @@ class GameController extends Controller
 				$em -> flush();
 				
 				$text = $slug;
-		} else {
+		}  else if ($move_var == 101) {
+				
+				$updated_gameboard = $this -> current_move ->updateBoardCrown($slug, $gameboard, $turn);
+				
+				$game -> setGameboard($updated_gameboard);
+				if($turn == 'w') {
+					$turn = 'b';
+				}else if($turn == 'b'){
+					$turn = 'w';
+				}
+				
+				$game -> setTurn($turn);
+				
+				$em -> persist($game);
+				$em -> flush();
+				
+				$text = "101".$slug;
+		}
+		
+		else {
 				// kommer att returnera felkod
-				$text = "what";
+		// $text = $move_var;
 		} 
 		
 		//här är xml:en som skickas som svar till ajax-requestet
