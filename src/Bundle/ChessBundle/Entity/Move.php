@@ -676,6 +676,9 @@ namespace Bundle\ChessBundle\Entity;
 						if(!checkChess($to, $piece, $yPosToInt, $board)){
 							return 100;
 						}
+						else{
+							return 205;
+						}
 					}
 					else{
 						return 204;
