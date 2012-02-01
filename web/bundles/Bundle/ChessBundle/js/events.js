@@ -83,7 +83,7 @@ function handleServerResponse()	{
 									 "201" : "It's not your turn."
 									,"202" : "This move is against the game rules."
 									,"203" : "Another piece in the way"
-									,"204" : "You can not move there."
+									,"204" : "You can not move on a frindly piece."
 									,"205" : "King can't move into chess."
 									};
 			if (move > 200) {
