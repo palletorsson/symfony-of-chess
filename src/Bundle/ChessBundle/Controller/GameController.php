@@ -45,15 +45,15 @@ class GameController extends Controller
 		//print_r($gameboard);
 		//echo $turn;
 		
-		//move objekt, kolla moven	
+		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn);
 		
-		$text = $slug;
-		
 		// the response DETTA ÄR DET ENDA SOM FAKTISKT KÖRS ÄN SÅ LÄNGE 		
-		//Den manipulerade arrayen måste in i db nånstans.Var?
-		if($this -> current_move -> move($slug)){
-			
+		// Den manipulerade arrayen måste in i db nånstans.Var?
+		$move_var = $this -> current_move -> move($slug);
+		if ($move_var != 1) {
+				$text = $move_var;
+		} else if ($move_var == TRUE) {
 				if($turn == 'w'){
 					$turn = 'b';
 				}else if($turn == 'b'){
@@ -67,19 +67,12 @@ class GameController extends Controller
 				
 				$em -> persist($game);
 				$em -> flush();
-				//print_r($result);
 				
-				/*
-				$em -> persist($updated_gameboard);
-				$em -> flush();
-				$em -> getRepository('BundleChessBundle:Game') -> updateTurn($turn);
-				*/
-				//uppdatera move också
-				//ändra i databasen 1. titta på array 2. titta på movet dvs A3-A4 3. ändra enligt move
 				$text = $slug;
-		}else{
-				$text = "Invalid move!";
-		}
+		} else {
+				// kommer att returnera felkod
+				$text = "what";
+		} 
 		
 		//här är xml:en som skickas som svar till ajax-requestet
 		$response = new Response();
