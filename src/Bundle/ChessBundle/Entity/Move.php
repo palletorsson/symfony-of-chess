@@ -873,4 +873,6 @@ namespace Bundle\ChessBundle\Entity;
 		}
 	}
 }
+// slut
 ?>
+
