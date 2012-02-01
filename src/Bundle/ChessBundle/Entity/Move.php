@@ -463,10 +463,24 @@ namespace Bundle\ChessBundle\Entity;
 				if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1){
 					if(checkTo($piece, $to, $board)){
 						if(!$board[$to] == 0){
-							return true;
-						};
-							
+							if (substr($to, 1, 1) == 1){
+								return 101;//kröna bonde till dam
+							}
+							else{
+								return 100;
+							}
+						}
+						else{
+							return 202;
+						}
 					}
+					else{
+						return 204;
+					}
+					
+				}
+				else{
+					return 202;
 				}
 			}
 			//drag för bondens ifrån startposion
@@ -474,21 +488,37 @@ namespace Bundle\ChessBundle\Entity;
 				if(substr($to, 1,1) == 6 || substr($to, 1,1) == 5){
 					if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 						if($board[$to] == 0){
-							return true;
+							return 100;
+						}
+						else{
+							return 202;
 						}
 					}
+					else{
+						return 203;
+					}
+				}
+				else{
+					return 202;
 				}
 			}
 			
 			// vanligt drag när bonden går ett steg framåt
 			else if(substr($to, 1, 1) == (substr($from, 1, 1)) - 1 && array_search($yPosToInt[substr($from, 0,1)], $yPosToInt) == array_search($yPosToInt[substr($to, 0,1)], $yPosToInt)){
 				if($board[$to] == 0){
-					return true;
+					if (substr($to, 1, 1) == 1){
+						return 101;//kröna bonde till dam
+					}
+					else{
+						return 100;
+					}
+				}
+				else{
+					return 202;
 				}
 			}
-			
 			else {
-				return false;	
+				return 202;	
 			}
 		}
 		//white pawn
@@ -498,9 +528,24 @@ namespace Bundle\ChessBundle\Entity;
 				if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1){
 					if(checkTo($piece, $to, $board)){
 						if(!$board[$to] == 0){
-							return true;
-						};
+							if (substr($to, 1, 1) == 8){
+								return 101;//kröna bonde till dam
+							}
+							else{
+								return 100;
+							}
+						}
+						else{
+							return 202;
+						}
 					}
+					else{
+						return 204;
+					}
+					
+				}
+				else{
+					return 202;
 				}
 			}
 			//drag för bondens ifrån startposion
@@ -508,20 +553,38 @@ namespace Bundle\ChessBundle\Entity;
 				if(substr($to, 1,1) == 3 || substr($to, 1,1) == 4){
 					if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 						if($board[$to] == 0){
-							return true;
+							return 100;
+						}
+						else{
+							return 202;
 						}
 					}
+					else{
+						return 203;
+					}
+				}
+				else{
+					return 202;
 				}
 			}
+			
 			
 			// vanligt drag när bonden går ett steg framåt
 			else if(substr($to, 1, 1) == (substr($from, 1, 1)) + 1 && array_search($yPosToInt[substr($from, 0,1)], $yPosToInt) == array_search($yPosToInt[substr($to, 0,1)], $yPosToInt)){
 				if($board[$to] == 0){
-					return true;
+					if (substr($to, 1, 1) == 8){
+						return 101;//kröna bonde till dam
+					}
+					else{
+						return 100;
+					}
+				}
+				else{
+					return 202;
 				}
 			}
 			else {
-				return false;	
+				return 202;	
 			}
 		}
 		//rook
@@ -533,10 +596,16 @@ namespace Bundle\ChessBundle\Entity;
 					if(checkTo($piece, $to, $board)){
 						return true;
 					}
+					else{
+						return 204;
+					}
+				}
+				else{
+					return 203;
 				}
 			}
 			else {
-				return false;
+				return 202;
 			}
 		}
 		//bishop
@@ -549,10 +618,16 @@ namespace Bundle\ChessBundle\Entity;
 					if(checkTo($piece, $to, $board)){
 						return true;
 					}
+					else{
+						return 204;
+					}
+				}
+				else{
+					return 203;
 				}
 			}
 			else {
-				return false;
+				return 202;
 			}
 		}
 		//knight
@@ -562,9 +637,12 @@ namespace Bundle\ChessBundle\Entity;
 				if(checkTo($piece, $to, $board)){
 					return true;
 				}
+				else{
+					return 204;
+				};
 			}
 			else{
-				return false;
+				return 202;
 			}
 		}
 		//queen
@@ -575,10 +653,16 @@ namespace Bundle\ChessBundle\Entity;
 					if(checkTo($piece, $to, $board)){
 						return true;
 					}
+					else{
+						return 204;
+					}
+				}
+				else{
+					return 203;
 				}
 			}
 			else{
-				return false;
+				return 202;
 			}
 			
 		}
@@ -590,14 +674,19 @@ namespace Bundle\ChessBundle\Entity;
 				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
 						if(!checkChess($to, $piece, $yPosToInt, $board)){
-							return true;
+							return 100;
 						}
-						
 					}
+					else{
+						return 204;
+					}
+				}
+				else{
+					return 203;
 				}
 			}
 			else {
-				return false;
+				return 202;
 			}
 		}
     }
