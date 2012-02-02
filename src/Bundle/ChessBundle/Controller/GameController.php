@@ -40,12 +40,12 @@ class GameController extends Controller
     }
 
     public function gameAction(){
-    	print_r($_POST);
+    	//print_r($_POST);
 
 		$p1 = $_POST['players']['player1'];
 		$p2 = $_POST['players']['player2'];
 		
-		echo $p1." ".$p2;				
+		//echo $p1." ".$p2;				
 		$current_game = new Game();  
 		$current_game -> createGame($p1, $p2);		 
 
@@ -73,7 +73,7 @@ class GameController extends Controller
 		$gameboard = $game -> getGameboard();
 		$turn = $game -> getTurn(); 	 
 		//print_r($gameboard);
-		//echo $turn;
+		//echo $gameid;
 		
 		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn);
@@ -83,6 +83,7 @@ class GameController extends Controller
 		
 		if ($move_var > 200) {
 				$text = $move_var;
+			
 		} else if ($move_var == 100) {
 				if($turn == 'w') {
 					$turn = 'b';
@@ -120,7 +121,7 @@ class GameController extends Controller
 		
 		else {
 				// kommer att returnera felkod
-		// $text = $move_var;
+				 $text = $move_var;
 		} 
 		
 		//här är xml:en som skickas som svar till ajax-requestet
