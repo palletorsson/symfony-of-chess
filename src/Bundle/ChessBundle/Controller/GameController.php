@@ -165,6 +165,45 @@ class GameController extends Controller
 			
 	} 
 
+    public function oldGameAction($slug){
+		$gameidminus = $slug; 	
+	    // get last game from database
+	    $em = $this -> getDoctrine()-> getEntityManager();
+		
+		$gameid = $em -> getRepository('BundleChessBundle:Game')
+				      -> getGameid();
+		
+		$game = $em -> getRepository('BundleChessBundle:Game')
+				    -> getGame($gameid-$gameidminus);
+		
+		$gameboard = $game -> getGameboard();
+		$turn = $game -> getTurn(); 	 
+		$player1 =  $game -> getPlayer1(); 
+		$player2 =  $game -> getPlayer2();
+		$Whitedraws =  $game -> getWhitedraws();
+		$Blackdraws =  $game -> getBlackdraws(); 
+		
+		$game = array(	"gameboard" => $gameboard
+						, "turn" => $turn
+						, "player1" => $player1
+						, "player2" => $player2
+						, "whitedraws" => $Whitedraws
+						, "blackdraws" => $Blackdraws);
+						
+		$gameboard = array_change_key_case($gameboard); 
+		// $gameboard är en array av snaste spelet 
+        $text = json_encode($game);
+        
+		//här är xml:en som skickas som svar till ajax-requestet
+		$response = new Response();
+		$response->setContent($text);
+		$response->setStatusCode(200);
+		$response->headers->set('Content-Type', 'text/javascript'); 
+		// prints the XML headers followed by the content
+		return $response; 	    
+	}
+
+
 }
 
 

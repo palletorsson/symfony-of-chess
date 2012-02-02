@@ -16,3 +16,10 @@ BundleChessBundle_move:
     defaults: { _controller: BundleChessBundle:Game:move}
     requirements:
         _method:  GET
+        
+BundleChessBundle_oldgame:
+    pattern:  /oldgame/{slug}
+    
+    defaults: { _controller: BundleChessBundle:Game:oldGame }
+    requirements:
+        _method:  GET
