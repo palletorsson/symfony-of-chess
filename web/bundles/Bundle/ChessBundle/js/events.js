@@ -118,6 +118,7 @@ function handleServerResponse()	{
 				document.getElementById("error").innerHTML = msg;
 				$('#error').html(msg).fadeIn("slow");
 				$('#error').fadeOut(3000);
+				
 			} else if (move.substring(0,3) == 101) {
  				var from = move.substring(3,5);	 
 				var to = move.substring(6,8);
@@ -133,6 +134,17 @@ function handleServerResponse()	{
 			}
 			else {
 				// update the client display using the data received 
+				var from = move.substring(0,2); 
+				var to = move.substring(3,5);
+				var element = document.getElementById(from);
+				var target = document.getElementById(to);
+				if(target.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
+					var x_piece = target.innerHTML;
+					move += 'x';
+					document.getElementById("x_piece").innerHTML += x_piece + " ";
+				}
+			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
+				element.innerHTML = ""; // Clearing old cell	
 				if(whosturn == 'w'){
 					document.getElementById("whitemoves").innerHTML += piece + move + "<br />";
 					whosturn = 'b'
@@ -142,12 +154,6 @@ function handleServerResponse()	{
 					whosturn = 'w'
 					addHighlight('w');
 				}
-				var from = move.substring(0,2); 
-				var to = move.substring(3,5);
-				var element = document.getElementById(from);
-				var target = document.getElementById(to);
-			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
-				element.innerHTML = ""; // Clearing old cell	
 			}
 		}
 		// a HTTP status different than 200 signals an error
