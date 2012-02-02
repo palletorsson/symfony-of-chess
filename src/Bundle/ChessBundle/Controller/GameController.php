@@ -61,6 +61,7 @@ class GameController extends Controller
     	));    
 	}
     
+	
     public function moveAction($slug) {
 		$em = $this -> getDoctrine()-> getEntityManager();
 		
@@ -87,8 +88,25 @@ class GameController extends Controller
 		} else if ($move_var == 100) {
 				if($turn == 'w') {
 					$turn = 'b';
+					//Här under fyller vi på whitedraws-listan med det vita draget
+					if($game -> getWhitedraws()){
+						$whitedraws = $game -> getWhitedraws();  //hämta ut arrayen om den finns
+					}else{
+						$whitedraws = array(); //annars gör en ny array
+					}
+					$whitedraws[] = $slug;  //fyll på med draget
+					$game -> setWhitedraws($whitedraws);
+
 				}else if($turn == 'b'){
 					$turn = 'w';
+					//Här under fyller vi på blackdraws-listan med det svarta draget
+					if($game -> getBlackdraws()){
+						$blackdraws = $game -> getBlackdraws();  //hämta ut arrayen om den finns
+					}else{
+						$blackdraws = array(); //annars gör en ny array
+					}
+					$blackdraws[] = $slug;  //fyll på med draget
+					$game -> setBlackdraws($blackdraws);
 				}
 			
 				$updated_gameboard = $this -> current_move ->updateBoard($slug, $gameboard);

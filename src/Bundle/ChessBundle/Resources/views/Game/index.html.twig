@@ -133,15 +133,21 @@
 
 	<div class="notation_wrapper"> 
 		<div class="left-side">
-			<p> In the white corner: </p> <h1> {{ player1 }} </h1> <div id="whitemoves" class="moves"> White Game Moves: </br></br> </div>
+			 <div id="whitemoves" class="moves"><p> In the white corner: </p> <h1> {{ player1 }} </h1><p class="whiteturn""></p>White Game Moves: </br></br> </div>
 		</div>
 		<div class="right-side">
-			<p> In the black corner: </p> <h1> {{ player2 }} </h1> <div id="blackmoves" class="moves"> Black Game Moves: </br></br> </div>
+			<div id="blackmoves" class="moves"> <p> In the black corner: </p> <h1> {{ player2 }} </h1><p class="blackturn""></p>Black Game Moves: </br></br> </div>
 		</div>
 	</div>
 	
-	<div id="start"><a href="{{ path('BundleChessBundle_homepage') }}">Start a new game</a></div></br></br>
-	<div id="error"></br></br> </div>
-
-
+	
+	
+	<div class="errorbox">
+		<h1>Message: <div id="error"> &nbsp; </br></br> </div> </h1>
+		
+	</div>
+	<div class="errorbox">
+		<div id="start" class="button_control"><a href="{{ path('BundleChessBundle_homepage') }}">Start a new game</a></div>
+		<div class="button_control">Save this game</div></br></br>
+	</div>
 {% endblock %}

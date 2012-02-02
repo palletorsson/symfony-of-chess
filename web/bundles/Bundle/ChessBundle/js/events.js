@@ -5,9 +5,27 @@ var piece;
 // retrieves the XMLHttpRequest object
 $(document).ready(function(){
 	$('#start a').click(function(){
-		alert('A new game will be started and this game lost. Continue?');
+		var answer = confirm('A new game will be started and this game lost. Continue?');
+		if(answer){
+			return true;
+		}else{
+			return false;
+		}
 	});
+	
+	$('.whiteturn').html('Your turn');
 });
+
+
+function addHighlight(color){
+	if(color == 'w'){
+		$('.whiteturn').html('Your turn');
+		$('.blackturn').html('');
+	}else if(color == 'b'){
+		$('.blackturn').html('Your turn');
+		$('.whiteturn').html('');
+	}
+}
 
 function createXmlHttpRequestObject() {
 	// will store the reference to the XMLHttpRequest object
@@ -98,7 +116,7 @@ function handleServerResponse()	{
 			if (move > 200) {
 				msg =  errormsg[move];
 				document.getElementById("error").innerHTML = msg;
-				$('#error').hide().fadeIn("slow");
+				$('#error').html(msg).fadeIn("slow");
 				$('#error').fadeOut(3000);
 			} else if (move.substring(0,3) == 101) {
  				var from = move.substring(3,5);	 
@@ -107,9 +125,9 @@ function handleServerResponse()	{
 				var target = document.getElementById(to);
 				var p = element.innerHTML;				 
 				if (move.substring(8,9) == "w") { 
-				target.innerHTML = "&#9819;"; // Make it a Queen
+					target.innerHTML = "&#9819;"; // Make it a Queen
 				} else {
-				target.innerHTML = "&#9813;"; // Make it a Queen
+					target.innerHTML = "&#9813;"; // Make it a Queen
 				}	
 				element.innerHTML = ""; // Clearing old cell
 			}
@@ -118,9 +136,11 @@ function handleServerResponse()	{
 				if(whosturn == 'w'){
 					document.getElementById("whitemoves").innerHTML += piece + move + "<br />";
 					whosturn = 'b'
+					addHighlight('b');
 				}else{
 					document.getElementById("blackmoves").innerHTML +=  piece + move + "<br />";
 					whosturn = 'w'
+					addHighlight('w');
 				}
 				var from = move.substring(0,2); 
 				var to = move.substring(3,5);

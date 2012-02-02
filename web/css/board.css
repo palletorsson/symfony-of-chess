@@ -1,3 +1,7 @@
+body{
+	background: url('../image/light_grey_floral_motif.jpg');
+}
+
 .white {
 	float: left;
 	background: #eee;
@@ -46,6 +50,7 @@
 	cursor: pointer;
 }
 #board {
+	background:#fff;
 	margin: 0;
 	border: 10px outset gray;
 	float: left;
@@ -54,6 +59,9 @@
 	position: relative;
 	margin: 10px;
 	padding: 7px 0 0 7px;
+	box-shadow: 0px 0px 27px rgba(0, 0, 0, 0.70);
+    -moz-box-shadow: 0px 0px 27px rgba(0, 0, 0, 0.70);
+    -webkit-box-shadow: 0px 0px 27px rgba(0, 0, 0, 0.70);
 }
 #board ul {
 	margin: 0; /* 340/40=42,5 2,5*8=20 */
@@ -178,6 +186,7 @@ h2{
 }
 
 .playernames{
+	background:#fff;
 	border: solid 1px #ccc;
 	padding: 30px;
 	border-radius: 25px;
@@ -193,6 +202,7 @@ h2{
 	border-radius: 10px;
 	min-height: 300px;
 	margin-bottom: 20px;
+	
 }
 
 #blackmoves{
@@ -212,6 +222,7 @@ h2{
 } 
 .notation_wrapper{
 	width:500px;
+	
 }
 
 .left-side{
@@ -222,4 +233,33 @@ h2{
 .right-side{
 	width:249px;
 	float:right;
+}
+
+.whiteturn, .blackturn{
+	color: red;
+	font-size: 14px;
+	min-height: 18px;
+	margin-top:-12px;
+	margin-bottom:12px;
+	padding-bottom: 3px;
+	border-bottom: solid 1px #ccc;
+}
+.errorbox{
+	background:#fff;
+	border: solid 1px #ccc;
+	padding: 10px;
+	border-radius: 10px;
+	width: 480px;
+	min-height: 40px;
+	clear: both;
+	margin-top:60px;
+}
+.button_control{
+	background:#fff;
+	border: solid 1px #ccc;
+	padding: 10px;
+	border-radius: 10px;
+	width: 140px;
+	float:left;
+	margin-right: 30px;
 }
