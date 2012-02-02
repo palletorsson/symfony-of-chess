@@ -40,13 +40,13 @@ class GameController extends Controller
     }
 
     public function gameAction(){
-    	print_r($_POST);
+    	// print_r($_POST);
 
 		$p1 = $_POST['players']['player_1'];
 		$p2 = $_POST['players']['player_2'];
 		$savedgame = $_POST['players']['saved_game'];
 		echo $savedgame; 
-		if($savedgame){
+		/* if($savedgame){
 			$em = $this -> getDoctrine()-> getEntityManager();
 			$current_game = $em -> getRepository('BundleChessBundle:Game')
 					            -> getGame($savedgame);
@@ -55,7 +55,7 @@ class GameController extends Controller
 			$p2 = $current_game -> getPlayer2();
 			$this -> gameid = $savedgame;
 			
-		}else{
+		}else{ */
 			$current_game = new Game();
 			$current_game -> createGame($p1, $p2);		 
 	
@@ -64,7 +64,7 @@ class GameController extends Controller
 			$em -> flush();
 	        
 	        $this -> gameid = $current_game -> getGameid();
-		}
+	//	}
         return $this -> render('BundleChessBundle:Game:index.html.twig', array(
         	'player1' => $p1,
         	'player2' => $p2
@@ -180,15 +180,15 @@ class GameController extends Controller
 		$turn = $game -> getTurn(); 	 
 		$player1 =  $game -> getPlayer1(); 
 		$player2 =  $game -> getPlayer2();
-		$Whitedraws =  $game -> getWhitedraws();
-		$Blackdraws =  $game -> getBlackdraws(); 
+		$whitedraws =  $game -> getWhitedraws();
+		$blackdraws =  $game -> getBlackdraws(); 
 		
 		$game = array(	"gameboard" => $gameboard
 						, "turn" => $turn
 						, "player1" => $player1
 						, "player2" => $player2
-						, "whitedraws" => $Whitedraws
-						, "blackdraws" => $Blackdraws);
+						, "whitedraws" => $whitedraws
+						, "blackdraws" => $blackdraws);
 						
 		$gameboard = array_change_key_case($gameboard); 
 		// $gameboard är en array av snaste spelet 
