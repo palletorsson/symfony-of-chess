@@ -127,6 +127,7 @@
 	
  	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/events.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/getold.js') }}"></script>
 
 {% endblock %}
 {% block sidebar %}
@@ -135,14 +136,14 @@
 		<div class="left-side">
 			 <div id="whitemoves" class="moves">
 				 <p> In the white corner: </p> 
-				 <h1> {{ player1 }} </h1>
+				 <h1 id="player1"> {{ player1 }} </h1>
 				 <p class="whiteturn"></p> White Game Moves: </br></br> 
 			 </div>
 		</div>
 		<div class="right-side">
 			<div id="blackmoves" class="moves"> 
 			<p> In the black corner: </p> 
-			<h1> {{ player2 }} </h1>
+			<h1 id="player2"> {{ player2 }} </h1>
 			<p class="blackturn""></p> Black Game Moves: </br></br> 
 			</div>
 		</div>
@@ -158,4 +159,8 @@
 		<div id="start" class="button_control"><a href="{{ path('BundleChessBundle_homepage') }}">Start a new game</a></div>
 		<div class="button_control">Save this game</div></br></br>
 	</div>
+	
+<div id="startoldgame" >Continue last Game</div></br></br>
+
+	
 {% endblock %}
