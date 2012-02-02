@@ -127,6 +127,7 @@
 	
 {% endblock %}
 {% block sidebar %}
+
 <div class="playernames">
 	<h2> Please enter the names of the players <br /> OR <br /> The game-id of a saved game </h2>
 	<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players" novalidate="novalidate" id="playerform">
