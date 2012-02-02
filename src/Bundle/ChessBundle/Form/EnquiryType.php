@@ -10,8 +10,9 @@ class EnquiryType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('player1');
-        $builder->add('player2');
+        $builder->add('player_1');
+        $builder->add('player_2');
+		$builder->add('saved_game', 'text');
     }
 
     public function getName()

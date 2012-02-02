@@ -40,21 +40,31 @@ class GameController extends Controller
     }
 
     public function gameAction(){
-    	//print_r($_POST);
+    	print_r($_POST);
 
-		$p1 = $_POST['players']['player1'];
-		$p2 = $_POST['players']['player2'];
-		
-		//echo $p1." ".$p2;				
-		$current_game = new Game();  
-		$current_game -> createGame($p1, $p2);		 
-
-		$em = $this -> getDoctrine()-> getEntityManager();
-		$em -> persist($current_game);
-		$em -> flush();
-        
-        $this -> gameid = $current_game -> getGameid();
-        
+		$p1 = $_POST['players']['player_1'];
+		$p2 = $_POST['players']['player_2'];
+		$savedgame = $_POST['players']['saved_game'];
+		echo $savedgame; 
+		if($savedgame){
+			$em = $this -> getDoctrine()-> getEntityManager();
+			$current_game = $em -> getRepository('BundleChessBundle:Game')
+					            -> getGame($savedgame);
+						
+			$p1 = $current_game -> getPlayer1();
+			$p2 = $current_game -> getPlayer2();
+			$this -> gameid = $savedgame;
+			
+		}else{
+			$current_game = new Game();
+			$current_game -> createGame($p1, $p2);		 
+	
+			$em = $this -> getDoctrine()-> getEntityManager();
+			$em -> persist($current_game);
+			$em -> flush();
+	        
+	        $this -> gameid = $current_game -> getGameid();
+		}
         return $this -> render('BundleChessBundle:Game:index.html.twig', array(
         	'player1' => $p1,
         	'player2' => $p2
