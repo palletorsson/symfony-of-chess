@@ -126,11 +126,30 @@ function handleServerResponse()	{
 				var target = document.getElementById(to);
 				var p = element.innerHTML;				 
 				if (move.substring(8,9) == "w") { 
-					target.innerHTML = "&#9819;"; // Make it a Queen
+					if(target.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
+						var x_piece = target.innerHTML;
+						move += 'x';
+						document.getElementById("x_piece").innerHTML += x_piece + " ";
+						target.innerHTML = "&#9819;"; // Make it a Queen
+					}
 				} else {
+					if(target.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
+						var x_piece = target.innerHTML;
+						move += 'x';
+						document.getElementById("x_piece").innerHTML += x_piece + " ";
+					}
 					target.innerHTML = "&#9813;"; // Make it a Queen
 				}	
 				element.innerHTML = ""; // Clearing old cell
+				if(whosturn == 'w'){
+					document.getElementById("whitemoves").innerHTML += piece + move + "<br />";
+					whosturn = 'b'
+					addHighlight('b');
+				}else{
+					document.getElementById("blackmoves").innerHTML +=  piece + move + "<br />";
+					whosturn = 'w'
+					addHighlight('w');
+				}
 			}
 			else {
 				// update the client display using the data received 

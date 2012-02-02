@@ -263,6 +263,6 @@ h2{
 	float:left;
 	margin-right: 30px;
 }
-#x_piece{
+#x_piece, #error{
 	display: inline;
 }
