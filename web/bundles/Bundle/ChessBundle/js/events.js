@@ -65,6 +65,26 @@ function dragOver(event) {
 	return false;
 }
 
+function getHit(whatcell){ //funktion för att ta vara på utslagna pjäser
+	if(whatcell.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
+		var x_piece = whatcell.innerHTML;
+		move += 'x';
+		document.getElementById("x_piece").innerHTML += x_piece + " ";
+	}
+}
+
+function updateTurn(whatpiece, whatmove){
+	if(whosturn == 'w'){
+		document.getElementById("whitemoves").innerHTML += whatpiece + whatmove + "<br />";
+		whosturn = 'b'
+		addHighlight('b');
+	}else{
+		document.getElementById("blackmoves").innerHTML +=  whatpiece + whatmove + "<br />";
+		whosturn = 'w'
+		addHighlight('w');
+	}
+}
+
 function drop(event) {
 	var from = event.dataTransfer.getData("Text");
 	console.log(from);	
@@ -124,32 +144,15 @@ function handleServerResponse()	{
 				var to = move.substring(6,8);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
+				getHit(target);
 				var p = element.innerHTML;				 
 				if (move.substring(8,9) == "w") { 
-					if(target.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
-						var x_piece = target.innerHTML;
-						move += 'x';
-						document.getElementById("x_piece").innerHTML += x_piece + " ";
-						target.innerHTML = "&#9819;"; // Make it a Queen
-					}
+					target.innerHTML = "&#9819;"; // Make it a Queen
 				} else {
-					if(target.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
-						var x_piece = target.innerHTML;
-						move += 'x';
-						document.getElementById("x_piece").innerHTML += x_piece + " ";
-					}
 					target.innerHTML = "&#9813;"; // Make it a Queen
 				}	
 				element.innerHTML = ""; // Clearing old cell
-				if(whosturn == 'w'){
-					document.getElementById("whitemoves").innerHTML += piece + move + "<br />";
-					whosturn = 'b'
-					addHighlight('b');
-				}else{
-					document.getElementById("blackmoves").innerHTML +=  piece + move + "<br />";
-					whosturn = 'w'
-					addHighlight('w');
-				}
+				updateTurn(piece,move);
 			}
 			else {
 				// update the client display using the data received 
@@ -157,22 +160,10 @@ function handleServerResponse()	{
 				var to = move.substring(3,5);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
-				if(target.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
-					var x_piece = target.innerHTML;
-					move += 'x';
-					document.getElementById("x_piece").innerHTML += x_piece + " ";
-				}
+				getHit(target);
 			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
 				element.innerHTML = ""; // Clearing old cell	
-				if(whosturn == 'w'){
-					document.getElementById("whitemoves").innerHTML += piece + move + "<br />";
-					whosturn = 'b'
-					addHighlight('b');
-				}else{
-					document.getElementById("blackmoves").innerHTML +=  piece + move + "<br />";
-					whosturn = 'w'
-					addHighlight('w');
-				}
+				updateTurn(piece, move);
 			}
 		}
 		// a HTTP status different than 200 signals an error

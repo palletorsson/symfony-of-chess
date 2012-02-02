@@ -1,5 +1,6 @@
 body{
-	background: url('../image/light_grey_floral_motif.jpg');
+	background: url('../image/vichy.jpg');
+	/*light_grey_floral_motif.jpg');*/
 }
 
 .white {
@@ -89,10 +90,10 @@ body{
 	position: relative;
 }
 #board ul:nth-child(odd) li:nth-child(odd) {
-	background-color: rgba(0,0,0,0.5);
+	background-color: #264761;
 }
 #board ul:nth-child(even) li:nth-child(even) {
-	background-color: rgba(0,0,0,0.5);
+	background-color: #264761;
 }
 #board ul li img.active:hover {
 	border: 1px solid red;
@@ -236,13 +237,15 @@ h2{
 }
 
 .whiteturn, .blackturn{
-	color: red;
+	background: #264761;
+	color: #FFFBCC;
 	font-size: 14px;
 	min-height: 18px;
 	margin-top:-12px;
 	margin-bottom:12px;
-	padding-bottom: 3px;
+	padding: 3px;
 	border-bottom: solid 1px #ccc;
+	border-top: solid 1px #ccc;
 }
 .errorbox{
 	background:#fff;
@@ -255,7 +258,8 @@ h2{
 	margin-top:20px;
 }
 .button_control{
-	background:#fff;
+	background: #264761;
+	color: #fffbcc;
 	border: solid 1px #ccc;
 	padding: 10px;
 	border-radius: 10px;
@@ -265,4 +269,7 @@ h2{
 }
 #x_piece, #error{
 	display: inline;
+}
+#x_piece{
+	font-size: 20px;
 }
