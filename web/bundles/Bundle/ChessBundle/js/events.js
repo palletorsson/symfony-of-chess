@@ -14,7 +14,11 @@ $(document).ready(function(){
 	});
 	
 	$('.whiteturn').html('Your turn');
-
+	
+	$('#savegame').click(function(){
+		var currentgameid = document.getElementById('thegameid').innerHTML;
+		alert('This game is saved with a game id of ' + currentgameid);
+	});
 
 });
 
