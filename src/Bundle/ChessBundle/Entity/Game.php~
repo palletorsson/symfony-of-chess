@@ -4,6 +4,8 @@ namespace Bundle\ChessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+// JOHANS MAMP Pro STRUL // date_default_timezone_set("Europe/Berlin");
+
 /**
  * 
  * @ORM\Entity(repositoryClass="Bundle\ChessBundle\Repository\ChessRepository")
@@ -51,6 +53,11 @@ class Game {
 	protected $blackdraws;
 	
 	/**
+	 * @ORM\Column(type="array")
+	 */
+	protected $hitpieces;
+	
+	/**
 	* @ORM\Column(type="datetime")
 	*/
 	protected $started;
@@ -64,9 +71,12 @@ class Game {
 
 	}
 	
-	public function createGame(){
-		$this -> player1 = "Player 1";
-		$this -> player2 = "Player 2";
+	public function createGame($p1,$p2){
+		$this -> player1 = $p1;
+		$this -> player2 = $p2;
+		$this -> turn = "w";
+		$this -> started = new \DateTime();
+		$this -> ended = new \DateTime();
 		
 		$this -> gameboard = array(
 			'a8' => 9820,
@@ -142,9 +152,6 @@ class Game {
 			'h1' => 9814,
 		);
 		
-		$em = $this -> getDoctrine() 
-					-> getEntityManager();
-		//SKICKA IN DESSA I DATABASEN, HUR????		
 		
 	}	
 

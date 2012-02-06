@@ -795,6 +795,36 @@ namespace Bundle\ChessBundle\Entity;
 			return $this->pieces[$code]; 
 		}
 		
+		public function getPiece($move){
+			$from = strtolower(substr($move,0,2)); 
+			$to = strtolower(substr($move,3,2));
+			$current_piece = $this -> board[$from];
+			return $current_piece;
+			
+		}
+		
+		public function checkX($move){
+			$from = strtolower(substr($move,0,2)); 
+			$to = strtolower(substr($move,3,2));
+			if($this -> board[$to] != 0){ //Den här raden lägger till ett x om man slår ut någon
+				$move = $move.'x';	
+			}
+			return $move;
+		}
+			
+		public function checkHit($move){
+			$from = strtolower(substr($move,0,2)); 
+			$to = strtolower(substr($move,3,2));
+			if($this -> board[$to] != 0){ //Den här raden lägger till ett x om man slår ut någon
+				$x_piece = $this -> board[$to];
+				return $x_piece;	
+			}else{
+				return FALSE;
+			}
+			
+		}
+		
+		
 		public function updateBoard($move,$board){
 			$from = strtolower(substr($move,0,2)); 
 			$to = strtolower(substr($move,3,2));

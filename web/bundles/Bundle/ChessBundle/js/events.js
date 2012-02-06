@@ -2,7 +2,7 @@
 var xmlHttp = createXmlHttpRequestObject();
 var whosturn = 'w';
 var piece;
-// retrieves the XMLHttpRequest object
+
 $(document).ready(function(){
 	$('#start a').click(function(){
 		var answer = confirm('A new game will be started and this game lost. Continue?');
@@ -28,7 +28,7 @@ function addHighlight(color){
 		$('.whiteturn').html('');
 	}
 }
-
+// retrieves the XMLHttpRequest object
 function createXmlHttpRequestObject() {
 	// will store the reference to the XMLHttpRequest object
 	var xmlHttp;
@@ -77,11 +77,11 @@ function getHit(whatcell){ //funktion för att ta vara på utslagna pjäser
 
 function updateTurn(whatpiece, whatmove){
 	if(whosturn == 'w'){
-		document.getElementById("whitemoves").innerHTML += whatpiece + whatmove + "<br />";
+		document.getElementById("whiteprint").innerHTML += whatpiece + whatmove + "<br />";
 		whosturn = 'b'
 		addHighlight('b');
 	}else{
-		document.getElementById("blackmoves").innerHTML +=  whatpiece + whatmove + "<br />";
+		document.getElementById("blackprint").innerHTML +=  whatpiece + whatmove + "<br />";
 		whosturn = 'w'
 		addHighlight('w');
 	}
@@ -92,7 +92,8 @@ function drop(event) {
 	console.log(from);	
 	var to = event.target.getAttribute('id');
 	piece = document.getElementById(from).innerHTML;
-	var txt = from+"-"+to;
+	var gameid = document.getElementById('thegameid').innerHTML;
+	var txt = from + "-" + to + gameid;
 	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var text = document.createTextNode(from+"-"+to);
 	// we can add the code for the piece and send it to the server. 

@@ -53,6 +53,11 @@ class Game {
 	protected $blackdraws;
 	
 	/**
+	 * @ORM\Column(type="array")
+	 */
+	protected $hitpieces;
+	
+	/**
 	* @ORM\Column(type="datetime")
 	*/
 	protected $started;
@@ -318,5 +323,25 @@ class Game {
     public function getTurn()
     {
         return $this->turn;
+    }
+
+    /**
+     * Set hitpieces
+     *
+     * @param array $hitpieces
+     */
+    public function setHitpieces($hitpieces)
+    {
+        $this->hitpieces = $hitpieces;
+    }
+
+    /**
+     * Get hitpieces
+     *
+     * @return array 
+     */
+    public function getHitpieces()
+    {
+        return $this->hitpieces;
     }
 }

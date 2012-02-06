@@ -67,7 +67,8 @@ class GameController extends Controller
 	//	}
         return $this -> render('BundleChessBundle:Game:index.html.twig', array(
         	'player1' => $p1,
-        	'player2' => $p2
+        	'player2' => $p2,
+        	'gameid' => $this ->gameid
     	));    
 	}
     
@@ -75,8 +76,11 @@ class GameController extends Controller
     public function moveAction($slug) {
 		$em = $this -> getDoctrine()-> getEntityManager();
 		
-		$gameid = $em -> getRepository('BundleChessBundle:Game')
-				      -> getGameid();
+		$gameid = substr($slug, 5); 
+		$slug = substr($slug, 0, 5);
+		
+		/*$em -> getRepository('BundleChessBundle:Game')
+				      -> getGameid();*/
 		
 		$game = $em -> getRepository('BundleChessBundle:Game')
 				    -> getGame($gameid);
@@ -89,13 +93,28 @@ class GameController extends Controller
 		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn);
 		
-		// Den manipulerade arrayen sparas i db. 
+		// Den manipulerade arrayen sparas i db.
+		
 		$move_var = $this -> current_move -> move($slug);
 		
 		if ($move_var > 200) {
 				$text = $move_var;
 			
 		} else if ($move_var == 100) {
+				$slugx = $this -> current_move -> checkX($slug); //lägg till ett x om slaget slår ut
+				//echo $slugx;
+
+				if($x_piece = $this -> current_move -> checkHit($slug)){ //kolla vilken pjäs som blir utslagen
+					if($game -> getHitpieces()){
+						$hitpieces = $game -> getHitpieces();  //hämta ut arrayen om den finns
+					}else{
+						$hitpieces = array(); //annars gör en ny array
+					}
+					
+					$hitpieces[] = $x_piece;  //fyll på med den utslagna pjäsen
+					$game -> setHitpieces($hitpieces);
+				}				
+
 				if($turn == 'w') {
 					$turn = 'b';
 					//Här under fyller vi på whitedraws-listan med det vita draget
@@ -104,7 +123,8 @@ class GameController extends Controller
 					}else{
 						$whitedraws = array(); //annars gör en ny array
 					}
-					$whitedraws[] = $slug;  //fyll på med draget
+					
+					$whitedraws[] = $this->current_move->getPiece($slug).$slugx;  //fyll på med draget
 					$game -> setWhitedraws($whitedraws);
 
 				}else if($turn == 'b'){
@@ -115,7 +135,7 @@ class GameController extends Controller
 					}else{
 						$blackdraws = array(); //annars gör en ny array
 					}
-					$blackdraws[] = $slug;  //fyll på med draget
+					$blackdraws[] = $this->current_move->getPiece($slug).$slugx;  //fyll på med draget
 					$game -> setBlackdraws($blackdraws);
 				}
 			
@@ -160,26 +180,22 @@ class GameController extends Controller
 		$response->headers->set('Content-Type', 'text/xml');
 		// prints the XML headers followed by the content
 		return $response; 
-		
-		
-			
 	} 
 
     public function oldGameAction($slug){
-		$gameidminus = $slug; 	
+		
 	    // get last game from database
 	    $em = $this -> getDoctrine()-> getEntityManager();
 		
-		$gameid = $em -> getRepository('BundleChessBundle:Game')
-				      -> getGameid();
-		
 		$game = $em -> getRepository('BundleChessBundle:Game')
-				    -> getGame($gameid-$gameidminus);
+				    -> getGame($slug);
 		
 		$gameboard = $game -> getGameboard();
 		$turn = $game -> getTurn(); 	 
 		$player1 =  $game -> getPlayer1(); 
 		$player2 =  $game -> getPlayer2();
+		$gameid =  $game -> getGameid(); 
+		$hitpieces =  $game -> getHitpieces();
 		$whitedraws =  $game -> getWhitedraws();
 		$blackdraws =  $game -> getBlackdraws(); 
 		
@@ -187,6 +203,8 @@ class GameController extends Controller
 						, "turn" => $turn
 						, "player1" => $player1
 						, "player2" => $player2
+						, "gameid" => $gameid
+						, "hitpieces" => $hitpieces
 						, "whitedraws" => $whitedraws
 						, "blackdraws" => $blackdraws);
 						

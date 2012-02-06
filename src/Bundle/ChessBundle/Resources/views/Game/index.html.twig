@@ -137,7 +137,8 @@
 			 <div id="whitemoves" class="moves">
 				 <p> In the white corner: </p> 
 				 <h1 id="player1"> {{ player1 }} </h1>
-				 <p class="whiteturn"></p> White Game Moves: </br></br> 
+				 <p class="whiteturn"></p> White Game Moves: </br></br>
+				 <span id="whiteprint"> </span> 
 			 </div>
 		</div>
 		<div class="right-side">
@@ -145,22 +146,25 @@
 			<p> In the black corner: </p> 
 			<h1 id="player2"> {{ player2 }} </h1>
 			<p class="blackturn""></p> Black Game Moves: </br></br> 
+			<span id="blackprint"> </span>
 			</div>
 		</div>
 	</div>
 	<div class="errorbox">
-		<h1>Hit pieces: <div id="x_piece"> </div> </h1>
+		<h1>Hit pieces: <span id="x_piece"> </span> </h1>
 	</div>
 	<div class="errorbox">
-		<h1>Message: <div id="error"> &nbsp; </br></br> </div> </h1>
+		<h1>Message: <span id="error"> &nbsp; </br></br> </span> </h1>
 		
 	</div>
 	<div class="errorbox">
 		<div id="start" class="button_control"><a href="{{ path('BundleChessBundle_homepage') }}">Start a new game</a></div>
-		<div class="button_control">Save this game</div></br></br>
+		<div class="button_control">Save this game</div>
+		<div id="startoldgame" class="button_control"> Play saved game </div>
 	</div>
+	<div id="thegameid">{{ gameid }}</div>
 	
-<div id="startoldgame" >Continue last Game</div></br></br>
+
 
 	
 {% endblock %}

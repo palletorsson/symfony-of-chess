@@ -263,13 +263,18 @@ h2{
 	border: solid 1px #ccc;
 	padding: 10px;
 	border-radius: 10px;
-	width: 140px;
+	width: 130px;
 	float:left;
-	margin-right: 30px;
+	display: inline;
+	cursor: pointer;
 }
 #x_piece, #error{
 	display: inline;
 }
 #x_piece{
 	font-size: 20px;
+}
+
+#thegameid{
+	
 }
