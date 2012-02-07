@@ -1,11 +1,12 @@
 // stores the reference to the XMLHttpRequest object
-var xmlHttp = createXmlHttpRequestObject();
-var whosturn = 'w';
-var piece;
+var xmlHttp = createXmlHttpRequestObject()
+	, whosturn = 'w'
+	, piece
+	, move;
 
 $(document).ready(function(){
 	$('#start a').click(function(){
-		var answer = confirm('A new game will be started and this game lost. Continue?');
+		var answer = confirm('A new game will be started, please save this game first unless you want to lose it. Continue?');
 		if(answer){
 			return true;
 		}else{
@@ -92,20 +93,20 @@ function updateTurn(whatpiece, whatmove){
 }
 
 function drop(event) {
+	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var from = event.dataTransfer.getData("Text");
-	console.log(from);	
 	var to = event.target.getAttribute('id');
 	piece = document.getElementById(from).innerHTML;
 	var gameid = document.getElementById('thegameid').innerHTML;
 	var txt = from + "-" + to + gameid;
-	event.preventDefault(); // Consider using `event.preventDefault` instead
 	var text = document.createTextNode(from+"-"+to);
 	// we can add the code for the piece and send it to the server. 
 	// proceed only if the xmlHttp object isn't busy
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0) {
 		// retrieve the name typed by the user on the form
 		text = encodeURIComponent(txt);
-		xmlHttp.open("GET", "move/"+txt, true);
+		alert(txt);
+		xmlHttp.open('GET', 'move/'+txt, true);
 		//	$.post("/move",{ str: text },function( data ){
 		//	},"json" );	
 		// define the method to handle server responses
@@ -124,30 +125,31 @@ function handleServerResponse()	{
 			// extract the XML retrieved from the server						
 			xmlDoc = xmlHttp.responseXML; 
 			// obtain the document element (the root element) of the XML structure
-			console.log(xmlDoc);
+			//console.log(xmlDoc);
 			// get the text message, which is in the first child of game.php
 			// obtain the document element (the root element) of the XML structure
 			xmlDocumentElement = xmlDoc.documentElement;
 			// get the text message, which is in the first child of
 			// the the document element
 			move = xmlDocumentElement.firstChild.data;
+			alert(move);	
+			var errormsg = 	{
+							 "201" : "It's not your turn."
+							,"202" : "This move is against the game rules."
+							,"203" : "Another piece in the way"
+							,"204" : "You cannot move there."
+							,"204" : "You can not move on a friendly piece."
+							,"205" : "King can't move into chess."
+							};
 			
-			var errormsg =  {
-									 "201" : "It's not your turn."
-									,"202" : "This move is against the game rules."
-									,"203" : "Another piece in the way"
-									,"204" : "You cannot move there."
-									,"204" : "You can not move on a friendly piece."
-									,"205" : "King can't move into chess."
-									};
 			if (move > 200) {
 				msg =  errormsg[move];
 				document.getElementById("error").innerHTML = msg;
 				$('#error').html(msg).fadeIn("slow");
 				$('#error').fadeOut(3000);
-				
-			} else if (move.substring(0,3) == 101) {
- 				var from = move.substring(3,5);	 
+			} 
+			else if (move.substring(0,3) == 101) {
+				var from = move.substring(3,5);	 
 				var to = move.substring(6,8);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
@@ -163,6 +165,7 @@ function handleServerResponse()	{
 			}
 			else {
 				// update the client display using the data received 
+				
 				var from = move.substring(0,2); 
 				var to = move.substring(3,5);
 				var element = document.getElementById(from);

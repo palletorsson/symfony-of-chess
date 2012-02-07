@@ -45,7 +45,7 @@ class GameController extends Controller
 		$p1 = $_POST['players']['player_1'];
 		$p2 = $_POST['players']['player_2'];
 		$savedgame = $_POST['players']['saved_game'];
-		echo $savedgame; 
+		//echo $savedgame; 
 		/* if($savedgame){
 			$em = $this -> getDoctrine()-> getEntityManager();
 			$current_game = $em -> getRepository('BundleChessBundle:Game')
@@ -79,98 +79,72 @@ class GameController extends Controller
 		$gameid = substr($slug, 5); 
 		$slug = substr($slug, 0, 5);
 		
-		/*$em -> getRepository('BundleChessBundle:Game')
-				      -> getGameid();*/
-		
 		$game = $em -> getRepository('BundleChessBundle:Game')
 				    -> getGame($gameid);
 					
 		$gameboard = $game -> getGameboard();
 		$turn = $game -> getTurn(); 	 
-		//print_r($gameboard);
-		//echo $gameid;
 		
 		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn);
 		
-		// Den manipulerade arrayen sparas i db.
-		
+		//returnerar en kod som avgör hur slaget gått igenom
 		$move_var = $this -> current_move -> move($slug);
-		
-		if ($move_var > 200) {
-				$text = $move_var;
+		//echo "move_var: ".$move_var;
+		//giltigt drag, 101 betyder krönt bonde
+		if (($move_var === 100) || ($move_var === 101)) {
 			
-		} else if ($move_var == 100) {
-				$slugx = $this -> current_move -> checkX($slug); //lägg till ett x om slaget slår ut
-				//echo $slugx;
-
-				if($x_piece = $this -> current_move -> checkHit($slug)){ //kolla vilken pjäs som blir utslagen
-					if($game -> getHitpieces()){
-						$hitpieces = $game -> getHitpieces();  //hämta ut arrayen om den finns
-					}else{
-						$hitpieces = array(); //annars gör en ny array
-					}
-					
-					$hitpieces[] = $x_piece;  //fyll på med den utslagna pjäsen
-					$game -> setHitpieces($hitpieces);
-				}				
-
-				if($turn == 'w') {
-					$turn = 'b';
-					//Här under fyller vi på whitedraws-listan med det vita draget
-					if($game -> getWhitedraws()){
-						$whitedraws = $game -> getWhitedraws();  //hämta ut arrayen om den finns
-					}else{
-						$whitedraws = array(); //annars gör en ny array
-					}
-					
-					$whitedraws[] = $this->current_move->getPiece($slug).$slugx;  //fyll på med draget
-					$game -> setWhitedraws($whitedraws);
-
-				}else if($turn == 'b'){
-					$turn = 'w';
-					//Här under fyller vi på blackdraws-listan med det svarta draget
-					if($game -> getBlackdraws()){
-						$blackdraws = $game -> getBlackdraws();  //hämta ut arrayen om den finns
-					}else{
-						$blackdraws = array(); //annars gör en ny array
-					}
-					$blackdraws[] = $this->current_move->getPiece($slug).$slugx;  //fyll på med draget
-					$game -> setBlackdraws($blackdraws);
+			//1. börja med att se om draget slår ut annan pjäs och lista den (för persistens)
+			if($x_piece = $this -> current_move -> checkHit($slug)){ //kolla vilken pjäs som blir utslagen
+				if(!$hitpieces = $game -> getHitpieces()){ //hämta ut hitpieces arrayen om finns
+					$hitpieces = array(); //annars gör en ny array
 				}
+				
+				$hitpieces[] = $x_piece;  //fyll på med den utslagna pjäsen
+				$game -> setHitpieces($hitpieces);
+			}				
 			
-				$updated_gameboard = $this -> current_move ->updateBoard($slug, $gameboard);
-				
-				$game -> setGameboard($updated_gameboard);
-				$game -> setTurn($turn);
-				
-				$em -> persist($game);
-				$em -> flush();
-				
-				$text = $slug;
-		}  else if ($move_var == 101) {
-				
+			//2. byt färg och fyll på drag-listorna
+			$slugx = $this -> current_move -> checkX($slug); 
+			if($turn == 'w') {
+				$turn = 'b';
+				//Här under fyller vi på whitedraws-listan med det vita draget
+				if(!$whitedraws = $game -> getWhitedraws()){
+					$whitedraws = array(); //annars gör en ny array
+				}
+				$whitedraws[] = $this->current_move->getPiece($slug).$slugx;  //fyll på med pjäs och drag
+				$game -> setWhitedraws($whitedraws);
+
+			}else if($turn == 'b'){
+				$turn = 'w';
+				//Här under fyller vi på blackdraws-listan med det svarta draget
+				if(!$blackdraws = $game -> getBlackdraws()){
+					$blackdraws = array(); //annars gör en ny array
+				}
+				$blackdraws[] = $this->current_move->getPiece($slug).$slugx;  //fyll på med draget
+				$game -> setBlackdraws($blackdraws);
+			}
+			
+			//3. Uppdatera board-arrayen
+			if($move_var == 101){
 				$updated_gameboard = $this -> current_move ->updateBoardCrown($slug, $gameboard, $turn);
-				
-				$game -> setGameboard($updated_gameboard);
-				if($turn == 'w') {
-					$turn = 'b';
-				}else if($turn == 'b'){
-					$turn = 'w';
-				}
-				
-				$game -> setTurn($turn);
-				
-				$em -> persist($game);
-				$em -> flush();
-				
 				$text = "101".$slug.$turn;
+			}else if($move_var == 100){
+				$updated_gameboard = $this -> current_move ->updateBoard($slug, $gameboard);
+				$text = $slug;
+			}		
+			$game -> setGameboard($updated_gameboard);
+			$game -> setTurn($turn);
+			
+			$em -> persist($game);
+			$em -> flush();
+			
+		}else if($move_var > 200) {
+			// kommer att returnera felkod
+			$text = $move_var;
+		} else {
+			echo "Something is wrong, movevar is: ".$move_var;
 		}
-		
-		else {
-				// kommer att returnera felkod
-				 $text = $move_var;
-		} 
 		
 		//här är xml:en som skickas som svar till ajax-requestet
 		$response = new Response();
@@ -195,9 +169,16 @@ class GameController extends Controller
 		$player1 =  $game -> getPlayer1(); 
 		$player2 =  $game -> getPlayer2();
 		$gameid =  $game -> getGameid(); 
-		$hitpieces =  $game -> getHitpieces();
-		$whitedraws =  $game -> getWhitedraws();
-		$blackdraws =  $game -> getBlackdraws(); 
+
+		if(!$hitpieces =  $game -> getHitpieces()){
+			$hitpieces = array();
+		};
+		if(!$whitedraws =  $game -> getWhitedraws()){
+			$whitedraws  = array();
+		};
+		if(!$blackdraws =  $game -> getBlackdraws()){
+			$blackdraws  = array();
+		};
 		
 		$game = array(	"gameboard" => $gameboard
 						, "turn" => $turn
@@ -209,15 +190,15 @@ class GameController extends Controller
 						, "blackdraws" => $blackdraws);
 						
 		$gameboard = array_change_key_case($gameboard); 
-		// $gameboard är en array av snaste spelet 
+		// $gameboard är en array av det aktuella spelet 
         $text = json_encode($game);
         
-		//här är xml:en som skickas som svar till ajax-requestet
+		//här är json som skickas som svar till ajax-requestet
 		$response = new Response();
 		$response->setContent($text);
 		$response->setStatusCode(200);
 		$response->headers->set('Content-Type', 'text/javascript'); 
-		// prints the XML headers followed by the content
+		// prints the javascript headers followed by the content
 		return $response; 	    
 	}
 

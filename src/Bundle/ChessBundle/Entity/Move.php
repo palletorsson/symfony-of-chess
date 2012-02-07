@@ -593,7 +593,7 @@ namespace Bundle\ChessBundle\Entity;
 			if($xyarray["y"] == 0 || $xyarray["x"] == 0){
 				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
-						return true;
+						return 100;
 					}
 					else{
 						return 204;
@@ -615,7 +615,7 @@ namespace Bundle\ChessBundle\Entity;
 			if($xyarray["y"] == $xyarray["x"]){
 				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
-						return true;
+						return 100;
 					}
 					else{
 						return 204;
@@ -634,7 +634,7 @@ namespace Bundle\ChessBundle\Entity;
 			$xyarray = xySteps($from, $to ,$yPosToInt);
 			if(($xyarray["x"] == 1 && $xyarray["y"] == 2) || ($xyarray["x"] == 2 && $xyarray["y"] == 1)){
 				if(checkTo($piece, $to, $board)){
-					return true;
+					return 100;
 				}
 				else{
 					return 204;
@@ -650,7 +650,7 @@ namespace Bundle\ChessBundle\Entity;
 			if($xyarray["x"] == $xyarray["y"] || ($xyarray["x"] == 0 xor $xyarray["y"] == 0)){
 				if(checkCollision(makeMoveOverArray($from, $to, $yPosToInt), $board)){
 					if(checkTo($piece, $to, $board)){
-						return true;
+						return 100;
 					}
 					else{
 						return 204;
@@ -768,8 +768,8 @@ namespace Bundle\ChessBundle\Entity;
 		
 		//-------------------------------------------------------
 		
-		protected $turn;
 		protected $board = array();
+		protected $turn;
 				
 		private	$pieces = array(
 			9820 => 'b_rook', 
@@ -840,10 +840,10 @@ namespace Bundle\ChessBundle\Entity;
 		public function updateBoardCrown($move,$board,$turn){
 			$from = strtolower(substr($move,0,2)); 
 			$to = strtolower(substr($move,3,2));
-			if ($turn = "w") {
-			$current_piece = "9813";
+			if ($turn == "w") {
+				$current_piece = "9813";
 			} else { 
-			$current_piece = "9819";
+				$current_piece = "9819";
 			}
 				
 			$board[$from] = 0;
@@ -870,13 +870,13 @@ namespace Bundle\ChessBundle\Entity;
 		public function checkTurn($current_piece) {
 			$piece_color = substr($this -> pieces[$current_piece],0,1);
 			if($this -> turn == 'w' && $piece_color == 'w'){
-				$this -> turn = 'b';
+				return TRUE;
 			}else if($this -> turn == 'b' && $piece_color == 'b'){
-				$this -> turn = 'w';
+				return TRUE;
 			}else{
-				return false;
+				return FALSE;
 			}	
-			return TRUE;
+			
 		}
 			
 		public function move($themove){
@@ -885,19 +885,22 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 			// kolla syntax ta mar to och from
-			$fromto = $this->checkPattern($themove); 
+			$fromto = $this -> checkPattern($themove); 
 			$from = $fromto[0];
 			$to = $fromto[1];
-			
+
 			// hämta pjäs nummer
 			$current_piece = $this -> board[$from];
+			
 			// Kolla om det är rätt färg som drar
-			if(!$this->checkTurn($current_piece)) {
+			if(!$this -> checkTurn($current_piece)) {
 				// "It's not your turn."
 				$error_201 = 201;
 				return $error_201;
 			} 
-			$moveAnswer = $this->checkMove($current_piece, $from, $to, $this -> board);
+			
+			$moveAnswer = $this -> checkMove($current_piece, $from, $to, $this -> board);
+			//echo "moveAnswer :".$moveAnswer;
 			return $moveAnswer; 
 		}
 		
