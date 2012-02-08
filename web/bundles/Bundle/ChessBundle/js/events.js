@@ -105,7 +105,7 @@ function drop(event) {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0) {
 		// retrieve the name typed by the user on the form
 		text = encodeURIComponent(txt);
-		alert(txt);
+		//alert(txt);
 		xmlHttp.open('GET', 'move/'+txt, true);
 		//	$.post("/move",{ str: text },function( data ){
 		//	},"json" );	
@@ -132,7 +132,7 @@ function handleServerResponse()	{
 			// get the text message, which is in the first child of
 			// the the document element
 			move = xmlDocumentElement.firstChild.data;
-			alert(move);	
+			//alert(move);	
 			var errormsg = 	{
 							 "201" : "It's not your turn."
 							,"202" : "This move is against the game rules."

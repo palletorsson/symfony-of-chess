@@ -44,7 +44,6 @@ class GameController extends Controller
 
 		$p1 = $_POST['players']['player_1'];
 		$p2 = $_POST['players']['player_2'];
-		$savedgame = $_POST['players']['saved_game'];
 		//echo $savedgame; 
 		/* if($savedgame){
 			$em = $this -> getDoctrine()-> getEntityManager();
