@@ -130,9 +130,9 @@
 
 <div class="playernames">
 	<h2> Please enter the names of the players  </h2>
-	<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform">
-	        {{ form_row(form.player_1) }}
-	        {{ form_row(form.player_2) }}
+	<form action="{{ path('BundleChessBundle_newplayer') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform">
+	        {{ form_row(form.player) }}
+	        {{ form_row(form.password) }}
 
 		<input type="submit" value="Start a new game" />
 	</form>

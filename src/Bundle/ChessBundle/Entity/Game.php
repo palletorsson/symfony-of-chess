@@ -22,9 +22,17 @@ class Game {
 	 */
 	protected $gameid;
 	
+
+	 /**
+     * @ORM\ManyToOne(targetEntity="Player",inversedBy="games")
+     * @ORM\JoinColumn(name="playerid", referencedColumnName="playerid")
+     */
+    protected $game;
+
 	/**
 	 * @ORM\Column(type="string", length="40")
 	 */
+	
 	protected $player1;
 	
 	/**
@@ -343,5 +351,25 @@ class Game {
     public function getHitpieces()
     {
         return $this->hitpieces;
+    }
+
+    /**
+     * Set game
+     *
+     * @param Bundle\ChessBundle\Entity\Blog $game
+     */
+    public function setGame(\Bundle\ChessBundle\Entity\Blog $game)
+    {
+        $this->game = $game;
+    }
+
+    /**
+     * Get game
+     *
+     * @return Bundle\ChessBundle\Entity\Blog 
+     */
+    public function getGame()
+    {
+        return $this->game;
     }
 }

@@ -13,15 +13,6 @@ use Doctrine\ORM\EntityRepository;
 
  class ChessRepository extends EntityRepository {
 
-	/*public function getGameId() {
-		$qb = $this -> createQueryBuilder('i') 
-					-> select('*')
-					-> from('game')
-					-> where('gameid = '. $gameid);
-
-		return $qb -> getQuery() -> getResult();
-	}
-*/	
 	public function getGameid() {
 		$qb = $this -> createQueryBuilder('Game') 
 					-> select('Game.gameid')

@@ -7,8 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Bundle\ChessBundle\Entity\Move;
 use Bundle\ChessBundle\Entity\Game;
-use Bundle\ChessBundle\Entity\Enquiry;
+use Bundle\ChessBundle\Entity\Player;
+use Bundle\ChessBundle\Entity\Friend;
 use Bundle\ChessBundle\Form\EnquiryType;
+use Bundle\ChessBundle\Form\EnquiryType2;
 
 class GameController extends Controller
 {
@@ -16,8 +18,8 @@ class GameController extends Controller
 	private $gameid;
 	
 	public function indexAction(){
-		$enquiry = new Enquiry();
-	    $form = $this->createForm(new EnquiryType(), $enquiry);
+		$player = new Player();
+	    $form = $this->createForm(new EnquiryType(), $player);
 	
 	    $request = $this->getRequest();
 	    if ($request->getMethod() == 'POST') {
@@ -28,7 +30,7 @@ class GameController extends Controller
 	
 	            // Redirect - This is important to prevent users re-posting
 	            // the form if they refresh the page
-	            return $this->redirect($this->generateUrl('BundleChessBundle_game'));
+	            return $this->redirect($this->generateUrl('BundleChessBundle_loggedin'));
 	        }
 	    }
 
@@ -38,33 +40,72 @@ class GameController extends Controller
 
         //return $this->render('BundleChessBundle::index.html.twig');
     }
+	
+	public function newplayerAction(){
+		print_r($_POST);
+		$player = $_POST['players']['player'];
+		if(!isset($_POST['players']['player2'])){
+			$player2 = 'player2';
+		};
+		
+		$password = md5($_POST['players']['password']);
+		
+		$newplayer = new Player();
+		$newplayer -> setPlayer2($player2); 
+		$newplayer -> setPlayer($player);		
+		$newplayer -> setPassword($password);
+
+		$em = $this -> getDoctrine()-> getEntityManager();
+		$em -> persist($newplayer);
+		$em -> flush();
+		$playerid = $newplayer -> getPlayerid();
+		echo $playerid;
+
+		$playerFriend = new Friend();
+	    $form = $this->createForm(new EnquiryType2(), $playerFriend);
+	    $request = $this->getRequest();
+	    if (isset($_POST['submitFriend']) && $request->getMethod() == 'POST') {
+			$newplayer -> setPlayer2($_POST['players']['player2']); 
+			$em -> persist($newplayer);
+			$em -> flush();
+            return $this->redirect($this->generateUrl('BundleChessBundle_game'));
+		}
+
+    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
+    		'player1' => $player,
+    		'form' => $form->createView()
+		));
+		
+	}
+
+	public function loggedinAction(){
+		$playerid = $_POST['players']['playerid'];
+
+		$em = $this -> getDoctrine()-> getEntityManager();
+		$player = $em -> getRepository('BundleChessBundle:Player')
+				      -> getGamesForPlayer($playerid);
+					
+		$gameboard = $game -> getGameboard();
+		$turn = $game -> getTurn(); 	 
+		
+	}
 
     public function gameAction(){
-    	// print_r($_POST);
+    	print_r($_POST);
 
-		$p1 = $_POST['players']['player_1'];
-		$p2 = $_POST['players']['player_2'];
-		//echo $savedgame; 
-		/* if($savedgame){
-			$em = $this -> getDoctrine()-> getEntityManager();
-			$current_game = $em -> getRepository('BundleChessBundle:Game')
-					            -> getGame($savedgame);
-						
-			$p1 = $current_game -> getPlayer1();
-			$p2 = $current_game -> getPlayer2();
-			$this -> gameid = $savedgame;
-			
-		}else{ */
-			$current_game = new Game();
-			$current_game -> createGame($p1, $p2);		 
-	
-			$em = $this -> getDoctrine()-> getEntityManager();
-			$em -> persist($current_game);
-			$em -> flush();
-	        
-	        $this -> gameid = $current_game -> getGameid();
-	//	}
-        return $this -> render('BundleChessBundle:Game:index.html.twig', array(
+		$p1 = $_POST['player1'];
+		$p2 = $_POST['players']['player2'];
+
+		$current_game = new Game();
+		$current_game -> createGame($p1, $p2);		 
+
+		$em = $this -> getDoctrine()-> getEntityManager();
+		$em -> persist($current_game);
+		$em -> flush();
+        
+        $this -> gameid = $current_game -> getGameid();
+		
+	    return $this -> render('BundleChessBundle:Game:index.html.twig', array(
         	'player1' => $p1,
         	'player2' => $p2,
         	'gameid' => $this ->gameid
@@ -73,10 +114,11 @@ class GameController extends Controller
     
 	
     public function moveAction($slug) {
-		$em = $this -> getDoctrine()-> getEntityManager();
 		
 		$gameid = substr($slug, 5); 
 		$slug = substr($slug, 0, 5);
+
+		$em = $this -> getDoctrine()-> getEntityManager();
 		
 		$game = $em -> getRepository('BundleChessBundle:Game')
 				    -> getGame($gameid);
@@ -85,10 +127,10 @@ class GameController extends Controller
 		$turn = $game -> getTurn(); 	 
 		
 		// move objekt, kolla moven	
-		$this -> current_move = new Move($gameboard,$turn);
-		
+		$this -> current_move = new Move($gameboard,$turn,$slug);
+		//print_r($this -> current_move);		
 		//returnerar en kod som avgör hur slaget gått igenom
-		$move_var = $this -> current_move -> move($slug);
+		$move_var = $this -> current_move -> move();
 		//echo "move_var: ".$move_var;
 		//giltigt drag, 101 betyder krönt bonde
 		if (($move_var === 100) || ($move_var === 101)) {
@@ -142,7 +184,7 @@ class GameController extends Controller
 			// kommer att returnera felkod
 			$text = $move_var;
 		} else {
-			echo "Something is wrong, movevar is: ".$move_var;
+			echo "Something is wrong, movevar is: ". $move_var;
 		}
 		
 		//här är xml:en som skickas som svar till ajax-requestet

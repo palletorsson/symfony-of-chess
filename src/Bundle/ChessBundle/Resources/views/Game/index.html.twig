@@ -125,7 +125,7 @@
 		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">H</span></div>
 	</ul>
 	
- 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+ 	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/jquery-1.7.min.js') }} "></script>
 	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/events.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/getold.js') }}"></script>
 
@@ -158,7 +158,7 @@
 		
 	</div>
 	<div class="errorbox">
-		<div id="start" class="button_control"><a href="{{ path('BundleChessBundle_homepage') }}">Start a new game</a></div>
+		<div id="start" class="button_control"><a href="{{ path('BundleChessBundle_homepage') }}"> Start a new game</a></div>
 		<div id="savegame" class="button_control">Save this game</div>
 		<div id="startoldgame" class="button_control"> Play saved game </div>
 	</div>

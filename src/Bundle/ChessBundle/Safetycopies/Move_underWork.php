@@ -9,7 +9,6 @@ namespace Bundle\ChessBundle\Entity;
 		private $board = array();
 		private $turn;
 		private $piece;
-		private $themove;
 		private $from;
 		private $to;
 		private $fromRow;
@@ -52,15 +51,14 @@ namespace Bundle\ChessBundle\Entity;
 			$this -> turn = $whosturn;
 			
 			$themove = strtolower($themove);
-			$this -> themove = $themove;
-			$this -> from = substr($themove,0,2);
-			$this -> to = substr($themove,3,2);
+			$this -> $from = substr($themove,0,2);
+			$this -> $to = substr($themove,3,2);
 			
 			//här konverteras movens bokstav till ett nummer från formet som A1-A2
-			$this -> fromCol = $this -> yPosToInt[substr($themove,0,1)];
-			$this -> fromRow = substr($themove,1,1);
-			$this -> toCol = $this -> yPosToInt[substr($themove,3,1)];
-			$this -> toRow = substr($themove,4,1);
+			$this -> $fromCol = $this -> yPosToInt[substr($themove,0,1)];
+			$this -> $fromRow = substr($themove,1,1);
+			$this -> $toCol = $this -> yPosToInt[substr($themove,3,1)];
+			$this -> $toRow = substr($themove,4,1);
 			
 			$this -> piece = $gameboard[$this -> from];	
 			$this -> hitpiece = $gameboard[$this -> to];
@@ -479,33 +477,27 @@ namespace Bundle\ChessBundle\Entity;
 			switch($this -> piece){
 				case 9823:
 				case 9817:
-					$answer = $this->pawn();
-					return $answer;
+					$this->pawn();
 					break;
 				case 9820:
 				case 9814:
-					$answer = $this -> rook();
-					return $answer;
+					$this -> rook();
 					break;
 				case 9821:
 				case 9815:
-					$answer = $this -> bishop();
-					return $answer;
+					$this -> bishop();
 					break;
 				case 9822:
 				case 9816:
-					$answer = $this -> knight();
-					return $answer;
+					$this -> knight();
 					break;
 				case 9819:
 				case 9813:
-					$answer = $this -> queen();
-					return $answer;
+					$this -> queen();
 					break;
 				case 9818:
 				case 9812:
-					$answer = $this -> king();
-					return $answer;
+					$this -> king();
 					break;
 			}
 			
@@ -533,19 +525,9 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			return true;
 		}
-/*
-		public function makeMoveOverArray($this->from, $this->to, $this->yPosToInt){
+
+		public function makeMoveOverArray(){
 			//Kollar riktning på drag
-			$yPosToInt = array(
-			'a' => 1,
-			'b' => 2,
-			'c' => 3,
-			'd' => 4,
-			'e' => 5,
-			'f' => 6,
-			'g' => 7,
-			'h' => 8,
-		);
 			if(($this->diagonal["col"]) < 0){ 
 				$y = 1;
 			}
@@ -567,59 +549,14 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 			$moveOverAttay = array();
-			$fromRow = $this->fromRow;
-			$fromCol = $this->fromCol;
-			$to = $this -> to;
+			
 			//from + 1 eller så, nästa position
-			$august = array_search(($fromCol + $y), $yPosToInt).($fromRow + $x); //genererar ett from i format a3
-			//echo $august." ".$to;
+			$from = array_search($this->fromCol + $y, $this -> yPosToInt) . $this->fromRow + $x; //genererar ett from i format a3
 			
-			while($august != ($to)){
-				$moveOverAttay[] = $august;
-				//echo $august." ";
-				
-				$fromRow = $fromRow + $x;
-				$fromCol = $fromCol + $y;
-				$fromColA = array_search(($fromCol),$yPosToInt);
-				$august = $fromColA . $fromRow ; //nästa steg
-				//echo $august." ". $fromRow." ".$fromCol." END <br/>";
-				
-				
-			}
-			return $moveOverAttay;
-		}
-*/
-	function makeMoveOverArray($from, $to, $yPosToInt){
-				
-			if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) < 0){
-				$y = 1;
-			}
-			else if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) == 0){
-				$y = 0;
-			}
-			else{
-				$y = -1;
-			}
-			
-			if((substr($to, 1, 1) - substr($from, 1, 1)) < 0){
-				$x = -1;
-			}
-			else if((substr($to, 1, 1) - substr($from, 1, 1)) == 0){
-				$x = 0;
-			}
-			else{
-				$x = 1;
-			}
-			
-			$moveOverAttay = array();
-			
-			$from = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
-			
-			while($from != $to){
+			while($from != $this -> to){
 				$moveOverAttay[] = $from;
-				$tempFrom = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
+				$tempFrom = array_search($this->fromCol + $y, $this -> yPosToInt) . $this->fromRow + $x; //nästa steg
 				$from = $tempFrom;
-				
 			}
 			return $moveOverAttay;
 		}
@@ -679,10 +616,10 @@ namespace Bundle\ChessBundle\Entity;
 			else if($this->fromRow == $startrow && $this->fromCol == $this->toCol){ //startrad + samma kolumn
 				if(($this->toRow-$startrow == ($direction || $firstmove))) {//ska bli 1,2,-1,-2
 
-					if($this -> checkCollision($this -> makeMoveOverArray($this->from, $this->to, $this->yPosToInt))){  //kolla om man går över nåt man inte får
+					if($this -> checkCollision($this -> makeMoveOverArray())){  //kolla om man går över nåt man inte får
+
 						if($this -> hitpiece == 0){
 							return 100;
-
 						}
 						else{
 							return 202;
@@ -722,7 +659,7 @@ namespace Bundle\ChessBundle\Entity;
 		public function rook(){
 			//om en rikning är noll får andra vara hur lång som helst
 			if($this -> diagonal["col"] == 0 || $this->diagonal["row"]== 0){ //här går man rakt, dvs diagonalen är 0
-				if($this -> checkCollision($this -> makeMoveOverArray($this->from, $this->to, $this->yPosToInt))){ //kolla att man inte går över någon pjäs
+				if($this -> checkCollision($this -> makeMoveOverArray())){ //kolla att man inte går över någon pjäs
 					if($this -> checkTo()){ //kolla att ingen egen står på to
 						return 100;
 					}
@@ -742,7 +679,7 @@ namespace Bundle\ChessBundle\Entity;
 		public function bishop(){
 			//om det är lika många steg i båda riktningarna är det en diagonal förflyttning
 			if($this->diagonal["col"]== $this -> diagonal["row"]){
-				if($this -> checkCollision($this -> makeMoveOverArray($this->from, $this->to, $this->yPosToInt))){
+				if($this -> checkCollision($this -> makeMoveOverArray())){
 					if($this -> checkTo()){
 						return 100;
 					}
@@ -777,7 +714,7 @@ namespace Bundle\ChessBundle\Entity;
 		public function queen(){
 			
 			if(($this->diagonal["row"]== $this->diagonal["col"]) || (($this->diagonal["row"]== 0) XOR ($this->diagonal["col"]== 0))){
-				if($this -> checkCollision($this -> makeMoveOverArray($this->from, $this->to, $this->yPosToInt))){
+				if($this -> checkCollision($this -> makeMoveOverArray())){
 					if($this -> checkTo()){
 						return 100;
 					}
@@ -799,7 +736,7 @@ namespace Bundle\ChessBundle\Entity;
 			
 			//om det är lika många steg i båda riktningarna är det en diagonal förflyttning
 			if($this->diagonal["col"]<= 1 && $this->diagonal["row"]<= 1){
-				if($this -> checkCollision($this -> makeMoveOverArray($this->from, $this->to, $this->yPosToInt))){
+				if($this -> checkCollision($this -> makeMoveOverArray())){
 					if($this -> checkTo()){
 						return 100;
 						/*
@@ -834,7 +771,7 @@ namespace Bundle\ChessBundle\Entity;
 		public function getPiece($move){
 			$from = strtolower(substr($move,0,2)); 
 			$to = strtolower(substr($move,3,2));
-			$current_piece = $this -> piece;
+			$current_piece = $this -> board[$from];
 			return $current_piece;
 			
 		}
@@ -842,7 +779,7 @@ namespace Bundle\ChessBundle\Entity;
 		public function checkX($move){
 			$from = strtolower(substr($move,0,2)); 
 			$to = strtolower(substr($move,3,2));
-			if($this -> hitpiece!= 0){ //Den här raden lägger till ett x om man slår ut någon
+			if($this -> board[$to] != 0){ //Den här raden lägger till ett x om man slår ut någon
 				$move = $move.'x';	
 			}
 			return $move;
@@ -851,9 +788,9 @@ namespace Bundle\ChessBundle\Entity;
 		public function checkHit($move){
 			$from = strtolower(substr($move,0,2)); 
 			$to = strtolower(substr($move,3,2));
-			if($this -> hitpiece!= 0){ //Den här raden lägger till ett x om man slår ut någon
-				
-				return $this -> hitpiece;	
+			if($this -> board[$to] != 0){ //Den här raden lägger till ett x om man slår ut någon
+				$x_piece = $this -> board[$to];
+				return $x_piece;	
 			}else{
 				return FALSE;
 			}
@@ -921,12 +858,12 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 			// kolla syntax ta mar to och from
-			$fromto = $this -> checkPattern($this->themove); 
+			$fromto = $this -> checkPattern($themove); 
 			$from = $fromto[0];
 			$to = $fromto[1];
 
 			// hämta pjäs nummer
-			$current_piece = $this -> piece;
+			$current_piece = $this -> board[$from];
 			
 			// Kolla om det är rätt färg som drar
 			if(!$this -> checkTurn($current_piece)) {
@@ -942,7 +879,7 @@ namespace Bundle\ChessBundle\Entity;
 					
 					$newBoard = $this->board;
 					$newBoard[$this -> from] = 0;
-					$newBoard[$this-> to] = $this -> piece;
+					$newBoard[$this-> to] = $this -> current_piece;
 
 					$boardAsInt = array();
 					foreach($newBoard as $key => $value){
@@ -950,7 +887,6 @@ namespace Bundle\ChessBundle\Entity;
 					}
 
 					//Kolla först om egen kung står i schack
-					
 					if($this->turn == "w"){
 						$kingPos = array_search(9812, $boardAsInt); //vit kung
 						if($this->checkChess($kingPos, 9812, $boardAsInt)){

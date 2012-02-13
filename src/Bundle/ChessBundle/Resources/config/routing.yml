@@ -4,6 +4,20 @@ BundleChessBundle_homepage:
     requirements:
         _method:  GET
 
+BundleChessBundle_newplayer:
+    pattern:  /newplayer
+    
+    defaults: { _controller: BundleChessBundle:Player:newplayer }
+    requirements:
+        _method:  GET|POST
+
+BundleChessBundle_loggedin:
+    pattern:  /loggedin
+    
+    defaults: { _controller: BundleChessBundle:Player:loggedin }
+    requirements:
+        _method:  GET|POST
+
 BundleChessBundle_game:
     pattern:  /game
     

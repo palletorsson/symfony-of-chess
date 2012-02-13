@@ -1,0 +1,7 @@
+Bundle\ChessBundle\Entity\User:
+  properties:
+    player_1:
+      - NotBlank: ~
+    password:
+      - NotBlank: ~
+      
