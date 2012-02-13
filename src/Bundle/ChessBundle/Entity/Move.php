@@ -133,36 +133,50 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 		public function checkCells($p, $w1, $w2, $b1, $b2, $color) {
-				
 			if($p != 0) {
-				if($color == "white" && $p <= 9817){
-					return false;
+				// echo $p;
+					
+				if($color == "white") {	
+					if ($p <= 9817){
+						return 1002;
+					}
+					else if ($p == $b1 || $p == $b2){
+						return 1003;
+					} 
+					else if ($p >= 9818) {
+						return 1002;	
+					}
 				}
-				else if(($color == "white" && $p == $b1) || ($color == "white" && $p == $b2)){
-					return true;
+				if($color == "black") {	
+					if ($p >= 9818){
+						return 1002;
+					}
+					else if($p == $w1 || $p == $w2){
+						return 1003;
+					}
+					else if ($p <= 9817) {
+						return 1002;	
+					}
 				}
-			
-				if($color == "black" && $p >= 9818){
-					return false;
-				}
-				else if(($color == "black" && $p == $w1) || ($color == "black" && $p == $w2)){
-					return true;
-				}
+			}else {
+			return 1001;	
+	
 			}
-		}
-		
+		}	
 		public function checkUp($kingRow, $kingCol, $color, $board){
 			$x = $kingRow;
 			$x++;
 			$y = $kingCol;
 			while ($x <= 8) {
 				$p = $board[$y . $x]; 
-				if ($this -> checkCells($p, 9814, 9813, 9820, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9814, 9813, 9820, 9819, $color);  
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
+				} else {
+					$x++;
 				}
-				$x++;
 			}
 		}
 				
@@ -171,15 +185,16 @@ namespace Bundle\ChessBundle\Entity;
 			$x = $kingRow;
 			$x--;
 			$y = $kingCol;
-			$color =  $color;
 			while ($x >= 1) {
 				$p = $board[$y . $x]; 
-				if ($this -> checkCells($p, 9814, 9813, 9820, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9814, 9813, 9820, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
+				} else {
+					$x--;
 				}
-				$x--;	
 			}
 			return false;		
 		}
@@ -192,12 +207,14 @@ namespace Bundle\ChessBundle\Entity;
 			$x = $kingRow;
 			while ($y <= 8) {
 				$p = $board[$y . $x]; 
-				if ($this -> checkCells($p, 9814, 9813, 9820, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9814, 9813, 9820, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
+				} else {
+					$y++;
 				}
-				$y++;
 			}
 			return false;
 		}
@@ -208,13 +225,14 @@ namespace Bundle\ChessBundle\Entity;
 			$x = $kingRow;
 			while ($y >= 1) {
 				$p = $board[$y . $x]; 
-				if ($this -> checkCells($p, 9814, 9813, 9820, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9814, 9813, 9820, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
-					
+				} else if ($answer == 1002){
 					return false;
-				}	
-				$y--;
+				} else {
+					$y--;
+				}
 			}
 			return false;
 		}
@@ -234,13 +252,16 @@ namespace Bundle\ChessBundle\Entity;
 			
 			while ($y <= 8 && $x <= 8) {
 				$p = $board[$y . $x]; 
-				if ($this -> checkCells($p, 9815, 9813, 9821, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9815, 9813, 9821, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
+				} else {
+					$y++;
+					$x++;
 				}	
-				$y++;
-				$x++;
+				
 			}
 			return false;
 		}
@@ -259,14 +280,16 @@ namespace Bundle\ChessBundle\Entity;
 				}
 			
 			while ($y >= 1 && $x <= 8) {
-				$p = $board[$y.$x];
-				if ($this -> checkCells($p, 9815, 9813, 9821, 9819, $color)) {
+				$p = $board[$y . $x];
+				$answer = $this -> checkCells($p, 9815, 9813, 9821, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
+				} else {
+					$y--;
+					$x++;
 				}	
-				$y--;
-				$x++;
 			}
 			return false;
 		}
@@ -278,22 +301,22 @@ namespace Bundle\ChessBundle\Entity;
 			$x--;
 			//kollar efter bonde på först steget
 			if($color == "black"  && ($y <= 8 || $x >= 1)){
-				if($board[$y . $x] == 9817){
-					return true;
+					if($board[$y . $x] == 9817){
+						return true;
+					}
 				}
-			}
 			
 			while ($y <= 8 && $x >= 1) {
 				$p = $board[$y . $x]; 
-				echo $p.$y.$x." down-left";
-				if ($this -> checkCells($p, 9815, 9813, 9821, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9815, 9813, 9821, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
-				}	
-				
-				$y++;
-				$x--;
+				} else {
+					$y++;
+					$x--;
+				}
 			}
 			return false;
 		}
@@ -313,53 +336,18 @@ namespace Bundle\ChessBundle\Entity;
 			
 			while ($y >= 1 && $x >= 1 ) {
 				$p = $board[$y.$x];
-				echo $p.$y.$x." down-left";
-				if ($this -> checkCells($p, 9815, 9813, 9821, 9819, $color)) {
+				$answer = $this -> checkCells($p, 9815, 9813, 9821, 9819, $color);
+				if ($answer == 1003) {
 					return true;
-				} else {
+				} else if ($answer == 1002){
 					return false;
-				}	
-				$y--;
-				$x--;
+				} else {
+					$y--;
+					$x--;
+				}
 			}
 			return false;
 		}
-		/*
-		public function checkStraight($row, $col, $color, $board, $pieceB1, $pieceB2, $pieceW1, $pieceW2, $x, $y, $limit){
-
-			$row + $x; //FÖRST +1, SEN -1, SEN 0
-			$col + $y; //FÖRST 
-			
-			if($x != 0){
-				while ($row <= $limit) {
-					$y = $kingColLetter;
-						if($color == "white"){
-							if($board[$y . $x] == $pieceB1 || $board[$y . $x] == $pieceB2){  //svart torn, drottning
-								return TRUE;
-							}
-						}
-						else if($color == "black"){
-							if($board[$y . $x] == $pieceW1 || $board[$y . $x] == $pieceW2){ //vit torn, drottning
-								return TRUE;
-							}
-						}
-						else{
-							return FALSE;
-							}
-					}
-				$row+$x;
-				$col+$y;	
-			}
-		}
-			for($i = $kingCol--; $i <= $kingCol++; $i++){
-				for($j = $kingRow--; $j <= $kingRow++; $j++){
-					if($board[$i.$j] != 0){
-						
-					} 
-				}
-			}
-		 * 				
-		*/
 		//kollar om pos är hotad att blir slagen. Behöver $piece som en kung för att avgöra färg return true om pos kan bli slagen
 		public function checkChess($pos, $piece, $board, $color){ //$pos = kingposition $piece=kungens kod $board=nya boarden
 			
@@ -411,10 +399,6 @@ namespace Bundle\ChessBundle\Entity;
 			}
 			
 			return false;
-			
-			
-			
-			
 		}
 
 		public function checkMove(){
@@ -874,32 +858,68 @@ namespace Bundle\ChessBundle\Entity;
 			// Kolla om det är rätt färg som drar
 			if(!$this -> checkTurn($current_piece)) {
 				// "It's not your turn."
-				$error_201 = 201;
-				return $error_201;
+				return 201;
 			} 
 
 			$newBoard = $this->board;
 			
 			$boardAsInt = array();
-					foreach($newBoard as $key => $value){
-						$boardAsInt[($this -> yPosToInt[substr($key, 0, 1)]) . substr($key, 1, 1)] = $value;
-					}
+			foreach($newBoard as $key => $value){
+				$boardAsInt[($this -> yPosToInt[substr($key, 0, 1)]) . substr($key, 1, 1)] = $value;
+			}
 
 			
 			if($this->turn == "w"){
-					$kingPos = array_search(9812, $boardAsInt); //vit kung
-					// echo $kingPos; 	
-					if($this->checkChess($kingPos, 9812, $boardAsInt, "white") && $this->piece != 9812){
-						$moveAnswer = 206;
-						return $moveAnswer; 
-					}
+				$kingPos = array_search(9812, $boardAsInt); //vit kung
+				// echo $kingPos; 	
+				if($this->checkChess($kingPos, 9812, $boardAsInt, "white")) {  
+					
+					$moveAnswer2 = $this -> checkMove(); 
+
+					if($moveAnswer2 === 100 || $moveAnswer2 === 101){
+					
+						$newBoard2 = $this->board;
+						$newBoard2[$this -> from] = 0;
+						$newBoard2[$this-> to] = $this -> piece;
+
+						$boardAsInt2 = array();
+						foreach($newBoard as $key => $value){
+							$boardAsInt2[($this -> yPosToInt[substr($key, 0, 1)]) . substr($key, 1, 1)] = $value;
+						}
+						
+						if($this->checkChess($kingPos, 9812, $boardAsInt2, "white")){
+							$moveAnswer2 = 206;
+						} else {
+							return $moveAnswer2;
+						}
+
 				}
+					
+			}
+			}
+			
 			else if($this->turn == "b"){ 
 				$kingPos = array_search(9818, $boardAsInt); //var står svart kung?
-				if($this->checkChess($kingPos, 9818, $boardAsInt, "black") && $this->piece != 9818){
-					$moveAnswer = 206;
-					return $moveAnswer; 
-			
+				if($this->checkChess($kingPos, 9818, $boardAsInt, "black")){ //står den i schack? JA
+					$moveAnswer2 = $this -> checkMove();  //validera draget
+
+					if($moveAnswer2 === 100 || $moveAnswer2 === 101){ //draget är ok
+					
+						$newBoard2 = $this->board; //klona brädan
+						$newBoard2[$this -> from] = 0;
+						$newBoard2[$this-> to] = $this -> piece;
+
+						$boardAsInt = array(); 
+						foreach($newBoard as $key => $value){ //gör om kolumner till siffror för beräkning
+							$boardAsInt[($this -> yPosToInt[substr($key, 0, 1)]) . substr($key, 1, 1)] = $value;
+						}
+						
+						if($this->checkChess($kingPos, 9818, $boardAsInt, "black")){ //kolla om man fortf står i schack
+							$moveAnswer2 = 206; //JA
+						} else {
+							return $moveAnswer2; //NEJ, draget godkänns och returneras till controller
+						}
+					}
 				}
 			}
 			
