@@ -74,9 +74,9 @@ function dragOver(event) {
 
 function getHit(whatcell){ //funktion för att ta vara på utslagna pjäser
 	if(whatcell.innerHTML != ''){ //Den här raden lägger till ett x om man slår ut någon
-		var x_piece = whatcell.innerHTML;
+		var x_pieces = whatcell.innerHTML;
 		move += 'x';
-		document.getElementById("x_piece").innerHTML += x_piece + " ";
+		document.getElementById("x_piece").innerHTML += x_pieces + " ";
 	}
 }
 
@@ -140,6 +140,7 @@ function handleServerResponse()	{
 							,"204" : "You cannot move there."
 							,"204" : "You can not move on a friendly piece."
 							,"205" : "King can't move into chess."
+							,"206" : "You are in chess, please move the king."
 							};
 			
 			if (move > 200) {
