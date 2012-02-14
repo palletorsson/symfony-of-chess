@@ -3,6 +3,9 @@
 
 namespace Bundle\ChessBundle\Controller;
 
+use Symfony\Component\Security\Core\SecurityContext;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Bundle\ChessBundle\Entity\Move;
@@ -18,24 +21,36 @@ class GameController extends Controller
 	private $gameid;
 	
 	public function indexAction(){
-		$player = new Player();
-	    $form = $this->createForm(new EnquiryType(), $player);
+
+	        $request = $this->getRequest();
+	        $session = $request->getSession();
 	
-	    $request = $this->getRequest();
-	    if ($request->getMethod() == 'POST') {
-	        $form->bindRequest($request);
-	
-	        if ($form->isValid()) {
-	            // Perform some action, such as sending an email
-	
-	            // Redirect - This is important to prevent users re-posting
-	            // the form if they refresh the page
-	            return $this->redirect($this->generateUrl('BundleChessBundle_loggedin'));
+	        // get the login error if there is one
+	        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+	            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+	        } else {
+	            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
 	        }
+	
+
+			$player = new Player();
+		    $form = $this->createForm(new EnquiryType(), $player);
+		
+		    if ($request->getMethod() == 'POST') {
+		        $form->bindRequest($request);
+	
+		        if ($form->isValid()) {
+		            // Perform some action, such as sending an email
+		
+		            // Redirect - This is important to prevent users re-posting
+		            // the form if they refresh the page
+		            return $this->redirect($this->generateUrl('BundleChessBundle_loggedin'));
+		        }
 	    }
 
     	return $this->render('BundleChessBundle::index.html.twig', array(
-        	'form' => $form->createView()
+        	'form' => $form->createView(),
+	        'error' => $error
     	));
 
         //return $this->render('BundleChessBundle::index.html.twig');

@@ -3,10 +3,16 @@ BundleChessBundle_homepage:
     defaults: { _controller: BundleChessBundle:Game:index }
     requirements:
         _method:  GET
+        
+        
+BundleChessBundle_login_check:
+    pattern: /login_check
+    defaults: {_controller: BundleChessBundle:Player:login_check }
+    requirements:
+        _method: GET|POST
 
 BundleChessBundle_newplayer:
     pattern:  /newplayer
-    
     defaults: { _controller: BundleChessBundle:Player:newplayer }
     requirements:
         _method:  GET|POST
@@ -38,7 +44,7 @@ BundleChessBundle_oldgame:
     requirements:
         _method:  GET
 
-BundleChessBundle_oldgame:
+BundleChessBundle_checkturn:
     pattern:  /checkturn
     defaults: { _controller: BundleChessBundle:CheckTurn:Checkturn }
     requirements:

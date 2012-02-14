@@ -10,42 +10,61 @@ use Bundle\ChessBundle\Entity\Friend;
 use Bundle\ChessBundle\Form\EnquiryType;
 use Bundle\ChessBundle\Form\EnquiryType2;
 
-class PlayerController extends Controller{
+	class PlayerController extends Controller{
 			
-		public function newplayerAction()
-		{
-		print_r($_POST);
-		$player = $_POST['players']['player'];
-		if(!isset($_POST['players']['player2'])){
-			$player2 = 'player2';
-		};
-		
-		$password = md5($_POST['players']['password']);
-		
-		$newplayer = new Player();
-		$newplayer -> setPlayer2($player2); 
-		$newplayer -> setPlayer($player);		
-		$newplayer -> setPassword($password);
+		public function login_checkAction(){
+	    	print_r($_POST);
+			$player = $_POST['players']['player'];
+			$password = md5($_POST['players']['password']);
 
-		$em = $this -> getDoctrine()-> getEntityManager();
-		$em -> persist($newplayer);
-		$em -> flush();
-		$playerid = $newplayer -> getPlayerid();
-		echo $playerid;
+			$em = $this -> getDoctrine()-> getEntityManager();
+			$player = $em -> getRepository('BundleChessBundle:Player')
+					      -> getPlayer($player);
+			
+			
+			if($password == $player -> getPassword()){
+				return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
+	    		'player1' => $player,
+	    		'form' => $form->createView()
+		));
+			}						
 
-		$playerFriend = new Friend();
-	    $form = $this->createForm(new EnquiryType2(), $playerFriend);
-	    $request = $this->getRequest();
-	    if (isset($_POST['submitFriend']) && $request->getMethod() == 'POST') {
-			$newplayer -> setPlayer2($_POST['players']['player2']); 
-			$em -> persist($newplayer);
-			$em -> flush();
-            return $this->redirect($this->generateUrl('BundleChessBundle_game'));
 		}
 
-    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
-    		'player1' => $player,
-    		'form' => $form->createView()
+		public function newplayerAction(){
+			print_r($_POST);
+			$player = $_POST['players']['player'];
+			if(!isset($_POST['players']['player2'])){
+				$player2 = 'player2';
+			};
+			
+			$salt = "ihaveadog";
+			$password = md5($salt.$_POST['players']['password']);
+			
+			$newplayer = new Player();
+			$newplayer -> setPlayer2($player2); 
+			$newplayer -> setPlayer($player);		
+			$newplayer -> setPassword($password);
+	
+			$em = $this -> getDoctrine()-> getEntityManager();
+			$em -> persist($newplayer);
+			$em -> flush();
+			$playerid = $newplayer -> getPlayerid();
+			echo $playerid;
+	
+			$playerFriend = new Friend();
+		    $form = $this->createForm(new EnquiryType2(), $playerFriend);
+		    $request = $this->getRequest();
+		    if (isset($_POST['submitFriend']) && $request->getMethod() == 'POST') {
+				$newplayer -> setPlayer2($_POST['players']['player2']); 
+				$em -> persist($newplayer);
+				$em -> flush();
+	            return $this->redirect($this->generateUrl('BundleChessBundle_game'));
+			}
+
+	    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
+	    		'player1' => $player,
+	    		'form' => $form->createView()
 		));
 		
 	}
@@ -61,8 +80,6 @@ class PlayerController extends Controller{
 		$turn = $game -> getTurn(); 	 
 		
 	}
-	
-	
 }
 
 

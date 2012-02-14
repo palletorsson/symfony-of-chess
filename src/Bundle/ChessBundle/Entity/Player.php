@@ -34,10 +34,14 @@ class Player
     protected $player2;
 
 	/**
-	 * @ORM\Column(type="string", length="40")
+	 * @ORM\Column(type="string", length="256")
 	 */
-
  	protected $password;
+	
+	/**
+	 * * @ORM\Column(type="string", length="40")
+	 */
+ 	protected $salt;
 
 	/**
      * @ORM\OneToMany(targetEntity="Game", mappedBy="game")
@@ -158,5 +162,25 @@ class Player
     public function getPlayer1()
     {
         return $this->player1;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string 
+     */
+    public function getSalt()
+    {
+        return $this->salt;
     }
 }

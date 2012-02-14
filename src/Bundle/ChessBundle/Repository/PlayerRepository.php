@@ -24,14 +24,16 @@ class PlayerRepository extends EntityRepository
                   ->getResult();
     }
 	
-	public function getPlayer($playerid){
+	public function getPlayer($player){
 	    $qb = $this->createQueryBuilder('Player')
                    ->select('Player')
-                   ->where('Player.playerid = :player_id')
-                   ->setParameter('player_id', $playerid);
+                   ->where('Player.player = :player')
+                   ->setParameter('player', $player);
 
-        return $qb->getQuery()
-                  ->getResult();
+        $result = $qb -> getQuery()
+            	      -> getResult();
+		//print_r($result[0]);	
+		return $result;
 		
 	}
 

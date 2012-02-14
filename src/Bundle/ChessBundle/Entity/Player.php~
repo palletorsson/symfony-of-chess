@@ -34,10 +34,14 @@ class Player
     protected $player2;
 
 	/**
-	 * @ORM\Column(type="string", length="40")
+	 * @ORM\Column(type="string", length="256")
 	 */
-
  	protected $password;
+	
+	/**
+	 * * @ORM\Column(type="string", length="40")
+	 */
+ 	protected $salt;
 
 	/**
      * @ORM\OneToMany(targetEntity="Game", mappedBy="game")
