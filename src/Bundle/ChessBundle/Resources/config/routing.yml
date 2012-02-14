@@ -46,6 +46,6 @@ BundleChessBundle_oldgame:
 
 BundleChessBundle_checkturn:
     pattern:  /checkturn
-    defaults: { _controller: BundleChessBundle:CheckTurn:Checkturn }
+    defaults: { _controller: BundleChessBundle:Turn:checkturn }
     requirements:
         _method:  POST

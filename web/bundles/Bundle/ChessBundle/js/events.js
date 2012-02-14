@@ -20,7 +20,9 @@ $(document).ready(function(){
 		var currentgameid = document.getElementById('thegameid').innerHTML;
 		alert('This game is saved with a game id of ' + currentgameid);
 	});
-
+	
+	var gameid = document.getElementById('thegameid').innerHTML;
+	retrieveTurnStatus(gameid); 
 });
 
 
@@ -70,6 +72,62 @@ function dragStart(event) {
 
 function dragOver(event) {
 	return false;
+}
+
+var retrieveTurnStatus = function(gameid) {
+	// if its your turn then go ahead and the other player 
+	// player move send the move. 
+	$.post('checkturn', { sendid: gameid, myturn : whosturn } ,
+		function(data) {
+			console.log(data);
+			var dbgameid = data.gameid;
+			var dbturn = data.turn; // return 0 if not your turn
+			
+			console.log(dbturn); 
+			if (dbturn != 0) {   
+				var dbblackdraw = data.blackdraw;
+				var dbwhitedraw = data.whitedraw;
+				if (dbturn == "w")  {
+					var piece = dbwhitedraw.substring(0,3);
+					var piece = '&#' + piece +';';	
+					var from = dbwhitedraw.substring(4,5); 
+					var to = dbwhitedraw.substring(8,9);
+				} else { 
+					var piece = dbblackdraw.substring(0,3);
+					var piece = '&#' + piece +';';	
+					var from = dbblackdraw.substring(4,5); 
+					var to = dbblackdraw.substring(8,9);
+				} 
+				var element = document.getElementById(from);
+				var target = document.getElementById(to);
+				var move = from+"-"+to; 
+				getHit(target);
+			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
+				element.innerHTML = ""; // Clearing old cell	
+				updateTurn(piece, move);		
+			} 
+			ajaxTurn(whosturn);
+			setTimeout(function() { 
+					retrieveTurnStatus(gameid);
+				}, 6000);
+		}, 
+		"json"
+	);
+}	
+	
+
+function ajaxTurn(turnColor){
+	if(turnColor == 'w'){
+		whosturn = 'w'
+		$('#turn').fadeOut(1000);
+		$('#turn').html('white');
+		$('#turn').fadeIn(1000);
+	}else if(turnColor == 'b'){
+		whosturn = 'b'
+		$('#turn').fadeOut(1000);
+		$('#turn').html('black');
+		$('#turn').fadeIn(1000);
+	}
 }
 
 function getHit(whatcell){ //funktion för att ta vara på utslagna pjäser
