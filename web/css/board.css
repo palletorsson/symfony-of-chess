@@ -188,11 +188,18 @@ h2{
 
 .playernames{
 	background:#fff;
-	border: solid 1px #ccc;
+	border: solid 3px #264761;
 	padding: 30px;
-	border-radius: 25px;
+	border-radius: 15px;
 	width: 230px;
+	margin-top: 20px;
+	box-shadow: 5px 5px 10px #000;
 }
+
+.playernames h2{
+	font-weight:bold;
+}
+
 
 .moves{
 	background: #fff;
@@ -277,4 +284,13 @@ h2{
 
 #thegameid{
 	
+}
+.message{
+	color: red;
+	margin-top:10px;
+}
+
+.containers{
+	margin-top:10px;
+	overflow:auto;
 }

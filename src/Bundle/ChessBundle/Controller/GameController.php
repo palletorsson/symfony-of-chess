@@ -20,10 +20,11 @@ class GameController extends Controller
 	private $current_move;
 	private $gameid;
 	
-	public function indexAction(){
+	public function indexAction($message1="",$message2=""){
 
 	        $request = $this->getRequest();
 	        $session = $request->getSession();
+			
 	
 	        // get the login error if there is one
 	        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
@@ -32,13 +33,10 @@ class GameController extends Controller
 	            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
 	        }
 	
-
 			$player = new Player();
 		    $form = $this->createForm(new EnquiryType(), $player);
-		
 		    if ($request->getMethod() == 'POST') {
 		        $form->bindRequest($request);
-	
 		        if ($form->isValid()) {
 		            // Perform some action, such as sending an email
 		
@@ -46,12 +44,28 @@ class GameController extends Controller
 		            // the form if they refresh the page
 		            return $this->redirect($this->generateUrl('BundleChessBundle_loggedin'));
 		        }
-	    }
+		    }
 
-    	return $this->render('BundleChessBundle::index.html.twig', array(
-        	'form' => $form->createView(),
-	        'error' => $error
-    	));
+			$player2 = new Player();		
+		    $form2 = $this->createForm(new EnquiryType(), $player2);
+		    if ($request->getMethod() == 'POST') {
+		        $form2->bindRequest($request);
+		        if ($form2->isValid()) {
+		            // Perform some action, such as sending an email
+		
+		            // Redirect - This is important to prevent users re-posting
+		            // the form if they refresh the page
+		            return $this->redirect($this->generateUrl('BundleChessBundle_loggedin'));
+		        }
+		    }
+
+	    	return $this->render('BundleChessBundle::index.html.twig', array(
+	        	'form' => $form->createView() ,
+	        	'form2' => $form2->createView() , 
+		        'error' => $error ,
+		        'message1' => $message1 ,
+		        'message2' => $message2
+    		));
 
         //return $this->render('BundleChessBundle::index.html.twig');
     }
@@ -95,10 +109,8 @@ class GameController extends Controller
 		
 		// move objekt, kolla moven	
 		$this -> current_move = new Move($gameboard,$turn,$slug);
-		//print_r($this -> current_move);		
 		//returnerar en kod som avgör hur slaget gått igenom
 		$move_var = $this -> current_move -> move();
-		//echo "move_var: ".$move_var;
 		//giltigt drag, 101 betyder krönt bonde
 		if (($move_var === 100) || ($move_var === 101)) {
 			

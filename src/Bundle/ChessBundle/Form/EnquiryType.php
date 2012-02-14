@@ -12,7 +12,7 @@ class EnquiryType extends AbstractType
     {
         $builder->add('player','text',array('label' =>'Name: '));
         $builder->add('password','password', array('label' => 'Password: '));
-        $builder->add('player2','hidden',array('label' =>'Name: '));
+        $builder->add('player2','hidden',array('data' =>'John Doe'));
     }
 
     public function getName()

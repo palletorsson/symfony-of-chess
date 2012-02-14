@@ -49,3 +49,9 @@ BundleChessBundle_checkturn:
     defaults: { _controller: BundleChessBundle:Turn:checkturn }
     requirements:
         _method:  POST
+
+BundleChessBundle_registernewplayer:
+    pattern:  /registernewplayer
+    defaults: { _controller: BundleChessBundle:Player:registernewplayer }
+    requirements:
+        _method:  GET|POST

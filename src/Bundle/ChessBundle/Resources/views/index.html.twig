@@ -129,13 +129,25 @@
 {% block sidebar %}
 
 <div class="playernames">
-	<h2> Please enter the names of the players  </h2>
+	<h2> Log in </h2>
 
 	<form action="{{ path('BundleChessBundle_login_check') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform">
 	        {{ form_row(form.player) }}
 	        {{ form_row(form.password) }}
-		<input type="submit" value="Start a new game" />
+		<input type="submit" value="Log in" name="login" />
 	</form>
+	<div class="message"> {{message1}} </div>
+</div>
+
+<div class="playernames">
+	<h2> Register new player </h2>
+	<form action="{{ path('BundleChessBundle_registernewplayer') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform">
+	        {{ form_row(form2.player) }}
+	        {{ form_row(form2.password) }}
+	        {{ form_row(form2.password) }}
+		<input type="submit" value="Register new player" name="register" />
+	</form>
+	<div class="message"> {{message2}} </div>
 </div>
 	
 {% endblock %}

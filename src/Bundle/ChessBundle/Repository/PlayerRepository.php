@@ -12,41 +12,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class PlayerRepository extends EntityRepository
 {
-	public function getGamesForPlayer($playerid)
-    {
-        $qb = $this->createQueryBuilder('Game')
-                   ->select('Game')
-                   ->where('Game.player1 = :player_id')
-                   ->addOrderBy('Game.gameid')
-                   ->setParameter('player_id', $playerid);
-
-        return $qb->getQuery()
-                  ->getResult();
-    }
-	
 	public function getPlayer($player){
 	    $qb = $this->createQueryBuilder('Player')
                    ->select('Player')
                    ->where('Player.player = :player')
-                   ->setParameter('player', $player);
+                   ->setParameter('player', $player)
+				   ->getQuery();
 
-        $result = $qb -> getQuery()
-            	      -> getResult();
-		//print_r($result[0]);	
-		return $result;
-		
+        $result = $qb -> getResult();
+		return $result[0];
 	}
 
-	public function getPlayerid() {
-		$qb = $this -> createQueryBuilder('Player') 
-					-> select('Player.playerid')
-					-> getQuery() 
-					;
+	public function checkNewPlayer($player){
+	    $qb = $this->createQueryBuilder('Player')
+                   ->select('Player')
+                   ->where('Player.player = :player')
+                   ->setParameter('player', $player)
+				   ->getQuery();
 
-		$result = $qb -> getResult();
-		print_r($result);
-		$result = count($result);
-		return $result;
+        $result = $qb -> getResult();
+		return $result[0];
+		
 	}
 	
 }

@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 /**
  * 
- @ORM\Entity(repositoryClass="Bundle\ChessBundle\Repository\PlayerRepository")
- * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="Bundle\ChessBundle\Repository\PlayerRepository")
+ * @ORM\Table(name="player")
  * @ORM\HasLifecycleCallbacks()
  */
 
@@ -39,9 +39,14 @@ class Player
  	protected $password;
 	
 	/**
-	 * * @ORM\Column(type="string", length="40")
+	 * * @ORM\Column(type="string", length="256")
 	 */
- 	protected $salt;
+ 	protected $salt1;
+
+	/**
+	 * * @ORM\Column(type="string", length="256")
+	 */
+ 	protected $salt2;
 
 	/**
      * @ORM\OneToMany(targetEntity="Game", mappedBy="game")
@@ -51,6 +56,8 @@ class Player
 	
 	public function __construct(){
 		$this -> games = new ArrayCollection();
+		$this -> salt1 = sha1('Ush8K&iu62msl82%');
+		$this -> salt2 = md5('jsSmdCw9lq1jd01?s&');
 	}
 	
     /**
@@ -164,23 +171,44 @@ class Player
         return $this->player1;
     }
 
+
     /**
-     * Set salt
+     * Set salt1
      *
-     * @param string $salt
+     * @param string $salt1
      */
-    public function setSalt($salt)
+    public function setSalt1($salt1)
     {
-        $this->salt = $salt;
+        $this->salt1 = $salt1;
     }
 
     /**
-     * Get salt
+     * Get salt1
      *
      * @return string 
      */
-    public function getSalt()
+    public function getSalt1()
     {
-        return $this->salt;
+        return $this->salt1;
+    }
+
+    /**
+     * Set salt2
+     *
+     * @param string $salt2
+     */
+    public function setSalt2($salt2)
+    {
+        $this->salt2 = $salt2;
+    }
+
+    /**
+     * Get salt2
+     *
+     * @return string 
+     */
+    public function getSalt2()
+    {
+        return $this->salt2;
     }
 }
