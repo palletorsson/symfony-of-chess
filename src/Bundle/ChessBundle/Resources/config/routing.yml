@@ -37,3 +37,9 @@ BundleChessBundle_oldgame:
     defaults: { _controller: BundleChessBundle:Game:oldGame }
     requirements:
         _method:  GET
+
+BundleChessBundle_oldgame:
+    pattern:  /checkturn
+    defaults: { _controller: BundleChessBundle:CheckTurn:Checkturn }
+    requirements:
+        _method:  POST
