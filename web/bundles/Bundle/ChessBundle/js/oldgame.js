@@ -1,11 +1,14 @@
-window.onload = function() {  
-	var a = document.getElementById("startoldgame");
-    
-    a.onclick = function() {
-		var oldgameid = prompt('Enter the gameid: ', 1);
+$(document).ready(function(){
+
+var a = document.getElementById("startoldgame");
+a.onclick = startoldGame();
+}
+   
+function startoldGame() {
+	var oldgameid = prompt('Enter the gameid: ', 1);
 		 
 	$.getJSON('oldgame/'+oldgameid, function(data) {						
-		console.log(data);
+		console.log(data); 
 		var gameboard = data.gameboard;
 		$.each(gameboard, function(key, val) {
 			if (val != "0"){ 
@@ -30,13 +33,18 @@ window.onload = function() {
 		});	
 		
 		var blackdraws = data.blackdraws;
-			var piece =  val.substring(0,3);
-			var move = '&#' + val.substring(3) +';';
-			$('#blackmoves').append(piece + ' ' + val);
+		var piece =  val.substring(0,3);
+		var move = '&#' + val.substring(3) +';';
+		$('#blackmoves').append(piece + ' ' + val);
+	
+		var hitpieces = data.hitpieces; 
+		$.each(hitpieces, function(key, val) {
+			var hitp = '&#' + val +';';
+			$('#x_piece').append(hitp + ' ');
 		});	
+		});	                 
+	
 		
-		                         
-		
-	});
-    }
-}; 
+	retrieveTurnStatus(gameid);		
+}
+
