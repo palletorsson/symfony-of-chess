@@ -72,7 +72,7 @@ namespace Bundle\ChessBundle\Entity;
 		}
 		
 		//gör ett negativt tal till noll
-		private function negativToZero($int){
+		public function negativToZero($int){
 			if($int < 0){
 				$int = 0;
 			}
@@ -436,10 +436,6 @@ namespace Bundle\ChessBundle\Entity;
 					break;
 			}
 			
-			
-			
-			
-			
 	    	//Pawn-function (BONDE)  9823  9817
 				//rook = TORN  	if($piece == 9820 || $piece == 9814){
 			
@@ -516,40 +512,40 @@ namespace Bundle\ChessBundle\Entity;
 			return $moveOverAttay;
 		}
 */
-	function makeMoveOverArray($from, $to, $yPosToInt){
+		function makeMoveOverArray($from, $to, $yPosToInt){
+					
+				if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) < 0){
+					$y = 1;
+				}
+				else if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) == 0){
+					$y = 0;
+				}
+				else{
+					$y = -1;
+				}
 				
-			if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) < 0){
-				$y = 1;
-			}
-			else if(($yPosToInt[substr($from, 0, 1)] - $yPosToInt[substr($to, 0, 1)]) == 0){
-				$y = 0;
-			}
-			else{
-				$y = -1;
-			}
-			
-			if((substr($to, 1, 1) - substr($from, 1, 1)) < 0){
-				$x = -1;
-			}
-			else if((substr($to, 1, 1) - substr($from, 1, 1)) == 0){
-				$x = 0;
-			}
-			else{
-				$x = 1;
-			}
-			
-			$moveOverAttay = array();
-			
-			$from = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
-			
-			while($from != $to){
-				$moveOverAttay[] = $from;
-				$tempFrom = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
-				$from = $tempFrom;
+				if((substr($to, 1, 1) - substr($from, 1, 1)) < 0){
+					$x = -1;
+				}
+				else if((substr($to, 1, 1) - substr($from, 1, 1)) == 0){
+					$x = 0;
+				}
+				else{
+					$x = 1;
+				}
 				
+				$moveOverAttay = array();
+				
+				$from = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
+				
+				while($from != $to){
+					$moveOverAttay[] = $from;
+					$tempFrom = array_search(($yPosToInt[substr($from, 0, 1)] + $y), $yPosToInt) . (substr($from, 1, 1) + $x);
+					$from = $tempFrom;
+					
+				}
+				return $moveOverAttay;
 			}
-			return $moveOverAttay;
-		}
 
 		public function checkTo(){//kollar om den slår vän eller motståndare
 			if($this -> hitpiece != 0){
