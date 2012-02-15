@@ -26,11 +26,16 @@ BundleChessBundle_loggedin:
 
 BundleChessBundle_game:
     pattern:  /game
-    
     defaults: { _controller: BundleChessBundle:Game:game }
     requirements:
         _method:  GET|POST
         
+BundleChessBundle_multiplayer:
+    pattern:  /multiplayer
+    defaults: { _controller: BundleChessBundle:Game:multiplayer }
+    requirements:
+        _method:  GET|POST
+
 BundleChessBundle_move:
     pattern:  /move/{slug}
     defaults: { _controller: BundleChessBundle:Game:move}
@@ -61,3 +66,10 @@ BundleChessBundle_logout:
     defaults: { _controller: BundleChessBundle:Player:logout}
     requirements:
         _method:  GET|POST
+
+
+BundleChessBundle_waitforplayer:
+    pattern:  /waitforplayer
+    defaults: { _controller: BundleChessBundle:FindPlayer:waitforplayer }
+    requirements:
+        _method:  POST

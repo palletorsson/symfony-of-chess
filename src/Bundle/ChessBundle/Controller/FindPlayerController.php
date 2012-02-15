@@ -8,49 +8,24 @@ use Bundle\ChessBundle\Entity\Game;
 use Bundle\ChessBundle\Entity\Player;
 use Bundle\ChessBundle\Entity\Friend;
 
-class TurnController extends Controller {
+class FindPlayerController extends Controller {
 		
-	public function checkturnAction() {
+	public function waitforplayerAction() {
 		
 		$gameidIn = $_POST['sendid'];
-	    $whosturn = $_POST['myturn'];
+	
 	    $em = $this -> getDoctrine()-> getEntityManager();
 		
 		$game = $em -> getRepository('BundleChessBundle:Game')
 				    -> getGame($gameidIn);
 			
-		$gameboard = $game -> getGameboard();
-		$turn = $game -> getTurn();
+		$dbplayer2 = $player2 -> getPlayer2();
 		$gameid =  $game -> getGameid(); 
-		// om det inte är din tur
-		if ($turn == $whosturn) {
-			$game = array("turn" => "0");	
-
-		} else {
 			
-			if ($turn == "b") {
-				if(!$whitedraws = $game -> getWhitedraws()) {
-					$lastdraw = "0";
-				} else {
-					$lastdraw = end($whitedraws);
-				}
-			}
-				
-			if ($turn == "w") {
-				if(!$blackdraws = $game -> getBlackdraws()) {
-					$lastdraw = "0";
-				} else {
-					$lastdraw = end($blackdraws);
-				}
-			}
-			
-			$game = array(	"turn" => $turn
+		$game = array(	"dbplayer2" => $dbplayer2
 							, "gameid" => $gameid
-							, "lastdraw" => $lastdraw
 						 );	
 
-		}	
-		
 						
         $game = json_encode($game);
         

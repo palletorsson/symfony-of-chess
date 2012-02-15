@@ -70,13 +70,34 @@ class GameController extends Controller
         //return $this->render('BundleChessBundle::index.html.twig');
     }
 	
+    public function multiplayerAction(){
+    	//print_r($_POST);
+		$gameid = $_POST['slugResult'][0];
+		$p2 = $_POST['slugResult'][1];
+    	$em = $this -> getDoctrine()-> getEntityManager();
+		$game = $em -> getRepository('BundleChessBundle:Game')
+				    -> getGame($gameid);
 
+		$game -> setPlayer2($p2);
+		$p1 = $game -> getPlayer1();		
+    
+		return $this->forward('BundleChessBundle:Game:render', array(
+	    		'p1' => $p1,
+	    		'p2' => $p2,
+	    		'gameid' => $gameid
+			));
+	}
+	
     public function gameAction(){
     	//print_r($_POST);
-
-		$p1 = $_POST['player1'];
-		$p2 = $_POST['players']['player2'];
-
+		if(isset($_POST['submitFriend'])){
+			$p1 = $_POST['player1'];
+			$p2 = $_POST['players']['player2'];
+		}else if(isset($_POST['submitPending'])){
+			$p1 = $_POST['player1'];
+			$p2 = 'Waiting...';
+		}
+		
 		$current_game = new Game();
 		$current_game -> createGame($p1, $p2); 
 
@@ -86,10 +107,26 @@ class GameController extends Controller
         
         $this -> gameid = $current_game -> getGameid();
 		
-	    return $this -> render('BundleChessBundle:Game:index.html.twig', array(
+		$em = $this -> getDoctrine()-> getEntityManager();
+		$playerdb = $em -> getRepository('BundleChessBundle:Player')
+				        -> getPlayer($p1);
+		
+		$playerdb -> setPendinggame($this -> gameid);
+		$playerdb -> setLoginstatus(2);
+		$em -> persist($playerdb);
+		$em -> flush();
+		return $this->forward('BundleChessBundle:Game:render', array(
+	    		'p1' => $p1,
+	    		'p2' => $p2,
+	    		'gameid' => $this -> gameid
+			));
+	}
+
+	public function renderAction($p1,$p2,$gameid){
+    return $this -> render('BundleChessBundle:Game:index.html.twig', array(
         	'player1' => $p1,
         	'player2' => $p2,
-        	'gameid' => $this ->gameid
+        	'gameid' => $gameid
     	));    
 	}
     

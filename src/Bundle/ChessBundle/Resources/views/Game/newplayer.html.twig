@@ -12,26 +12,36 @@
 					<li> 2. Check  the list to see if there are any other players that wait for an opponent. <br/> </li>
 				</ol>
 			</p>
-			<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform2">
+			<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform2" novalidate="novalidate">
 		        {{ form_row(form.player2) }}
 		        <input type="hidden" value="{{ player1 }}" name="player1"/>
 				<input type="submit" name="submitFriend" value="Play with player 2" />
+				<input type="submit" name="submitPending" value="Start multiplayer game" />
 			</form>
 			
 		</div>
 	<div id="players" style="background:#fff; padding:20px; width:350px;border:1px solid #ccc;border-radius:15px;margin:20px;"> 
 		<h1> Players online </h1>
 		
-		 <ul id="navigation">
+		 <ul>
             {% for index, value in loggedinplayers %}
                 <li> {{ value }} </li>
+            {% endfor %}
+         </ul>
+        <h1> Players online </h1>
+        <ul>
+            {% for key, value in pendingplayers %}
+                <li id="{{value}}-{{player1}}" class="multiplayer"> {{ key }} </li>
             {% else %}
-                <li> No players are currently online </li>
+            	<li> There are no pending games at the moment. </li>
             {% endfor %}
         </ul>
 	</div>
 	
 	<div id="logout" class="button_control"> <a href="logout/{{player1}}"> Log out </a></div>
 </div> 
+ 	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/jquery-1.7.min.js') }} "></script>
+	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/multiplayers.js') }}"></script>
+
 {% endblock %}
 

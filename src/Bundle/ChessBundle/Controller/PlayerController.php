@@ -93,9 +93,10 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			
 			//kolla vilka som har loginstatus 1 i db
 			$em = $this -> getDoctrine()-> getEntityManager();
-			
 			$playerdb = $em -> getRepository('BundleChessBundle:Player')
 				            -> findByLoginstatus(1);
+			$playerpending = $em -> getRepository('BundleChessBundle:Player')
+				            	 -> findByLoginstatus(2);
 			
 			$loggedinplayers = array();				   
 			foreach($playerdb as $key=>$value){
@@ -103,13 +104,21 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 					$loggedinplayers[] = $value->getPlayer();
 				};
 			}
-			//print_r($loggedinplayers);
+			
+			$pendingplayers = array();				   
+			foreach($playerpending as $key=>$value){
+				if($value->getLoginstatus()== 2){
+					$pendingplayers[$value->getPlayer()] = $value -> getPendinggame();
+				};
+			}
+			print_r($pendingplayers);
 			
 
 	    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
 	    		'player1' => $player,
 	    		'form' => $form->createView(),
-	    		'loggedinplayers' => $loggedinplayers
+	    		'loggedinplayers' => $loggedinplayers,
+	    		'pendingplayers' => $pendingplayers
 			));
 	}
 	
@@ -118,7 +127,6 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			$em = $this -> getDoctrine()-> getEntityManager();
 			$playerdb = $em -> getRepository('BundleChessBundle:Player')
 					        -> getPlayer($player1);
-			
 			
 			$playerdb -> setLoginstatus(0);
 			$em -> persist($playerdb);
