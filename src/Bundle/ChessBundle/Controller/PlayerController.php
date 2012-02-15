@@ -26,12 +26,13 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			//passwordcheck
 			$salt1 = $playersalt->getSalt1();
 			$salt2 = $playersalt->getSalt2();
+			
 			if(md5(($salt1.$password .$salt2)) === $playerdb -> getPassword()){
 				$playerdb -> setLoginstatus(1);
 				$em -> persist($playerdb);
 				$em -> flush();
-				return $this->forward('BundleChessBundle:Player:loggedin', array(  //den här skickar vidare till PlayerController loggedinAction med en 
-				'player' => $player												   //player parameter
+				return $this->forward('BundleChessBundle:Player:loggedin', array(	//den här skickar vidare till PlayerController loggedinAction med en 
+					'player' => $player												//player parameter
 				));
 			}else{
 				return $this->forward('BundleChessBundle:Game:index', array(
@@ -79,34 +80,54 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			$em -> persist($playerdb);
 			$em -> flush();
 	
-			$playerFriend = new Friend();
-		    $form = $this->createForm(new EnquiryType2(), $playerFriend);
-		    $request = $this->getRequest();
-
-	    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
-	    		'player1' => $player,
-	    		'form' => $form->createView()
-		));
-		
+	    	return $this->forward('BundleChessBundle:Player:loggedin', array(
+	    		'player' => $player,
+			));
 	}
 
 	public function loggedinAction($player){
+			//skapa ny friend för att rendera ett formulär
 			$playerFriend = new Friend();
 		    $form = $this->createForm(new EnquiryType2(), $playerFriend);
 		    $request = $this->getRequest();
 			
-		    if (isset($_POST['submitFriend']) && $request->getMethod() == 'POST') {
-				$newplayer -> setPlayer2($_POST['players']['player2']); 
-				$em -> persist($newplayer);
-				$em -> flush();
-	            return $this->redirect($this->generateUrl('BundleChessBundle_game'));
+			//kolla vilka som har loginstatus 1 i db
+			$em = $this -> getDoctrine()-> getEntityManager();
+			
+			$playerdb = $em -> getRepository('BundleChessBundle:Player')
+				            -> findByLoginstatus(1);
+			
+			$loggedinplayers = array();				   
+			foreach($playerdb as $key=>$value){
+				if($value->getLoginstatus()== 1){
+					$loggedinplayers[] = $value->getPlayer();
+				};
 			}
+			//print_r($loggedinplayers);
+			
 
 	    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(
 	    		'player1' => $player,
-	    		'form' => $form->createView()
+	    		'form' => $form->createView(),
+	    		'loggedinplayers' => $loggedinplayers
 			));
 	}
+	
+	public function logoutAction($player1){
+	
+			$em = $this -> getDoctrine()-> getEntityManager();
+			$playerdb = $em -> getRepository('BundleChessBundle:Player')
+					        -> getPlayer($player1);
+			
+			
+			$playerdb -> setLoginstatus(0);
+			$em -> persist($playerdb);
+			$em -> flush();
+			
+			return $this->forward('BundleChessBundle:Game:index', array(
+				'message1'=> 'You are now logged out, thank you for playing.'
+			));			
+	}						
 }
 
 

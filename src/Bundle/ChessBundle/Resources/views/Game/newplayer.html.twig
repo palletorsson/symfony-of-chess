@@ -2,28 +2,36 @@
 {% extends 'BundleChessBundle::index.html.twig' %}
 
 {% block sidebar %}
-	<div class="notation_wrapper"><div style="background:#fff; padding:20px; width:350px;border:1px solid #ccc;border-radius:15px;margin:20px;"> 
-		<h1> Welcome {{player1}}! </h1>
-		
-		<p> If you would like to start a new game there are two options: 
-			<ol>
-				<li> Play with someone next to you, enter their name and press new game </li>
-				<li> Look at the list of other players online and invite any one of them to play with you </li>
-			</ol>
-		</p>
-		<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform2">
-	        {{ form_row(form.player2) }}
-	        <input type="hidden" value="{{player1}}" name="player1"/>
-			<input type="submit" name="submitFriend" value="Start a new game with my friend" />
-		</form>
-		
-
-		<div id="error">  </div>
-	</div>
+	<div class="notation_wrapper">
+		<div style="background:#fff; padding:20px; width:350px;border:1px solid #ccc;border-radius:15px;margin:20px;"> 
+			<h1> Welcome {{player1}}! </h1>
+			
+			<p> If you would like to start a new game there are two options: 
+				<ol>
+					<li> 1. Play with someone next to you, enter their name and press Play with player 2. <br/> </li>
+					<li> 2. Check  the list to see if there are any other players that wait for an opponent. <br/> </li>
+				</ol>
+			</p>
+			<form action="{{ path('BundleChessBundle_game') }}" method="post" {{ form_enctype(form) }} class="players" id="playerform2">
+		        {{ form_row(form.player2) }}
+		        <input type="hidden" value="{{ player1 }}" name="player1"/>
+				<input type="submit" name="submitFriend" value="Play with player 2" />
+			</form>
+			
+		</div>
 	<div id="players" style="background:#fff; padding:20px; width:350px;border:1px solid #ccc;border-radius:15px;margin:20px;"> 
-		<h1> Players </h1>
-		<p> No  players are currently online. </p>
+		<h1> Players online </h1>
+		
+		 <ul id="navigation">
+            {% for index, value in loggedinplayers %}
+                <li> {{ value }} </li>
+            {% else %}
+                <li> No players are currently online </li>
+            {% endfor %}
+        </ul>
 	</div>
-</div>
+	
+	<div id="logout" class="button_control"> <a href="logout/{{player1}}"> Log out </a></div>
+</div> 
 {% endblock %}
 

@@ -55,3 +55,9 @@ BundleChessBundle_registernewplayer:
     defaults: { _controller: BundleChessBundle:Player:registernewplayer }
     requirements:
         _method:  GET|POST
+
+BundleChessBundle_logout:
+    pattern:  /logout/{player1}
+    defaults: { _controller: BundleChessBundle:Player:logout}
+    requirements:
+        _method:  GET|POST

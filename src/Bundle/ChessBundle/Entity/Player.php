@@ -58,6 +58,10 @@ class Player
 	 */
  	protected $loginstatus;
     
+	/**
+	 * @ORM\Column(type="string", length="40")
+	 */
+    protected $pendinggame;
 	
 	public function __construct(){
 		$this -> games = new ArrayCollection();
@@ -236,5 +240,25 @@ class Player
     public function getLoginstatus()
     {
         return $this->loginstatus;
+    }
+
+    /**
+     * Set pendinggame
+     *
+     * @param string $pendinggame
+     */
+    public function setPendinggame($pendinggame)
+    {
+        $this->pendinggame = $pendinggame;
+    }
+
+    /**
+     * Get pendinggame
+     *
+     * @return string 
+     */
+    public function getPendinggame()
+    {
+        return $this->pendinggame;
     }
 }

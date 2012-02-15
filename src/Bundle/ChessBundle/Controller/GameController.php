@@ -78,7 +78,7 @@ class GameController extends Controller
 		$p2 = $_POST['players']['player2'];
 
 		$current_game = new Game();
-		$current_game -> createGame($p1, $p2);		 
+		$current_game -> createGame($p1, $p2); 
 
 		$em = $this -> getDoctrine()-> getEntityManager();
 		$em -> persist($current_game);
