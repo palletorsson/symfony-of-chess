@@ -24,8 +24,9 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			
 			$playersalt = new Player();			
 			//passwordcheck
-			if(md5(($playersalt -> getSalt1() . $password . $playersalt -> getSalt2())) == $playerdb -> getPassword()){
-
+			$salt1 = $playersalt->getSalt1();
+			$salt2 = $playersalt->getSalt2();
+			if(md5(($salt1.$password .$salt2)) === $playerdb -> getPassword()){
 				$playerdb -> setLoginstatus(1);
 				$em -> persist($playerdb);
 				$em -> flush();

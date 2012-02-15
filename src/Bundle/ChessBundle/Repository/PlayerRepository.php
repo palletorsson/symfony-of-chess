@@ -23,6 +23,7 @@ class PlayerRepository extends EntityRepository
 		return $result[0];
 	}
 
+
 	public function checkNewPlayer($player){
 	    $qb = $this->createQueryBuilder('Player')
                    ->select('Player')
