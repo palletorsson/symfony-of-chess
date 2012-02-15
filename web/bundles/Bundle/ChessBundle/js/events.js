@@ -39,11 +39,40 @@ $(document).ready(function(){
 	});
 
 	var gameid = document.getElementById('thegameid').innerHTML;
+	
+	var player2 = $('#player2').html();
+	
 	retrieveTurnStatus(gameid); 
+	
+	// skapa variable player2
+	if (player2 == "waiting") {
+		waitForPlayer(gameid); 
+		}
 
 });
 
 
+function waitForPlayer(gameid) {
+		$.post('checkplayer', { sendid: gameid } ,
+			function(data) {
+				console.log(data);
+				var dbgameid = data.gameid;
+				var dbPlayer2 = data.dbplayer2; 
+				
+				// om spelaren slagit uppdatera med json-objektet
+				if (dbPlayer2 != "waiting") {   
+					var playerName2 = data.player2;
+					$('#player2').html('w');
+					// öppna spelet	
+				} 
+				setTimeout(function() { 
+						retrieveTurnStatus(gameid);
+					}, 6000);
+			}, 
+			"json"
+		);
+	}
+}	
 function addHighlight(color){
 	if(color == 'w'){
 		$('.whiteturn').html('Your turn');
@@ -122,6 +151,7 @@ var retrieveTurnStatus = function(gameid) {
 					updateTurn(piece, move);		
 					// om denna går igenom och byt turn sluta lyssna 
 					// och tvinga svart att börja lyssna 	
+					retrieveTurnStatus(gameid);
 				} 
 				ajaxTurn(whosturn);
 				setTimeout(function() { 
@@ -156,6 +186,7 @@ function getHit(whatcell){ //funktion för att ta vara på utslagna pjäser
 	}
 }
 
+// utdate this turn thing 
 function updateTurn(whatpiece, whatmove){
 	if(whosturn == 'w'){
 		document.getElementById("whiteprint").innerHTML += whatpiece + whatmove + "<br />";

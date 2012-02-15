@@ -55,3 +55,11 @@ BundleChessBundle_registernewplayer:
     defaults: { _controller: BundleChessBundle:Player:registernewplayer }
     requirements:
         _method:  GET|POST
+
+
+
+BundleChessBundle_waitforplayer:
+    pattern:  /waitforplayer
+    defaults: { _controller: BundleChessBundle:FindPlayer:waitforplayer }
+    requirements:
+        _method:  POST
