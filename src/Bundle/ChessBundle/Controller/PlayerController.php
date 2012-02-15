@@ -22,12 +22,13 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			$playerdb = $em -> getRepository('BundleChessBundle:Player')
 					        -> getPlayer($player);
 			
-			$playerdb -> setLoginstatus(1);
-			persist($playerdb);
-			flush();
-			
+			$playersalt = new Player();			
 			//passwordcheck
-			if(md5(($playerdb -> getSalt1() . $password . $playerdb -> getSalt2())) == $playerdb -> getPassword()){
+			if(md5(($playersalt -> getSalt1() . $password . $playersalt -> getSalt2())) == $playerdb -> getPassword()){
+
+				$playerdb -> setLoginstatus(1);
+				$em -> persist($playerdb);
+				$em -> flush();
 				return $this->forward('BundleChessBundle:Player:loggedin', array(  //den här skickar vidare till PlayerController loggedinAction med en 
 				'player' => $player												   //player parameter
 				));
