@@ -24,7 +24,7 @@ class Player
 	 protected $playerid;
 	
 	/**
-	 * @ORM\Column(type="string", length="40")
+	 * @ORM\Column(type="string",unique="true", length="40")
 	 */
     protected $player;
 
@@ -39,12 +39,12 @@ class Player
  	protected $password;
 	
 	/**
-	 * * @ORM\Column(type="string", length="256")
+	 * 
 	 */
  	protected $salt1;
 
 	/**
-	 * * @ORM\Column(type="string", length="256")
+	 *
 	 */
  	protected $salt2;
 
@@ -52,10 +52,16 @@ class Player
      * @ORM\OneToMany(targetEntity="Game", mappedBy="game")
      */
     protected $games;
+
+	/**
+	 * @ORM\Column(type="smallint")
+	 */
+ 	protected $loginstatus;
     
 	
 	public function __construct(){
 		$this -> games = new ArrayCollection();
+		$this -> loginstatus = 1;
 		$this -> salt1 = sha1('Ush8K&iu62msl82%');
 		$this -> salt2 = md5('jsSmdCw9lq1jd01?s&');
 	}
@@ -210,5 +216,25 @@ class Player
     public function getSalt2()
     {
         return $this->salt2;
+    }
+
+    /**
+     * Set loginstatus
+     *
+     * @param smallint $loginstatus
+     */
+    public function setLoginstatus($loginstatus)
+    {
+        $this->loginstatus = $loginstatus;
+    }
+
+    /**
+     * Get loginstatus
+     *
+     * @return smallint 
+     */
+    public function getLoginstatus()
+    {
+        return $this->loginstatus;
     }
 }

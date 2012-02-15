@@ -22,7 +22,11 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			$playerdb = $em -> getRepository('BundleChessBundle:Player')
 					        -> getPlayer($player);
 			
-		
+			$playerdb -> setLoginstatus(1);
+			persist($playerdb);
+			flush();
+			
+			//passwordcheck
 			if(md5(($playerdb -> getSalt1() . $password . $playerdb -> getSalt2())) == $playerdb -> getPassword()){
 				return $this->forward('BundleChessBundle:Player:loggedin', array(  //den här skickar vidare till PlayerController loggedinAction med en 
 				'player' => $player												   //player parameter
@@ -66,7 +70,8 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 			$playerdb = new Player();
 			$playerdb -> setPassword(md5(($playerdb -> getSalt1() . $password . $playerdb -> getSalt2())));		 
 			$playerdb -> setPlayer($player);
-			$playerdb -> setPlayer2('Player2');
+			$playerdb -> setPlayer2($player2);
+			$playerdb -> setLoginstatus(1);
 
 			$em = $this -> getDoctrine()-> getEntityManager();
 			$em -> persist($playerdb);

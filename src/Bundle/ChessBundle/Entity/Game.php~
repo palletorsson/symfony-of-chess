@@ -66,12 +66,13 @@ class Game {
 	protected $hitpieces;
 	
 	/**
-	* @ORM\Column(type="datetime")
+	 * @ORM\prePersist
+	 * @ORM\Column(type="datetime")
 	*/
 	protected $started;
 
 	/**
-	* @ORM\Column(type="datetime")
+	 * @ORM\Column(type="datetime")
 	*/
 	protected $ended;
 	
