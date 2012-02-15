@@ -22,27 +22,31 @@ class TurnController extends Controller {
 		$gameboard = $game -> getGameboard();
 		$turn = $game -> getTurn();
 		$gameid =  $game -> getGameid(); 
-		// is your turn
+		// om det inte är din tur
 		if ($turn == $whosturn) {
-			// om det inte är din tur
 			$game = array("turn" => "0");	
 
 		} else {
-			if(!$whitedraws = $game -> getWhitedraws()){
-				$whitedraws = "0";
-			} else {
-				$whitedraws = end($whitedraws);
+			
+			if ($turn == "b") {
+				if(!$whitedraws = $game -> getWhitedraws()) {
+					$lastdraw = "0";
+				} else {
+					$lastdraw = end($whitedraws);
+				}
+			}
+				
+			if ($turn == "w") {
+				if(!$blackdraws = $game -> getBlackdraws()) {
+					$lastdraw = "0";
+				} else {
+					$lastdraw = end($blackdraws);
+				}
 			}
 			
-			if(!$blackdraws = $game -> getBlackdraws()){
-				$blackdraws = "0";
-			} else {
-				$blackdraws = end($blackdraws);
-			}
 			$game = array(	"turn" => $turn
 							, "gameid" => $gameid
-							, "blackdraw" => $blackdraws
-							, "whitedraw" => $whitedraws
+							, "lastdraw" => $lastdraw
 						 );	
 
 		}	

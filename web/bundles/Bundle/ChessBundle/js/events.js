@@ -21,8 +21,26 @@ $(document).ready(function(){
 		alert('This game is saved with a game id of ' + currentgameid);
 	});
 	
+	
+	$('#playas').html('w');
+	var playcolor = $('#playas').html();
+	
+	$('#playas').click(function(){
+		playcolor = $('#playas').html();
+		if(playcolor == "w"){
+			$('#playas').html('b');
+			
+		} 
+		if (playcolor == "b") {
+			$('#playas').html('w');
+		}
+		retrieveTurnStatus(gameid); 
+
+	});
+
 	var gameid = document.getElementById('thegameid').innerHTML;
 	retrieveTurnStatus(gameid); 
+
 });
 
 
@@ -75,44 +93,44 @@ function dragOver(event) {
 }
 
 var retrieveTurnStatus = function(gameid) {
-	// if its your turn then go ahead and the other player 
-	// player move send the move. 
-	$.post('checkturn', { sendid: gameid, myturn : whosturn } ,
-		function(data) {
-			console.log(data);
-			var dbgameid = data.gameid;
-			var dbturn = data.turn; // return 0 if not your turn
-			
-			console.log(dbturn); 
-			if (dbturn != 0) {   
-				var dbblackdraw = data.blackdraw;
-				var dbwhitedraw = data.whitedraw;
-				if (dbturn == "w")  {
-					var piece = dbwhitedraw.substring(0,3);
+	playcolor = $('#playas').html();
+	console.log(playcolor+' '+whosturn); 
+	// om det inte är din tur kolla om den andra spelaren har slagit med ajax
+	if (playcolor != whosturn) {
+		
+		$.post('checkturn', { sendid: gameid, myturn : whosturn } ,
+			function(data) {
+				console.log(data);
+				var dbgameid = data.gameid;
+				var dbturn = data.turn; 
+				
+				// om spelaren slagit uppdatera med json-objektet
+				if (dbturn != 0) {   
+					var lastdrawed = data.lastdraw;
+					var piece = lastdrawed.substring(0,4);
 					var piece = '&#' + piece +';';	
-					var from = dbwhitedraw.substring(4,5); 
-					var to = dbwhitedraw.substring(8,9);
-				} else { 
-					var piece = dbblackdraw.substring(0,3);
-					var piece = '&#' + piece +';';	
-					var from = dbblackdraw.substring(4,5); 
-					var to = dbblackdraw.substring(8,9);
+					console.log(piece);
+					var from = lastdrawed.substring(4,6); 
+					var to = lastdrawed.substring(7,9);
+					console.log(piece+' '+from+' '+to);
+					var element = document.getElementById(from);
+					var target = document.getElementById(to);
+					var move = from+"-"+to; 
+					getHit(target);
+					target.innerHTML = element.innerHTML; // Moving piece to new cell
+					element.innerHTML = ""; // Clearing old cell	
+					updateTurn(piece, move);		
+					// om denna går igenom och byt turn sluta lyssna 
+					// och tvinga svart att börja lyssna 	
 				} 
-				var element = document.getElementById(from);
-				var target = document.getElementById(to);
-				var move = from+"-"+to; 
-				getHit(target);
-			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
-				element.innerHTML = ""; // Clearing old cell	
-				updateTurn(piece, move);		
-			} 
-			ajaxTurn(whosturn);
-			setTimeout(function() { 
-					retrieveTurnStatus(gameid);
-				}, 6000);
-		}, 
-		"json"
-	);
+				ajaxTurn(whosturn);
+				setTimeout(function() { 
+						retrieveTurnStatus(gameid);
+					}, 6000);
+			}, 
+			"json"
+		);
+	}
 }	
 	
 
