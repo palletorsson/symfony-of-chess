@@ -72,19 +72,27 @@ class GameController extends Controller
 	
     public function multiplayerAction(){
     	//print_r($_POST);
-		$gameid = $_POST['slugResult'][0];
-		$p2 = $_POST['slugResult'][1];
+		$gameid = $_POST['gameid'];
+		$p2 = $_POST['player'];
+		$color = 'b';
+		
     	$em = $this -> getDoctrine()-> getEntityManager();
 		$game = $em -> getRepository('BundleChessBundle:Game')
 				    -> getGame($gameid);
 
 		$game -> setPlayer2($p2);
 		$p1 = $game -> getPlayer1();		
-    
+		$em -> persist($game);
+		$em -> flush();
+		
+		$local = 0;    
 		return $this->forward('BundleChessBundle:Game:render', array(
 	    		'p1' => $p1,
 	    		'p2' => $p2,
-	    		'gameid' => $gameid
+	    		'gameid' => $gameid,
+	    		'color' => $color,
+	    		'loggedinas' =>	$p2,
+	    		'local' => $local
 			));
 	}
 	
@@ -93,11 +101,14 @@ class GameController extends Controller
 		if(isset($_POST['submitFriend'])){
 			$p1 = $_POST['player1'];
 			$p2 = $_POST['players']['player2'];
+			$local = 1;
 		}else if(isset($_POST['submitPending'])){
 			$p1 = $_POST['player1'];
 			$p2 = 'Waiting...';
+			$local = 0;
 		}
 		
+		$color = 'w';
 		$current_game = new Game();
 		$current_game -> createGame($p1, $p2); 
 
@@ -118,15 +129,21 @@ class GameController extends Controller
 		return $this->forward('BundleChessBundle:Game:render', array(
 	    		'p1' => $p1,
 	    		'p2' => $p2,
-	    		'gameid' => $this -> gameid
+	    		'gameid' => $this -> gameid,
+	    		'color' => $color,
+	    		'loggedinas' =>	$p1,
+	    		'local' => $local
 			));
 	}
 
-	public function renderAction($p1,$p2,$gameid){
+	public function renderAction($p1,$p2,$gameid,$color,$loggedinas,$local){
     return $this -> render('BundleChessBundle:Game:index.html.twig', array(
         	'player1' => $p1,
         	'player2' => $p2,
-        	'gameid' => $gameid
+        	'gameid' => $gameid,
+        	'color' => $color,
+        	'loggedinas' =>	$loggedinas,
+        	'local' => $local
     	));    
 	}
     

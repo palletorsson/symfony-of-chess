@@ -28,20 +28,26 @@
                 <li> {{ value }} </li>
             {% endfor %}
          </ul>
-        <h1> Players online </h1>
+		<br/>
+        <h1> Pending games </h1>
+        <form action="{{ path('BundleChessBundle_multiplayer') }}" method="post" {{ form_enctype(form) }}>
         <ul>
             {% for key, value in pendingplayers %}
-                <li id="{{value}}-{{player1}}" class="multiplayer"> {{ key }} </li>
+               <li class="multiplayer"> {{ key }}  
+               		<input type="hidden" name="player" value="{{player1}}" />
+               		<input type="hidden" name="gameid" value="{{value}}" />
+               		<input type="submit" name="newPending" value="Play with {{key}}" />
+               	</li>
             {% else %}
             	<li> There are no pending games at the moment. </li>
             {% endfor %}
         </ul>
+		</form>
 	</div>
 	
 	<div id="logout" class="button_control"> <a href="logout/{{player1}}"> Log out </a></div>
 </div> 
- 	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/jquery-1.7.min.js') }} "></script>
-	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/multiplayers.js') }}"></script>
+
 
 {% endblock %}
 

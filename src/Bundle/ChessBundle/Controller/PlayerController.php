@@ -111,7 +111,7 @@ use Bundle\ChessBundle\Form\EnquiryType2;
 					$pendingplayers[$value->getPlayer()] = $value -> getPendinggame();
 				};
 			}
-			print_r($pendingplayers);
+			//print_r($pendingplayers);
 			
 
 	    	return $this->render('BundleChessBundle:Game:newplayer.html.twig', array(

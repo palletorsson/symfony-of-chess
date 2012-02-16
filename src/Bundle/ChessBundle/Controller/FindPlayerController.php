@@ -11,7 +11,7 @@ use Bundle\ChessBundle\Entity\Friend;
 class FindPlayerController extends Controller {
 		
 	public function waitforplayerAction() {
-		
+		//print_r($_POST);
 		$gameidIn = $_POST['sendid'];
 	
 	    $em = $this -> getDoctrine()-> getEntityManager();
@@ -19,12 +19,12 @@ class FindPlayerController extends Controller {
 		$game = $em -> getRepository('BundleChessBundle:Game')
 				    -> getGame($gameidIn);
 			
-		$dbplayer2 = $player2 -> getPlayer2();
-		$gameid =  $game -> getGameid(); 
+		$dbplayer2 = $game -> getPlayer2();
+		//$gameid =  $game -> getGameid(); 
 			
 		$game = array(	"dbplayer2" => $dbplayer2
-							, "gameid" => $gameid
-						 );	
+					  , "gameid" => $gameidIn
+					 );	
 
 						
         $game = json_encode($game);

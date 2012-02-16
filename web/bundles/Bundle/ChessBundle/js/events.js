@@ -2,9 +2,11 @@
 var xmlHttp = createXmlHttpRequestObject()
 	, whosturn = 'w'
 	, piece
-	, move;
+	, move
+	, local;
 
 $(document).ready(function(){
+	local = $('#local').html();
 	$('#start a').click(function(){
 		var answer = confirm('A new game will be started, please save this game first unless you want to lose it. Continue?');
 		if(answer){
@@ -21,66 +23,40 @@ $(document).ready(function(){
 		alert('This game is saved with a game id of ' + currentgameid);
 	});
 	
-	
-	$('#playas').html('w');
+	var gameid = $('#thegameid').html();
 	var playcolor = $('#playas').html();
-	
-	$('#playas').click(function(){
-		playcolor = $('#playas').html();
-		if(playcolor == "w"){
-			$('#playas').html('b');
-			
-		} 
-		if (playcolor == "b") {
-			$('#playas').html('w');
-		}
-		retrieveTurnStatus(gameid); 
-
-	});
-
-
-	var gameid = document.getElementById('thegameid').innerHTML;
-	
 	var player2 = $('#player2').html();
-	
-	retrieveTurnStatus(gameid); 
+	console.log(player2);
 	
 	// skapa variable player2
 	if (player2 == "Waiting...") {
+		alert('Waiting...');
 		waitForPlayer(gameid); 
 	}
-
-	
-	$('.multiplayer').click(function(e,slug){
-			console.log(slug);
-			e.stopPropagation();
-			e.preventDefault();
-			var slug = $(this).attr('id');
-			var slugResult = slug.split('-');
-			console.log(slugResult);
-			$.post('multiplayer', { 'slugResult[]': ["gameid", "player"] })
-	});
-
+	if (local == 0){
+		retrieveTurnStatus(gameid);
+	}
 });
 
 
 
 	function waitForPlayer(gameid) {
-		$.post('checkplayer', { sendid: gameid } ,
+		$.post('waitforplayer', { sendid: gameid } ,
 			function(data) {
-				console.log(data);
-				var dbgameid = data.gameid;
+				//console.log(data);
+				//var dbgameid = data.gameid;
 				var dbPlayer2 = data.dbplayer2; 
 				
 				// om spelaren slagit uppdatera med json-objektet
 				if (dbPlayer2 != "Waiting...") {   
-					var playerName2 = data.player2;
-					$('#player2').html(playerName2);
-					alert('You have an opponent, start playing');
+					$('#player2').html(dbPlayer2);
+					alert(dbPlayer2 + ' wants to play, shah mat!');
+					//retrieveTurnStatus(gameid);
+					return; 
 				} 
 				setTimeout(function() { 
-						retrieveTurnStatus(gameid);
-					}, 6000);
+					waitForPlayer(gameid);
+				}, 4000);
 			}, 
 			"json"
 		);
@@ -95,6 +71,7 @@ function addHighlight(color){
 		$('.whiteturn').html('');
 	}
 }
+
 // retrieves the XMLHttpRequest object
 function createXmlHttpRequestObject() {
 	// will store the reference to the XMLHttpRequest object
@@ -126,8 +103,14 @@ function createXmlHttpRequestObject() {
 }
 	
 function dragStart(event) {
-	event.dataTransfer.effectAllowed = 'move';
-	event.dataTransfer.setData("Text", event.target.getAttribute('id'));
+	if ((local == 1)||(playcolor == whosturn)) {
+		event.dataTransfer.effectAllowed = 'move';
+		event.dataTransfer.setData("Text", event.target.getAttribute('id'));
+	}else{
+		event.dataTransfer.effectAllowed != 'move';
+		$('#error').html("It's not your turn").fadeIn("slow");
+		$('#error').fadeOut(3000);
+	}
 }
 
 function dragOver(event) {
@@ -135,11 +118,11 @@ function dragOver(event) {
 }
 
 var retrieveTurnStatus = function(gameid) {
+	//alert('Retrieve turn status fired');
 	playcolor = $('#playas').html();
 	console.log(playcolor+' '+whosturn); 
 	// om det inte är din tur kolla om den andra spelaren har slagit med ajax
 	if (playcolor != whosturn) {
-		
 		$.post('checkturn', { sendid: gameid, myturn : whosturn } ,
 			function(data) {
 				console.log(data);
@@ -162,14 +145,12 @@ var retrieveTurnStatus = function(gameid) {
 					target.innerHTML = element.innerHTML; // Moving piece to new cell
 					element.innerHTML = ""; // Clearing old cell	
 					updateTurn(piece, move);		
-					// om denna går igenom och byt turn sluta lyssna 
-					// och tvinga svart att börja lyssna 	
-					retrieveTurnStatus(gameid);
+					return;
 				} 
-				ajaxTurn(whosturn);
+				//ajaxTurn(whosturn);
 				setTimeout(function() { 
-						retrieveTurnStatus(gameid);
-					}, 6000);
+					retrieveTurnStatus(gameid);
+				}, 6000);
 			}, 
 			"json"
 		);
@@ -265,7 +246,6 @@ function handleServerResponse()	{
 			
 			if (move > 200) {
 				msg =  errormsg[move];
-				document.getElementById("error").innerHTML = msg;
 				$('#error').html(msg).fadeIn("slow");
 				$('#error').fadeOut(3000);
 			} 
@@ -274,6 +254,7 @@ function handleServerResponse()	{
 				var to = move.substring(6,8);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
+				var gameid = $('#thegameid').html();
 				getHit(target);
 				var p = element.innerHTML;				 
 				if (move.substring(8,9) == "w") { 
@@ -283,6 +264,10 @@ function handleServerResponse()	{
 				}	
 				element.innerHTML = ""; // Clearing old cell
 				updateTurn(piece,move);
+				if (local == 0){
+					retrieveTurnStatus(gameid);
+				}
+
 			}
 			else {
 				// update the client display using the data received 
@@ -291,10 +276,14 @@ function handleServerResponse()	{
 				var to = move.substring(3,5);
 				var element = document.getElementById(from);
 				var target = document.getElementById(to);
+				var gameid = $('#thegameid').html();
 				getHit(target);
 			 	target.innerHTML = element.innerHTML; // Moving piece to new cell
 				element.innerHTML = ""; // Clearing old cell	
 				updateTurn(piece, move);
+				if (local == 0){
+					retrieveTurnStatus(gameid);
+				}
 			}
 		}
 		// a HTTP status different than 200 signals an error

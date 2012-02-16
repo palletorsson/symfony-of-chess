@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-
+/*
 	$('.multiplayer').click(function(slug){
 			console.log(slug);
 			//e.stopPropagation();
@@ -12,5 +12,5 @@ $(document).ready(function(){
 				$('body').html(data);
 			})
 	});
-
+*/
 });

@@ -125,13 +125,12 @@
 		<div id="coord_bottom_bar_no">	<span class="coordbot_dsq">H</span></div>
 	</ul>
 	
-	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/events.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/getold.js') }}"></script>
 
 {% endblock %}
 {% block sidebar %}
 
-	<div class="notation_wrapper"> 
+	<div class="notation_wrapper">
+	<p> You are currently logged in as {{loggedinas}}</p> 
 		<div class="left-side containers">
 			 <div id="whitemoves" class="moves">
 				 <p> In the white corner: </p> 
@@ -143,7 +142,7 @@
 		<div class="right-side containers">
 			<div id="blackmoves" class="moves"> 
 			<p> In the black corner: </p> 
-			<h1 id="player2"> {{ player2 }} </h1>
+			<h1 id="player2">{{ player2 }}</h1>
 			<p class="blackturn""></p> Black Game Moves: </br></br> 
 			<span id="blackprint"> </span>
 			</div>
@@ -163,9 +162,16 @@
 	</div>
 	<div id="turn"></div> 
 	<div id="thegameid">{{ gameid }}</div>
-	<div id="playas"></div>	
+	<div id="playas">{{color}}</div>
+	<div id="local">{{local}}</div>	
 	
 
 
 	
 {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/events.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/Bundle/ChessBundle/js/getold.js') }}"></script>
+{% endblock %}
+	

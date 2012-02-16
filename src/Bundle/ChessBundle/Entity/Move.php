@@ -70,7 +70,7 @@ namespace Bundle\ChessBundle\Entity;
 			$this -> diagonal["col"] = abs($this -> toCol - $this ->fromCol); 
 			$this -> diagonal["row"] = abs($this -> toRow - $this ->fromRow); 
 		}
-		
+//*********************************************HÄR BÖRJAR SCHACK TESTERNA ***************************
 		//gör ett negativt tal till noll
 		public function negativToZero($int){
 			if($int < 0){
@@ -86,21 +86,13 @@ namespace Bundle\ChessBundle\Entity;
 			
 			//alla 8 positioner som en häst kan stå på
 			$tempArray[] = (($kingCol + 2) . ($kingRow + 1));
-			
 			$tempArray[] = (($kingCol + 1) . ($kingRow + 2));
-			
 			$tempArray[] = ($this -> negativToZero($kingCol - 2) . ($kingRow + 1));
-			
 			$tempArray[] = ($this -> negativToZero($kingCol - 1) . ($kingRow + 2));
-			
 			$tempArray[] = (($kingCol + 2) . $this -> negativToZero($kingRow - 1));
-			
 			$tempArray[] = (($kingCol + 1) . $this -> negativToZero($kingRow - 2));
-			
 			$tempArray[] = ($this -> negativToZero($kingCol - 2) . $this -> negativToZero($kingRow - 1));
-			
 			$tempArray[] = ($this -> negativToZero($kingCol - 1) . $this -> negativToZero($kingRow - 2));
-			
 			
 			foreach ($tempArray as $value) {
 				if(substr($value, 0, 1) > 0 && substr($value, 0, 1) < 9){ //kolumnen är mindre än 9
@@ -163,6 +155,7 @@ namespace Bundle\ChessBundle\Entity;
 	
 			}
 		}	
+
 		public function checkUp($kingRow, $kingCol, $color, $board){
 			$x = $kingRow;
 			$x++;
@@ -896,6 +889,7 @@ namespace Bundle\ChessBundle\Entity;
 			
 			else if($this->turn == "b"){ 
 				$kingPos = array_search(9818, $boardAsInt); //var står svart kung?
+
 				if($this->checkChess($kingPos, 9818, $boardAsInt, "black")){ //står den i schack? JA
 					$moveAnswer2 = $this -> checkMove();  //validera draget
 
@@ -909,7 +903,7 @@ namespace Bundle\ChessBundle\Entity;
 						foreach($newBoard as $key => $value){ //gör om kolumner till siffror för beräkning
 							$boardAsInt[($this -> yPosToInt[substr($key, 0, 1)]) . substr($key, 1, 1)] = $value;
 						}
-						
+						//checkchess igen, är din kung skyddad som följd av ditt nya drag?						
 						if($this->checkChess($kingPos, 9818, $boardAsInt, "black")){ //kolla om man fortf står i schack
 							$moveAnswer2 = 206; //JA
 						} else {
@@ -950,6 +944,7 @@ namespace Bundle\ChessBundle\Entity;
 							$moveAnswer = 205;
 						}
 					}
+					
 					return $moveAnswer; 
 				}
 			return $moveAnswer; 

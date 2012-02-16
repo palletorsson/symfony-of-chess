@@ -300,7 +300,10 @@ h2{
 	margin:5px;
 }
 
-
+.multiplayer {
+	cursor: pointer;
+	color: red;
+}
 
 
 
